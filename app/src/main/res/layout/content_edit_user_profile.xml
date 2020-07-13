@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/_10sdp"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".EditUserProfileActivity"
+    tools:showIn="@layout/activity_edit_user_profile">
+
+    <com.mikhaellopez.circularimageview.CircularImageView
+        android:id="@+id/imgUser"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_100sdp"
+        android:src="@drawable/learn"
+        app:civ_border_color="@color/colorPrimary"
+        app:civ_border_width="2dp"
+        android:layout_gravity="center"
+        app:civ_shadow="true"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_centerHorizontal="true"
+        app:civ_shadow_color="#00000000"
+        app:civ_shadow_radius="4dp" />
+
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/full_name"
+        android:drawableStart="@mipmap/name"
+        app:backgroundTint="@color/black"
+        android:inputType="text"
+        android:singleLine="true"
+        android:layoutDirection="locale"
+        android:textDirection="locale"
+        android:drawablePadding="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/email"
+        android:drawableStart="@mipmap/email"
+        android:inputType="textEmailAddress"
+        app:backgroundTint="@color/black"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layoutDirection="locale"
+        android:textDirection="locale"
+        android:drawablePadding="@dimen/_10sdp"
+
+        />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/phone_number"
+        android:drawableStart="@mipmap/phone"
+        android:inputType="phone"
+        android:layoutDirection="locale"
+        android:textDirection="locale"
+        app:backgroundTint="@color/black"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:drawablePadding="@dimen/_10sdp"
+        />
+
+    <Button
+        android:layout_width="250dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:background="@drawable/button"
+        android:text="@string/update"
+        android:textSize="@dimen/_12ssp"
+        />
+
+
+</LinearLayout>

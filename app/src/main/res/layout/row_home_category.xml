@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+    android:layout_margin="@dimen/_4sdp"
+    android:id="@+id/llMAin"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+<LinearLayout
+    android:layout_width="180dp"
+    android:orientation="vertical"
+    android:background="@drawable/round_rect"
+    android:padding="@dimen/_10ssp"
+    android:layout_height="wrap_content">
+
+
+
+
+    <ImageView
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:src="@drawable/design"
+        />
+
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/_11ssp"
+        android:text="Design"
+        android:textColor="@color/black"
+        />
+
+    <TextView
+        android:id="@+id/tvNoOfCourses"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/_9ssp"
+        android:text="1150 Courses"
+        android:textColor="@color/font1"
+        />
+
+
+</LinearLayout>
+</LinearLayout>
