@@ -2,7 +2,6 @@ package com.onlineeducationsyestem;
 
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,7 +12,7 @@ import com.onlineeducationsyestem.interfaces.OnInstructorsClick;
 
 import java.util.ArrayList;
 
-public class InstructorProfileActivity extends AppCompatActivity implements OnInstructorsClick {
+public class InstructorProfileActivity extends BaseActivity implements OnInstructorsClick {
 
     private InstructorProfileCoursesAdpter instructorProfileCoursesAdpter;
     private HomeAdapterInstructor popularInstructorAdapter;
@@ -27,6 +26,7 @@ public class InstructorProfileActivity extends AppCompatActivity implements OnIn
 
         initUI();
     }
+
     private void initUI()
     {
 

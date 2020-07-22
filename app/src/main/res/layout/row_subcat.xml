@@ -7,6 +7,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/_12sdp"
         android:layout_marginStart="@dimen/_5sdp"
         android:layout_marginEnd="@dimen/_5sdp"
         android:layout_height="wrap_content">
@@ -17,7 +18,6 @@
             android:layout_width="wrap_content"
             android:layout_alignParentEnd="true"
             android:text="@string/view_all"
-            android:textStyle="bold"
             android:textColor="@color/blue"
             android:layout_height="wrap_content"
             />
@@ -27,7 +27,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
-            android:textStyle="bold"
             android:text="@string/home"
             android:textSize="@dimen/_13ssp"
             />

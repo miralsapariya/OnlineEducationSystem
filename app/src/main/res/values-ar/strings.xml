@@ -2,7 +2,7 @@
     <string name="app_name">OnlineEducationSyestem</string>
 
     <!--bottom nav-->
-    <string name="home">Home</string>
+    <string name="home">الصفحة الرئيسية</string>
     <string name="category">Category</string>
     <string name="my_courses">My Courses</string>
     <string name="cart">Cart</string>

@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:background="@mipmap/splash"
     android:orientation="vertical"
+    android:id="@+id/llMain"
     tools:context=".SignUpActivity">
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -40,7 +41,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/_15sdp"
             android:gravity="center_horizontal"
-            android:text="@string/forgot_pwd_"
+            android:text="@string/otp"
             android:textColor="@color/white"
             android:textSize="@dimen/_19ssp"
             android:textStyle="bold" />
@@ -105,7 +106,7 @@
                 android:text="@string/otp_string"
                 />
 
-            <EditText
+            <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/etOtp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -131,6 +132,7 @@
                 android:layout_marginBottom="@dimen/_10sdp"
                 >
                 <TextView
+                    android:id="@+id/tvTimer"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
@@ -141,6 +143,7 @@
 
                     />
                 <TextView
+                    android:id="@+id/tvResend"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorPrimary"

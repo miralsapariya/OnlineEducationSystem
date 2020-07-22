@@ -27,7 +27,6 @@ public class CategoryFragment extends BaseFragment implements OnItemClick {
     private RecyclerView recyclerView,rvSubCat;
     private ArrayList<String> list;
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -44,10 +43,7 @@ public class CategoryFragment extends BaseFragment implements OnItemClick {
 
         Intent intent = new Intent(activity, SubCategoryActivity.class);
         startActivity(intent);
-
-
     }
-
 
     private void init()
     {

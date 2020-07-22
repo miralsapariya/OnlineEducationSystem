@@ -8,10 +8,9 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-public class LessionSlideActivity extends AppCompatActivity {
+public class LessionSlideActivity extends BaseActivity {
 
     private WebView webView;
     private ProgressBar progressbar;

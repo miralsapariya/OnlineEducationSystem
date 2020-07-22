@@ -7,7 +7,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".SubCategoryActivity"
     android:orientation="vertical"
-    android:paddingTop="@dimen/_10sdp"
+    android:padding="@dimen/_10sdp"
     tools:showIn="@layout/activity_sub_category">
 
 

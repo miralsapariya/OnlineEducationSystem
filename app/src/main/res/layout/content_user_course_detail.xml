@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:textDirection="locale"
+    android:layoutDirection="locale"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".UserCourseDetailActivity"
     android:background="@color/bg"
@@ -14,6 +16,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/_10sdp"
+        android:textDirection="locale"
+        android:layoutDirection="locale"
         android:background="@color/white"
         >
         <androidx.appcompat.widget.AppCompatTextView
@@ -22,12 +26,18 @@
             android:layout_height="wrap_content"
             android:text="Course Title Name"
             android:textSize="@dimen/_13ssp"
+            android:gravity="start"
+            android:textDirection="locale"
+            android:layoutDirection="locale"
             android:textColor="@color/black"
             />
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textDirection="locale"
+            android:layoutDirection="locale"
             android:textSize="@dimen/_10ssp"
+            android:gravity="end"
             android:textColor="@color/colorPrimary"
             android:text="Total section 21"
             />
@@ -43,6 +53,7 @@
         android:padding="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_10sdp"
         android:divider="@null"
+        android:groupIndicator="@null"
         android:listSelector="@android:color/transparent"
         android:background="@color/white"
         android:layout_height="wrap_content"/>

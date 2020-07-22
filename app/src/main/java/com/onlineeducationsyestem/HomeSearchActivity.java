@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,7 +17,7 @@ import com.onlineeducationsyestem.interfaces.OnItemClick;
 
 import java.util.ArrayList;
 
-public class HomeSearchActivity extends AppCompatActivity implements OnItemClick {
+public class HomeSearchActivity extends BaseActivity implements OnItemClick {
 
     private RecyclerView recyclerView;
     private EditText etSearch;

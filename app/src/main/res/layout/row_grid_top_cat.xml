@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView android:layout_width="match_parent"
+    android:layout_height="115dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="5dp"
+    android:layout_margin="@dimen/_5ssp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="115dp"
-    android:layout_margin="@dimen/_5ssp"
-    android:id="@+id/rlMain"
+
+android:id="@+id/rlMain"
     >
     <ImageView
     android:id="@+id/imageView"
@@ -43,3 +49,4 @@
     </RelativeLayout>
 
 </RelativeLayout>
+</androidx.cardview.widget.CardView>

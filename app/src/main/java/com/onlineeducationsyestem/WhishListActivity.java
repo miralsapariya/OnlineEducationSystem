@@ -2,7 +2,6 @@ package com.onlineeducationsyestem;
 
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,7 +12,7 @@ import com.onlineeducationsyestem.interfaces.OnItemClick;
 
 import java.util.ArrayList;
 
-public class WhishListActivity extends AppCompatActivity implements OnItemClick {
+public class WhishListActivity extends BaseActivity implements OnItemClick {
 
     private RecyclerView rvWhishList;
     private WhishListAdapter whishListAdapter;
@@ -25,8 +24,7 @@ public class WhishListActivity extends AppCompatActivity implements OnItemClick 
 
         initToolBar();
         initUI();
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
 
     }
     private void initToolBar()

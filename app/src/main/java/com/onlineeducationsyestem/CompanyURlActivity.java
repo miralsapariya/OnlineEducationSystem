@@ -2,9 +2,7 @@ package com.onlineeducationsyestem;
 
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-public class CompanyURlActivity extends AppCompatActivity {
+public class CompanyURlActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

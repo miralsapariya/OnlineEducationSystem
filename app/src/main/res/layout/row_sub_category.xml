@@ -10,7 +10,7 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="180dp"
         android:orientation="vertical"
-        android:background="@drawable/round_rect1"
+        android:background="@drawable/shadow_round_rect"
         android:layout_height="wrap_content">
 
         <androidx.cardview.widget.CardView

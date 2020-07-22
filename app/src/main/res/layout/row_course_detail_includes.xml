@@ -2,6 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:orientation="vertical"
+    android:textDirection="locale"
+    android:layoutDirection="locale"
     android:layout_height="wrap_content">
 
     <LinearLayout
@@ -16,7 +18,6 @@
             android:layout_width="@dimen/_20sdp"
             android:layout_height="@dimen/_20sdp"
             android:src="@mipmap/ic_cart"
-            android:layout_alignParentStart="true"
             />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -25,6 +26,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="@string/home"
+            android:gravity="start"
             android:textDirection="locale"
             style="@style/edittext_grevity"
             android:layout_marginStart="@dimen/_10sdp"

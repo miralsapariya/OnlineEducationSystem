@@ -1,11 +1,12 @@
 package com.onlineeducationsyestem;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -14,16 +15,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.onlineeducationsyestem.adapter.EdittextAdapter;
 import com.onlineeducationsyestem.adapter.QuestionTypeCheckboxAdapter;
+import com.onlineeducationsyestem.adapter.QuestionTypeMatrixImgOneAdapter;
+import com.onlineeducationsyestem.adapter.QuestionTypeMatrixImgSecondAdapter;
 import com.onlineeducationsyestem.adapter.QuestionTypeMatrixOneAdapter;
 import com.onlineeducationsyestem.adapter.QuestionTypeMatrixSecondAdapter;
 import com.onlineeducationsyestem.adapter.QuestionTypeRadioAdapter;
 import com.onlineeducationsyestem.adapter.QuestionTypeSingleSortingAdapter;
 import com.onlineeducationsyestem.widget.ItemMoveCallback;
 import com.onlineeducationsyestem.widget.ItemMoveCallback1;
+import com.onlineeducationsyestem.widget.ItemMoveCallback2;
 
 import java.util.ArrayList;
 
-public class ExamActivity extends AppCompatActivity {
+public class ExamActivity extends BaseActivity {
 
     private LinearLayout llContent;
     private ImageView imgPrev,imgNext;
@@ -34,6 +38,8 @@ public class ExamActivity extends AppCompatActivity {
     private QuestionTypeSingleSortingAdapter questionTypeSingleSortingAdapter;
     private QuestionTypeMatrixOneAdapter questionTypeMatrixOneAdapter;
     private QuestionTypeMatrixSecondAdapter questionTypeMatrixSecondAdapter;
+    private QuestionTypeMatrixImgOneAdapter questionTypeMatrixImgOneAdapter;
+    private QuestionTypeMatrixImgSecondAdapter questionTypeMatrixImgSecondAdapter;
     private int counter=0;
 
 
@@ -44,11 +50,9 @@ public class ExamActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
         initUI();
 
         typeRadio();
-
 
     }
     private void typeRadio()
@@ -67,6 +71,7 @@ public class ExamActivity extends AppCompatActivity {
         rvRadio.setLayoutManager(manager);
         rvRadio.setAdapter(questionTypeRadioAdapter);
     }
+
     private void typeCheckbox()
     {
         inflatedView = View.inflate(ExamActivity.this, R.layout.question_type_chechkbox, null);
@@ -130,7 +135,6 @@ public class ExamActivity extends AppCompatActivity {
         inflatedView = View.inflate(ExamActivity.this, R.layout.question_type_single_shorting, null);
         llContent.addView(inflatedView);
 
-
         ArrayList<String> list =new ArrayList<>();
         list.add("Two");
         list.add("One");
@@ -145,15 +149,45 @@ public class ExamActivity extends AppCompatActivity {
         touchHelper.attachToRecyclerView(rvSorting);
         rvSorting.setAdapter(questionTypeSingleSortingAdapter);
     }
+    private void typeImgMatrix()
+    {
+        inflatedView = View.inflate(ExamActivity.this, R.layout.question_type_matrix_shorting, null);
+        llContent.addView(inflatedView);
+        rvQuestion =inflatedView.findViewById(R.id.rvQuestion);
+        ArrayList<String> list1=new ArrayList<>();
+        list1.add("1 abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz");
+        list1.add("2");
+        list1.add("3");
+        list1.add("4");
+        ArrayList<String> list =new ArrayList<>();
+        list.add("Two");
+        list.add("One");
+        list.add("Four");
+        list.add("Three");
+
+        questionTypeMatrixImgOneAdapter= new QuestionTypeMatrixImgOneAdapter(ExamActivity.this,list1);
+        RecyclerView.LayoutManager mLayoutManager =
+                new LinearLayoutManager(ExamActivity.this);
+        rvQuestion.setLayoutManager(mLayoutManager);
+        rvQuestion.setItemAnimator(new DefaultItemAnimator());
+        rvQuestion.setAdapter(questionTypeMatrixImgOneAdapter);
+
+        rvSortingMtrix =inflatedView.findViewById(R.id.rvSortingMtrix);
+        questionTypeMatrixImgSecondAdapter = new QuestionTypeMatrixImgSecondAdapter(list);
+        ItemTouchHelper.Callback callback =
+                new ItemMoveCallback2(questionTypeMatrixImgSecondAdapter);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(rvSortingMtrix);
+        rvSortingMtrix.setAdapter(questionTypeMatrixImgSecondAdapter);
+    }
 
     private void typeMatrix()
     {
         inflatedView = View.inflate(ExamActivity.this, R.layout.question_type_matrix_shorting, null);
         llContent.addView(inflatedView);
 
-
         ArrayList<String> list1=new ArrayList<>();
-        list1.add("1");
+        list1.add("1 abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz");
         list1.add("2");
         list1.add("3");
         list1.add("4");
@@ -172,7 +206,6 @@ public class ExamActivity extends AppCompatActivity {
         rvQuestion.setItemAnimator(new DefaultItemAnimator());
         rvQuestion.setAdapter(questionTypeMatrixOneAdapter);
 
-
         rvSortingMtrix =inflatedView.findViewById(R.id.rvSortingMtrix);
         questionTypeMatrixSecondAdapter = new QuestionTypeMatrixSecondAdapter(list);
         ItemTouchHelper.Callback callback =
@@ -184,6 +217,9 @@ public class ExamActivity extends AppCompatActivity {
 
     private void typeTrueFalse()
     {
+        inflatedView = View.inflate(ExamActivity.this, R.layout.question_type_true_false, null);
+        llContent.addView(inflatedView);
+        RadioGroup radioGroup =inflatedView.findViewById(R.id.radioGroup);
 
     }
 
@@ -217,6 +253,16 @@ public class ExamActivity extends AppCompatActivity {
                 }else if(counter == 4)
                 {
                     typeMatrix();
+                }else if(counter == 5)
+                {
+                    typeTrueFalse();
+                }else if(counter == 6)
+                {
+                    typeImgMatrix();
+                }else
+                {
+                    Intent intent=new Intent(ExamActivity.this,ReportActivity.class);
+                    startActivity(intent);
                 }
 
             }
@@ -239,6 +285,16 @@ public class ExamActivity extends AppCompatActivity {
                 }else if(counter == 4)
                 {
                     typeMatrix();
+                }else if(counter == 5)
+                {
+                    typeTrueFalse();
+                }else if(counter == 6)
+                {
+                    typeImgMatrix();
+                }else
+                {
+                    Intent intent=new Intent(ExamActivity.this,ReportActivity.class);
+                    startActivity(intent);
                 }
             }
         });

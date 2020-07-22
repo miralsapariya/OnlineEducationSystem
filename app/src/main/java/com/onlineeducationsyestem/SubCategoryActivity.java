@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,7 +14,7 @@ import com.onlineeducationsyestem.interfaces.OnItemClick;
 
 import java.util.ArrayList;
 
-public class SubCategoryActivity extends AppCompatActivity implements OnItemClick {
+public class SubCategoryActivity extends BaseActivity implements OnItemClick {
 
     private RecyclerView recyclerViewSubCat;
     private SubCategoryAdapter subCategoryAdapter;

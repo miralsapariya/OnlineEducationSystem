@@ -56,9 +56,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         Tag t3 =new Tag("Hardware");
         list.add(t3);
 
-
-
         holder.tagCategory.addTags(list);*/
+
 
         List<Item> list = new ArrayList<>();
         Item i= new Item(1, "It certification");

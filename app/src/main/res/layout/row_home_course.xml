@@ -4,6 +4,8 @@
     android:layout_height="wrap_content"
     android:layout_width="wrap_content"
     android:layout_margin="@dimen/_4sdp"
+    android:layoutDirection="locale"
+    android:textDirection="locale"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -13,6 +15,8 @@
     android:orientation="vertical"
     android:elevation="8dp"
     android:layout_gravity="center"
+    android:layoutDirection="locale"
+    android:textDirection="locale"
     android:background="@drawable/shadow_round_rect"
     android:layout_height="wrap_content">
 
@@ -52,6 +56,7 @@
         android:textColor="@color/black"
         android:textSize="@dimen/_11ssp"
         android:textDirection="locale"
+        android:gravity="start"
         />
 
     <androidx.appcompat.widget.AppCompatTextView

@@ -3,7 +3,6 @@ package com.onlineeducationsyestem;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,7 +13,7 @@ import com.onlineeducationsyestem.interfaces.OnItemClick;
 
 import java.util.ArrayList;
 
-public class TrendingCourseActivity extends AppCompatActivity implements OnItemClick {
+public class TrendingCourseActivity extends BaseActivity implements OnItemClick {
 
 
     private TrendingCourseAdapter trendingCourseAdapter;

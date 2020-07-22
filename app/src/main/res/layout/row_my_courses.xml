@@ -5,12 +5,16 @@
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layoutDirection="locale"
+    android:textDirection="locale"
     android:layout_margin="@dimen/_10sdp"
     card_view:cardCornerRadius="5dp">
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:orientation="vertical"
+    android:layoutDirection="locale"
+    android:textDirection="locale"
     android:layout_height="wrap_content">
 
     <ImageView
@@ -70,6 +74,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/progress"
+                android:gravity="start"
+                android:layoutDirection="locale"
                 android:textSize="@dimen/_11ssp"
                 android:textDirection="locale"
                 android:textColor="@color/black"
@@ -79,6 +85,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/progress"
+                android:gravity="start"
+                android:layoutDirection="locale"
                 android:textSize="@dimen/_9ssp"
                 android:textDirection="locale"
                 android:textColor="@color/font1"
@@ -100,6 +108,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/end_date"
                 android:textSize="@dimen/_11ssp"
+                android:gravity="end"
+                android:layoutDirection="locale"
                 android:textDirection="locale"
                 android:textColor="@color/black"
                 />

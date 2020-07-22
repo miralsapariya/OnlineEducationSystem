@@ -63,6 +63,7 @@
     <string name="phone_number">Phone number</string>
     <string name="send_otp">SEND OTP</string>
     <string name="enter_otp">Enter OTP</string>
+    <string name="otp">OTP</string>
     <string name="otp_string">OTP is send to your phone. Check and enter below.</string>
     <string name="resend">Resend</string>
     <string name="verify">Verify</string>
@@ -95,8 +96,32 @@
     <string name="lession">Lession</string>
     <string name="update">Update</string>
     <string name="answer">Answer</string>
+    <string name="ans">Ans:</string>
     <string name="true_">True</string>
     <string name="false_">False</string>
+    <string name="congratulation">Congratulations</string>
+    <string name="score">Score</string>
+    <string name="download_certificate">Download Certificate</string>
+    <string name="better_luck_next_time">Better luck next</string>
+    <string name="you_have_passed">You have passed this test and completed this course. You can download your certificate of completion below.</string>
+    <string name="hard_luck">Hard Luck. You have falled the test this time. You must retry the test and score </string>
+    <string name="to_complete_course">to complete this course.</string>
+    <string name="review_your_ans">Review your Answers</string>
+    <string name="correct">Correct</string>
+    <string name="wrong">Wrong</string>
+    <string name="pls_wait">Please wait</string>
+    <string name="report">Report</string>
 
-
+    <string name="toast_name">Please enter name</string>
+    <string name="toast_email">Please enter email</string>
+    <string name="toast_phone">Please enter phone</string>
+    <string name="toast_password">Please enter password</string>
+    <string name="no_login">You haven\'t login, Please login first.</string>
+    <string name="choose_lang">Choose Language</string>
+    <string name="english">English</string>
+    <string name="arabic">Arabic</string>
+    <string name="toast_otp">Please enter OTP.</string>
+    <string name="toast_old_pwd">Please enter old password.</string>
+    <string name="toast_new_pwd">Please enter new password.</string>
+    <string name="toast_confirm_pwd">Please enter confirm password.</string>
 </resources>

@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:background="@mipmap/splash"
     android:orientation="vertical"
+    android:id="@+id/llMain"
     tools:context=".SignUpActivity">
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -46,8 +47,8 @@
             android:textStyle="bold" />
 
 
-        <EditText
-            android:id="@+id/etName"
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/etOldPwd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/white"
@@ -56,7 +57,6 @@
             android:hint="@string/old_pwd"
             android:inputType="textPassword"
             android:layoutDirection="locale"
-            android:maxLength="12"
             android:singleLine="true"
             android:layout_marginTop="@dimen/_10sdp"
             android:textColor="@color/white"
@@ -64,8 +64,8 @@
             android:textDirection="locale"
             android:textSize="@dimen/_13ssp" />
 
-        <EditText
-            android:id="@+id/etEmail"
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/etNewPwd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/white"
@@ -75,15 +75,14 @@
             android:layout_marginTop="@dimen/_10sdp"
             android:inputType="textPassword"
             android:layoutDirection="locale"
-            android:maxLength="12"
             android:singleLine="true"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
             android:textDirection="locale"
             android:textSize="@dimen/_13ssp" />
 
-        <EditText
-            android:id="@+id/etPassword"
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/etConfirmPwd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
@@ -93,7 +92,6 @@
             android:hint="@string/confirm_pwd"
             android:inputType="textPassword"
             android:layoutDirection="locale"
-            android:maxLength="12"
             android:singleLine="true"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
@@ -102,7 +100,7 @@
 
 
         <TextView
-            android:id="@+id/btnLogin"
+            android:id="@+id/btnContinue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -116,8 +114,6 @@
             android:paddingBottom="@dimen/_8sdp"
             android:textColor="@color/white"
             android:textSize="@dimen/_13sdp" />
-
-
 
 
     </LinearLayout>

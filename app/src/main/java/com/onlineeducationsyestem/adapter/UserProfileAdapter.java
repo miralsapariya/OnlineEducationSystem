@@ -52,9 +52,9 @@ public class UserProfileAdapter extends RecyclerView.Adapter<UserProfileAdapter.
         else if(position ==2)
         {
             holder.img.setImageResource(R.mipmap.change_password);
-        }else {
+        }/*else {
             holder.img.setImageResource(R.mipmap.notification);
-        }
+        }*/
         holder.tvCatName.setText(listProduct.get(position).toString());
 
         holder.llMain.setOnClickListener(new View.OnClickListener() {

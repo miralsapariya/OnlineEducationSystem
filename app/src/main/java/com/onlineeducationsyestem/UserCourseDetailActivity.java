@@ -3,7 +3,6 @@ package com.onlineeducationsyestem;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.onlineeducationsyestem.adapter.ExpandedUserCourseDetail;
@@ -15,7 +14,7 @@ import com.onlineeducationsyestem.widget.NonScrollExpandableListView;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class UserCourseDetailActivity extends AppCompatActivity implements OnChildItemClick {
+public class UserCourseDetailActivity extends BaseActivity implements OnChildItemClick {
 
     private NonScrollExpandableListView expandableView;
 
@@ -61,7 +60,6 @@ public class UserCourseDetailActivity extends AppCompatActivity implements OnChi
                 (UserCourseDetailActivity.this, listDataHeader, listDataChild,this);
         expandableView.setAdapter(expandedCourseDetail);
         expandableView.expandGroup(0);
-
         expandedCourseDetail.notifyDataSetChanged();
     }
 

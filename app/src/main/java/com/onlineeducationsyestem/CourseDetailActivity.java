@@ -2,7 +2,6 @@ package com.onlineeducationsyestem;
 
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,7 +16,7 @@ import com.onlineeducationsyestem.widget.NonScrollExpandableListView;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class CourseDetailActivity extends AppCompatActivity {
+public class CourseDetailActivity extends BaseActivity {
 
     private RecyclerView rvCourse;
     private CourseDetailCourseIncludesAdapter courseDetailCourseIncludesAdapter;
@@ -77,8 +76,8 @@ public class CourseDetailActivity extends AppCompatActivity {
         ExpandedCourseDetail expandedCourseDetail =new ExpandedCourseDetail(CourseDetailActivity.this, listDataHeader, listDataChild);
         expandableView.setAdapter(expandedCourseDetail);
         expandableView.expandGroup(0);
-
         expandedCourseDetail.notifyDataSetChanged();
+
        /* expandableView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {

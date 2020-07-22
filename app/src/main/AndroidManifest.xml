@@ -3,10 +3,12 @@
     package="com.onlineeducationsyestem">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.android.permission.ACCESS_NETWORK_STATE" />
 
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -15,10 +17,19 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".EditUserProfileActivity"
+            android:name=".ReportActivity"
+            android:configChanges="locale"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
+            android:name=".EditUserProfileActivity"
+            android:configChanges="locale"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".ExamActivity"
+            android:configChanges="locale"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <meta-data
@@ -27,51 +38,83 @@
 
         <activity
             android:name=".LessionSlideActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="locale"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".UserCourseDetailActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="locale"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".WhishListActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="locale"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".LoginActivity"
+            android:configChanges="locale"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ForgotPwdActivity"
+            android:name=".OTPActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="locale"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ChangePwdActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="locale"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".CompanyURlActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="locale"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SignUpActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="locale"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".CourseDetailActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="locale"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".InstructorProfileActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="locale"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".PopularInstructorActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="locale"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".NewCousesActivity"
+            android:configChanges="locale"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".TrendingCourseActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="locale"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SubCategoryActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="locale"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".HomeSearchActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="locale"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MainActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="locale"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

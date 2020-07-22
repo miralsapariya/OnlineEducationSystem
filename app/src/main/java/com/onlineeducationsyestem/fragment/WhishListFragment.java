@@ -43,7 +43,6 @@ public class WhishListFragment extends BaseFragment implements OnItemClick {
         Intent intent = new Intent(activity, SubCategoryActivity.class);
         startActivity(intent);
 
-
     }
 
 
