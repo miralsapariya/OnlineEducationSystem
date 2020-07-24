@@ -15,31 +15,45 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.mikhaellopez.circularimageview.CircularImageView;
+import com.onlineeducationsyestem.ChangePwdActivity;
 import com.onlineeducationsyestem.EditUserProfileActivity;
 import com.onlineeducationsyestem.LoginActivity;
 import com.onlineeducationsyestem.R;
 import com.onlineeducationsyestem.adapter.UserProfileAboutUsAdapter;
 import com.onlineeducationsyestem.adapter.UserProfileAdapter;
+import com.onlineeducationsyestem.interfaces.NetworkListener;
 import com.onlineeducationsyestem.interfaces.OnItemClick;
+import com.onlineeducationsyestem.model.GetProfile;
+import com.onlineeducationsyestem.network.ApiCall;
+import com.onlineeducationsyestem.network.ApiInterface;
+import com.onlineeducationsyestem.network.RestApi;
+import com.onlineeducationsyestem.network.ServerConstents;
 import com.onlineeducationsyestem.util.AppConstant;
 import com.onlineeducationsyestem.util.AppSharedPreference;
+import com.onlineeducationsyestem.util.AppUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
 
-public class UserProfileFragment extends BaseFragment implements OnItemClick {
+import retrofit2.Call;
+
+public class UserProfileFragment extends BaseFragment implements OnItemClick , NetworkListener {
     private RecyclerView rvBasicSetting,rvAboutUs;
     private UserProfileAdapter userProfileAdapter;
     private UserProfileAboutUsAdapter userProfileAboutUsAdapter;
     private LinearLayout llWithLogin;
-    private TextView tvSignIn,tvSignOut;
+    private TextView tvSignIn,tvSignOut,tvDate,tvCountry,tvCourse,tvName;
     private View view;
     private Configuration config;
+    private CircularImageView imgUser;
 
     @Override
     public View onCreateView
@@ -61,6 +75,10 @@ public class UserProfileFragment extends BaseFragment implements OnItemClick {
        // list.add(getString(R.string.whishlist_));
       //  list.add(getString(R.string.notification));
 
+        tvDate =view.findViewById(R.id.tvDate);
+        tvCountry =view.findViewById(R.id.tvCountry);
+        tvCourse =view.findViewById(R.id.tvCourse);
+        tvName =view.findViewById(R.id.tvName);
         rvBasicSetting =view.findViewById(R.id.rvBasicSetting);
         userProfileAdapter= new UserProfileAdapter(activity, list,this);
         rvBasicSetting.setItemAnimator(new DefaultItemAnimator());
@@ -113,6 +131,69 @@ public class UserProfileFragment extends BaseFragment implements OnItemClick {
             }
         });
 
+
+        imgUser =view.findViewById(R.id.imgUser);
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (AppUtils.isInternetAvailable(activity)) {
+            getProfile();
+        }
+    }
+
+    private void getProfile()
+    {
+        AppUtils.showDialog(activity, getString(R.string.pls_wait));
+        ApiInterface apiInterface = RestApi.getConnection(ApiInterface.class, ServerConstents.API_URL);
+        final HashMap params = new HashMap<>();
+        params.put("user_id", AppSharedPreference.getInstance().getString(activity, AppSharedPreference.USERID));
+        if (AppSharedPreference.getInstance().getString(activity, AppSharedPreference.LANGUAGE_SELECTED) == null ||
+                AppSharedPreference.getInstance().getString(activity, AppSharedPreference.LANGUAGE_SELECTED).equalsIgnoreCase(AppConstant.ENG_LANG)) {
+            params.put("language", AppConstant.ENG_LANG);
+        }else
+        {
+            params.put("language", AppConstant.ARABIC_LANG);
+        }
+
+        Call<GetProfile> call = apiInterface.getProfile(
+                AppSharedPreference.getInstance().
+                        getString(activity, AppSharedPreference.ACCESS_TOKEN),
+                ServerConstents.HEADER_ACCEPT,
+                params);
+
+        ApiCall.getInstance().hitService(activity, call, this, ServerConstents.GET_PROFILE);
+
+    }
+
+    @Override
+    public void onSuccess(int responseCode, Object response, int requestCode) {
+
+        if(requestCode == ServerConstents.GET_PROFILE) {
+            GetProfile data = (GetProfile) response;
+
+            AppUtils.loadImageWithPicasso(data.getData().get(0).getProfilePicture() , imgUser, activity, 0, 0);
+
+           // Picasso.with(activity).load(data.getData().get(0).getProfilePicture()).into(imgUser);
+            tvDate.setText(data.getData().get(0).getJoinDate());
+            tvCountry.setText(data.getData().get(0).getCountryName());
+            tvCourse.setText(data.getData().get(0).getCourse()+"");
+            tvName.setText(data.getData().get(0).getName());
+        }
+
+    }
+
+    @Override
+    public void onError(String response, int requestCode) {
+        Toast.makeText(activity, response, Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void onFailure() {
+
     }
 
     @Override
@@ -126,6 +207,10 @@ public class UserProfileFragment extends BaseFragment implements OnItemClick {
         }else if(pos == 1)
         {
             Intent intent =new Intent(activity, EditUserProfileActivity.class);
+            startActivity(intent);
+        }else if(pos == 2)
+        {
+            Intent intent =new Intent(activity, ChangePwdActivity.class);
             startActivity(intent);
         }
     }
@@ -185,6 +270,7 @@ public class UserProfileFragment extends BaseFragment implements OnItemClick {
 
                 AppSharedPreference.getInstance().putString(activity, AppSharedPreference.LANGUAGE_SELECTED, AppConstant.ARABIC_LANG);
 
+                Log.d("arabic :: ", AppSharedPreference.getInstance().getString(activity, AppSharedPreference.LANGUAGE_SELECTED));
                 /*Fragment currentFragment = getFragmentManager().findFragmentById(R.id.nav_host_fragment);
                 FragmentTransaction fragTransaction = getFragmentManager().beginTransaction();
                 fragTransaction.detach(currentFragment);

@@ -13,7 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.onlineeducationsyestem.interfaces.NetworkListener;
-import com.onlineeducationsyestem.model.BaseBean;
+import com.onlineeducationsyestem.model.User;
 import com.onlineeducationsyestem.network.ApiCall;
 import com.onlineeducationsyestem.network.ApiInterface;
 import com.onlineeducationsyestem.network.RestApi;
@@ -88,22 +88,34 @@ public class SignUpActivity extends BaseActivity implements NetworkListener
         params.put("phone_no", etPhone.getText().toString());
         params.put("device_token", "1234");
         params.put("device_type", ServerConstents.DEVICE_TYPE);
-        if (AppSharedPreference.getInstance().getString(this, AppSharedPreference.LANGUAGE_SELECTED) == null) {
+        if (AppSharedPreference.getInstance().getString(this, AppSharedPreference.LANGUAGE_SELECTED) == null ||
+                AppSharedPreference.getInstance().getString(SignUpActivity.this, AppSharedPreference.LANGUAGE_SELECTED).equalsIgnoreCase(AppConstant.ENG_LANG)) {
             params.put("language", AppConstant.ENG_LANG);
         }else
         {
             params.put("language", AppConstant.ARABIC_LANG);
         }
 
-        Call<BaseBean> call = apiInterface.register(params);
+        Call<User> call = apiInterface.register(params);
         ApiCall.getInstance().hitService(SignUpActivity.this, call, this, ServerConstents.LOGIN);
     }
 
     @Override
     public void onSuccess(int responseCode, Object response, int requestCode) {
+        User data=(User) response;
+        if(responseCode == 403)
+        {
+           Toast.makeText(SignUpActivity.this, data.getStatus(), Toast.LENGTH_SHORT).show();
+        }
 
+
+        AppConstant.registerData =data;
         Intent intent =new Intent(SignUpActivity.this, OTPActivity.class);
+        intent.putExtra("name", etName.getText().toString());
+        intent.putExtra("password", etPassword.getText().toString());
+        intent.putExtra("email", etEmail.getText().toString());
         intent.putExtra("phone", etPhone.getText().toString());
+        intent.putExtra("response_code", "200");
 
         startActivity(intent);
         finish();
@@ -113,7 +125,15 @@ public class SignUpActivity extends BaseActivity implements NetworkListener
     @Override
     public void onError(String response, int requestCode) {
         Toast.makeText(SignUpActivity.this, response, Toast.LENGTH_SHORT).show();
+        Intent intent =new Intent(SignUpActivity.this, OTPActivity.class);
+        intent.putExtra("name", etName.getText().toString());
+        intent.putExtra("password", etPassword.getText().toString());
+        intent.putExtra("email", etEmail.getText().toString());
+        intent.putExtra("phone", etPhone.getText().toString());
+        intent.putExtra("response_code", "403");
 
+        startActivity(intent);
+        finish();
     }
 
     @Override

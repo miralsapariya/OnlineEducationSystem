@@ -30,7 +30,7 @@ import retrofit2.Call;
 
 public class OTPActivity extends BaseActivity implements NetworkListener {
 
-    private String phone;
+    private String phone,response_code;
     private EditText etOtp;
     private LinearLayout llMain;
     private TextView btnVerify,tvTimer,tvResend;
@@ -39,7 +39,7 @@ public class OTPActivity extends BaseActivity implements NetworkListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_forgot_pwd);
+        setContentView(R.layout.activity_otp);
         initUI();
     }
 
@@ -54,18 +54,24 @@ public class OTPActivity extends BaseActivity implements NetworkListener {
         }
         // get data via the key
         phone  = extras.getString("phone");
+        response_code =extras.getString("response_code");
         btnVerify=findViewById(R.id.btnVerify);
         tvTimer =findViewById(R.id.tvTimer);
         countDownTimer();
+
+        if(response_code.equals("403"))
+        {
+            if (AppUtils.isInternetAvailable(OTPActivity.this)) {
+                    hintResend();
+            }
+        }
         tvResend =findViewById(R.id.tvResend);
         tvResend.setEnabled(false);
         tvResend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (AppUtils.isInternetAvailable(OTPActivity.this)) {
-                    if (isValid()) {
                         hintResend();
-                    }
                 }
             }
         });
@@ -89,7 +95,8 @@ public class OTPActivity extends BaseActivity implements NetworkListener {
         ApiInterface apiInterface = RestApi.getConnection(ApiInterface.class, ServerConstents.API_URL);
         final HashMap params = new HashMap<>();
         params.put("phone_no", phone);
-        if (AppSharedPreference.getInstance().getString(this, AppSharedPreference.LANGUAGE_SELECTED) == null) {
+        if (AppSharedPreference.getInstance().getString(this, AppSharedPreference.LANGUAGE_SELECTED) == null ||
+                AppSharedPreference.getInstance().getString(OTPActivity.this, AppSharedPreference.LANGUAGE_SELECTED).equalsIgnoreCase(AppConstant.ENG_LANG)) {
             params.put("language", AppConstant.ENG_LANG);
         }else
         {
@@ -100,6 +107,7 @@ public class OTPActivity extends BaseActivity implements NetworkListener {
         ApiCall.getInstance().hitService(OTPActivity.this, call, this, ServerConstents.RESEND);
 
     }
+
     private void hintOtp()
     {
         AppUtils.showDialog(this, getString(R.string.pls_wait));
@@ -107,7 +115,9 @@ public class OTPActivity extends BaseActivity implements NetworkListener {
         final HashMap params = new HashMap<>();
         params.put("otp", etOtp.getText().toString());
         params.put("phone_no", phone);
-        if (AppSharedPreference.getInstance().getString(this, AppSharedPreference.LANGUAGE_SELECTED) == null) {
+        if (AppSharedPreference.getInstance().getString(this, AppSharedPreference.LANGUAGE_SELECTED) == null ||
+                AppSharedPreference.getInstance().getString(OTPActivity.this, AppSharedPreference.LANGUAGE_SELECTED).equalsIgnoreCase(AppConstant.ENG_LANG)
+        ) {
             params.put("language", AppConstant.ENG_LANG);
         }else
         {
@@ -130,30 +140,32 @@ public class OTPActivity extends BaseActivity implements NetworkListener {
               /*  Intent intent = new Intent(OTPActivity.this,MainActivity.class);
                 startActivity(intent);
                 finish();*/
-                countDownTimer();
-                tvResend.setEnabled(false);
+              if(!response_code.equals("403")) {
+                  countDownTimer();
+                  tvResend.setEnabled(false);
+              }
             }
         }else
         {
             User data=(User) response;
-            if(data.getStatus()==ServerConstents.CODE_SUCCESS)
-            {
-                ArrayList<User.Datum> res= data.getData();
+            if(data.getStatus()==ServerConstents.CODE_SUCCESS) {
+                ArrayList<User.Datum> res = data.getData();
 
-                preference.putString(OTPActivity.this, AppSharedPreference.USERID, res.get(0).getUserId()+"");
-                preference.putString(OTPActivity.this, AppSharedPreference.NAME, res.get(0).getName()+"");
+                preference.putString(OTPActivity.this, AppSharedPreference.USERID, res.get(0).getUserId() + "");
+                preference.putString(OTPActivity.this, AppSharedPreference.NAME, res.get(0).getName() + "");
                 preference.putString(OTPActivity.this, AppSharedPreference.EMAIL, res.get(0).getEmail());
-
-                preference.putString(OTPActivity.this, AppSharedPreference.FIRST_NAME, res.get(0).getFirstName()+"");
-                preference.putString(OTPActivity.this, AppSharedPreference.LAST_NAME, res.get(0).getLastName()+"");
+                preference.putString(OTPActivity.this, AppSharedPreference.FIRST_NAME, res.get(0).getFirstName() + "");
+                preference.putString(OTPActivity.this, AppSharedPreference.LAST_NAME, res.get(0).getLastName() + "");
                 preference.putString(OTPActivity.this, AppSharedPreference.PROFILE_PIC, res.get(0).getProfilePicture());
-                preference.putString(OTPActivity.this,AppSharedPreference.PHONE, res.get(0).getPhoneNo());
+                preference.putString(OTPActivity.this, AppSharedPreference.PHONE, res.get(0).getPhoneNo());
+                preference.putString(OTPActivity.this, AppSharedPreference.ACCESS_TOKEN, res.get(0).getToken());
 
                 Intent i = new Intent(OTPActivity.this,
                         MainActivity.class);
                 startActivity(i);
                 finish();
             }
+
         }
 
     }
@@ -169,6 +181,7 @@ public class OTPActivity extends BaseActivity implements NetworkListener {
     public void onFailure() {
 
     }
+
     private void countDownTimer() {
         new CountDownTimer(60000, 1000) {
 
@@ -188,6 +201,7 @@ public class OTPActivity extends BaseActivity implements NetworkListener {
 
         }.start();
     }
+
     private boolean isValid() {
         boolean bool = true;
         if (TextUtils.isEmpty(etOtp.getText().toString())) {
@@ -199,6 +213,7 @@ public class OTPActivity extends BaseActivity implements NetworkListener {
         }
         return bool;
     }
+
     private void hideKeyboard()
     {
         InputMethodManager imm = (InputMethodManager)

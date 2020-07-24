@@ -43,6 +43,7 @@
     <string name="full_name">Full Name</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
+    <string name="new_pwd">New Password</string>
 
     <string name="forgot_pwd">Forgot Password?</string>
     <string name="next">Next</string>
@@ -62,8 +63,10 @@
     <string name="enter_phone_number">Enter Phone Number</string>
     <string name="phone_number">Phone number</string>
     <string name="send_otp">SEND OTP</string>
+    <string name="set_pwd">Set New Password</string>
     <string name="enter_otp">Enter OTP</string>
     <string name="otp">OTP</string>
+    <string name="reset_pwd">Reset Password</string>
     <string name="otp_string">OTP is send to your phone. Check and enter below.</string>
     <string name="resend">Resend</string>
     <string name="verify">Verify</string>
@@ -124,4 +127,6 @@
     <string name="toast_old_pwd">Please enter old password.</string>
     <string name="toast_new_pwd">Please enter new password.</string>
     <string name="toast_confirm_pwd">Please enter confirm password.</string>
+    <string name="toast_pwd_retype_pwd_same">Password and retype passsword should be same</string>
+    <string name="text_unable_to_select_image">Unable to select image</string>
 </resources>

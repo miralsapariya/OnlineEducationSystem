@@ -14,15 +14,18 @@ public class ServerConstents {
 
     //
     public static int CODE_SUCCESS=200;
+
+    public static String HEADER_ACCEPT="application/json";
     //service code
 
     public static int LOGIN=1;
     public static int RESEND=2;
-    public static int PLACEORDER=3;
-    public static int ORDER=4;
-    public static int DRAWLINE=5;
-    public static int PREFIX=6;
-    public static int ACCEPT_CORDER=7;
-    public static int SELF_USE_DETAIL=8;
+    public static int SEND_OTP=3;
+    public static int OTP=4;
+    public static int RESET=5;
+    public static int CHANGE_PWD=6;
+    public static int GET_PROFILE=7;
+    public static int EDIT_PROFILE=8;
+    public static int CATEGORY=9;
 
 }

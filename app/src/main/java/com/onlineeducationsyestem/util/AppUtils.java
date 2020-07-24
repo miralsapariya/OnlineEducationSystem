@@ -1,5 +1,6 @@
 package com.onlineeducationsyestem.util;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
@@ -8,6 +9,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -41,6 +43,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Parcelable;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Images.ImageColumns;
 import android.provider.MediaStore.Images.Media;
@@ -56,6 +59,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,6 +68,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 import com.onlineeducationsyestem.R;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -108,6 +113,11 @@ public class AppUtils {
     static ProgressDialog mProgressDialog;
     static ProgressDialog pgdialog;
     private static Dialog updatedialog;
+    public static String image = "image";
+    public static String video = "video";
+    public static String audio = "audio";
+    public static String content = "content";
+    public static String file = "file";
 
 
     /**
@@ -120,6 +130,21 @@ public class AppUtils {
     public static Toast showToast(Context ctx, CharSequence msg) {
         return showToast(ctx, msg, Toast.LENGTH_LONG);
     }
+
+    public static void loadImageWithPicasso(String imagePath, ImageView iv, Context context, int width, int height) {
+        if (width == 0 && height == 0) {
+            Picasso.with(context).load(imagePath)
+                    .placeholder(R.mipmap.placeholder).error(R.mipmap.placeholder).into(iv);
+        } else {
+            if (!imagePath.isEmpty())
+                Picasso.with(context).load(imagePath).placeholder(R.mipmap.placeholder)
+                        .error(R.mipmap.placeholder).resize(width, height).centerCrop().into(iv);
+            else
+                Picasso.with(context).load(R.mipmap.placeholder).placeholder(R.mipmap.placeholder)
+                        .error(R.mipmap.placeholder).resize(width, height).centerCrop().into(iv);
+        }
+    }
+
 
     /**
      * Shows the message passed in the parameter in the Toast.
@@ -168,6 +193,71 @@ public class AppUtils {
 
         return false;
     }
+
+    private static boolean isExternalStorageDocument(Uri uri) {
+        return "com.android.externalstorage.documents".equals(uri.getAuthority());
+    }
+
+    private static boolean isDownloadsDocument(Uri uri) {
+        return "com.android.providers.downloads.documents".equals(uri.getAuthority());
+    }
+
+    private static boolean isMediaDocument(Uri uri) {
+        return "com.android.providers.media.documents".equals(uri.getAuthority());
+    }
+
+    @SuppressLint("NewApi")
+    public static String getFilePath(Context context, Uri uri) {
+        String selection = null;
+        String[] selectionArgs = null;
+        // Uri is different in versions after KITKAT (Android 4.4), we need to
+        if (Build.VERSION.SDK_INT >= 19 && DocumentsContract.isDocumentUri(context, uri)) {
+            if (isExternalStorageDocument(uri)) {
+                final String docId = DocumentsContract.getDocumentId(uri);
+                final String[] split = docId.split(":");
+                return Environment.getExternalStorageDirectory() + "/" + split[1];
+            } else if (isDownloadsDocument(uri)) {
+                final String id = DocumentsContract.getDocumentId(uri);
+                uri = ContentUris.withAppendedId(
+                        Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
+            } else if (isMediaDocument(uri)) {
+                final String docId = DocumentsContract.getDocumentId(uri);
+                final String[] split = docId.split(":");
+                final String type = split[0];
+                if (image.equals(type)) {
+                    uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+                } else if (video.equals(type)) {
+                    uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+                } else if (audio.equals(type)) {
+                    uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+                }
+                selection = "_id=?";
+                selectionArgs = new String[]{
+                        split[1]
+                };
+            }
+        }
+        if (content.equalsIgnoreCase(uri.getScheme())) {
+            String[] projection = {
+                    MediaStore.Images.Media.DATA
+            };
+            Cursor cursor = null;
+            try {
+                cursor = context.getContentResolver()
+                        .query(uri, projection, selection, selectionArgs, null);
+                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                if (cursor.moveToFirst()) {
+                    return cursor.getString(column_index);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else if (file.equalsIgnoreCase(uri.getScheme())) {
+            return uri.getPath();
+        }
+        return null;
+    }
+
 
     /**
      * Shows an alert dialog with the OK button. When the user presses OK button, the dialog

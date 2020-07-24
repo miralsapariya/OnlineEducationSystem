@@ -1,5 +1,7 @@
 package com.onlineeducationsyestem.util;
 
+import com.onlineeducationsyestem.model.User;
+
 /**
  * Created  on 25/10/16.
  */
@@ -11,9 +13,11 @@ public class AppConstant {
     public static final String ARABIC_LANG = "ar";
 
 
+    public static String SUB_FOLDER = "OnlineEducationSystem";
 
     //Permission Constant
     public static final int CAMERA = 1;
+    public static User registerData=new User();
 
 
 }

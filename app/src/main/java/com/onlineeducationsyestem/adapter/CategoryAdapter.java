@@ -12,23 +12,22 @@ import com.github.tommykw.tagview.DataTransform;
 import com.github.tommykw.tagview.TagView;
 import com.onlineeducationsyestem.R;
 import com.onlineeducationsyestem.interfaces.OnSubItemClick;
-import com.onlineeducationsyestem.model.Item;
+import com.onlineeducationsyestem.model.Category;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder>
         implements OnSubItemClick {
 
-    private ArrayList<String> listProduct;
+    private ArrayList<Category.AllCategoriesList> listProduct;
     private LayoutInflater mInflater;
     private OnSubItemClick onItemClick;
     private Context context;
 
     public CategoryAdapter(Context context,
-                       ArrayList<String> listProduct, OnSubItemClick onItemClick) {
+                           ArrayList<Category.AllCategoriesList> listProduct, OnSubItemClick onItemClick) {
         this.mInflater = LayoutInflater.from(context);
         this.context = context;
         this.listProduct = listProduct;
@@ -44,22 +43,12 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(final CategoryAdapter.ViewHolder holder, int position) {
-        final String data = listProduct.get(position);
+        final Category.AllCategoriesList data = listProduct.get(position);
 
-       /* ArrayList<Tag> list = new ArrayList<>();
-        Tag t1 =new Tag("It certification");
-        list.add(t1);
-
-        Tag t2 =new Tag("Netword and security");
-        list.add(t2);
-
-        Tag t3 =new Tag("Hardware");
-        list.add(t3);
-
-        holder.tagCategory.addTags(list);*/
+       holder.tvNameCategory.setText(data.getCategoryName());
 
 
-        List<Item> list = new ArrayList<>();
+       /* List<Category.SubCategory> list = new ArrayList<>();
         Item i= new Item(1, "It certification");
         list.add(i);
         Item i1= new Item(2, "Netword and security");
@@ -69,19 +58,20 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         Item i111= new Item(4, "Operating system");
         list.add(i111);
         Item i1111= new Item(5, "Other");
-        list.add(i1111);
+        list.add(i1111);*/
 
-        holder.tagCategory.setTags(list, new DataTransform<Item>() {
+
+        holder.tagCategory.setTags(data.getSubCategories(), new DataTransform<Category.SubCategory>() {
             @NotNull
             @Override
-            public String transfer(Item item) {
-                return item.getName();
+            public String transfer(Category.SubCategory item) {
+                return item.getSubCategoryName();
             }
         });
 
-        holder.tagCategory.setClickListener(new TagView.TagClickListener<Item>() {
+        holder.tagCategory.setClickListener(new TagView.TagClickListener<Category.SubCategory>() {
             @Override
-            public void onTagClick(Item item) {
+            public void onTagClick(Category.SubCategory item) {
                 item.getId();
             }
         });
@@ -98,13 +88,13 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         return listProduct.size();
     }
 
-    public String getItem(int id) {
+    public Category.AllCategoriesList getItem(int id) {
         return listProduct.get(id);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView tvNameCategory,tvViewAll;
-        TagView<Item> tagCategory ;
+        TagView<Category.SubCategory> tagCategory ;
 
         public ViewHolder(View itemView) {
             super(itemView);

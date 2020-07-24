@@ -29,7 +29,7 @@ import retrofit2.Call;
 public class LoginActivity extends BaseActivity implements NetworkListener {
 
     private EditText etEmail,etPassword;
-    private TextView btnLogin,tvSignUP;
+    private TextView btnLogin,tvSignUP,tvForgotPwd;
     private LinearLayout llMain;
     private AppSharedPreference preference;
     private ImageView imgBack;
@@ -75,6 +75,16 @@ public class LoginActivity extends BaseActivity implements NetworkListener {
                 finish();
             }
         });
+
+        tvForgotPwd =findViewById(R.id.tvForgotPwd);
+        tvForgotPwd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginActivity.this,ForgotPwdActivity.class);
+                startActivity(intent);
+
+            }
+        });
     }
 
     private void hintLogin()
@@ -107,7 +117,7 @@ public class LoginActivity extends BaseActivity implements NetworkListener {
             preference.putString(LoginActivity.this, AppSharedPreference.LAST_NAME, res.get(0).getLastName()+"");
             preference.putString(LoginActivity.this, AppSharedPreference.PROFILE_PIC, res.get(0).getProfilePicture());
             preference.putString(LoginActivity.this,AppSharedPreference.PHONE, res.get(0).getPhoneNo());
-            preference.putString(LoginActivity.this, AppSharedPreference.ACCESS_TOKEN, res.get(0).getToken());
+            preference.putString(LoginActivity.this, AppSharedPreference.ACCESS_TOKEN, "Bearer"+" "+res.get(0).getToken());
 
             Intent i = new Intent(LoginActivity.this,
                     MainActivity.class);

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -11,19 +12,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.onlineeducationsyestem.R;
 import com.onlineeducationsyestem.interfaces.OnItemClick;
+import com.onlineeducationsyestem.model.Category;
+import com.onlineeducationsyestem.util.AppUtils;
 
 import java.util.ArrayList;
 
 public class GridTopCategoryAdapter extends RecyclerView.Adapter<GridTopCategoryAdapter.ViewHolder>
        {
 
-    private ArrayList<String> listProduct;
+    private ArrayList<Category.TopCategoriesList> listProduct;
     private LayoutInflater mInflater;
     private OnItemClick onItemClick;
     private Context context;
 
     public GridTopCategoryAdapter(Context context,
-                                 ArrayList<String> listProduct,OnItemClick onItemClick) {
+                                  ArrayList<Category.TopCategoriesList> listProduct,
+                                  OnItemClick onItemClick) {
         this.mInflater = LayoutInflater.from(context);
         this.context =context;
         this.listProduct = listProduct;
@@ -39,7 +43,7 @@ public class GridTopCategoryAdapter extends RecyclerView.Adapter<GridTopCategory
 
     @Override
     public void onBindViewHolder(final GridTopCategoryAdapter.ViewHolder holder, final int position) {
-        final  String data = listProduct.get(position);
+        final Category.TopCategoriesList data = listProduct.get(position);
         holder.rlMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -47,7 +51,8 @@ public class GridTopCategoryAdapter extends RecyclerView.Adapter<GridTopCategory
                 onItemClick.onGridClick(position);
             }
         });
-
+        AppUtils.loadImageWithPicasso(data.getCategoryImg() , holder.imageView, context, 0, 0);
+        holder.title.setText(data.getCategoryName());
 
     }
 
@@ -57,20 +62,21 @@ public class GridTopCategoryAdapter extends RecyclerView.Adapter<GridTopCategory
         return listProduct.size();
     }
 
-    public  String getItem(int id) {
+    public Category.TopCategoriesList getItem(int id) {
         return listProduct.get(id);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView tvInstructorname,tvNoOfCourses;
+        public TextView title;
         private RelativeLayout rlMain;
+        private ImageView imageView;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
-            tvNoOfCourses =itemView.findViewById(R.id.tvNoOfCourses);
-            tvInstructorname =itemView.findViewById(R.id.tvInstructorname);
+            title =itemView.findViewById(R.id.title);
             rlMain =itemView.findViewById(R.id.rlMain);
+            imageView =itemView.findViewById(R.id.imageView);
 
         }
     }

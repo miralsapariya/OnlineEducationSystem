@@ -70,11 +70,19 @@ public class ApiCall {
 
                     } else if(response.code() == 401)
                     {
+                        //token expired
                         AppUtils.dismissDialog();
                         JSONObject jsonObject=new JSONObject(response.errorBody().string());
                         Log.d("msg er :: ", jsonObject.get("message").toString());
 
                         networkListener.onError(jsonObject.get("message").toString(), requestCode);
+                    }else if(response.code() == 403)
+                    {
+                        //otp not verify
+                        AppUtils.dismissDialog();
+                        JSONObject jsonObject=new JSONObject(response.errorBody().string());
+                        networkListener.onError(jsonObject.get("message").toString(), requestCode);
+//
                     }
                         else {
                         Log.d("in error :: ", " "+response.code());

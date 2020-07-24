@@ -11,11 +11,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.onlineeducationsyestem.interfaces.NetworkListener;
-import com.onlineeducationsyestem.model.User;
+import com.onlineeducationsyestem.model.BaseBean;
 import com.onlineeducationsyestem.network.ApiCall;
 import com.onlineeducationsyestem.network.ApiInterface;
 import com.onlineeducationsyestem.network.RestApi;
 import com.onlineeducationsyestem.network.ServerConstents;
+import com.onlineeducationsyestem.util.AppSharedPreference;
 import com.onlineeducationsyestem.util.AppUtils;
 
 import java.util.HashMap;
@@ -44,19 +45,30 @@ public class ChangePwdActivity extends BaseActivity implements NetworkListener {
         params.put("current_password", etOldPwd.getText().toString());
         params.put("new_password", etNewPwd.getText().toString());
         params.put("confirm_password", etConfirmPwd.getText().toString());
-        Call<User> call = apiInterface.changePwd(params);
+        Call<BaseBean> call = apiInterface.changePwd(
+                AppSharedPreference.getInstance().
+                        getString(ChangePwdActivity.this, AppSharedPreference.ACCESS_TOKEN),
+                ServerConstents.HEADER_ACCEPT,
+                params);
 
-        ApiCall.getInstance().hitService(ChangePwdActivity.this, call, this, ServerConstents.LOGIN);
+        ApiCall.getInstance().hitService(ChangePwdActivity.this, call, this, ServerConstents.CHANGE_PWD);
 
     }
 
     @Override
     public void onSuccess(int responseCode, Object response, int requestCode) {
 
+        BaseBean data=(BaseBean) response;
+        if(data.getStatus()==ServerConstents.CODE_SUCCESS)
+        {
+            Toast.makeText(ChangePwdActivity.this, data.getMessage(), Toast.LENGTH_SHORT).show();
+            finish();
+        }
     }
 
     @Override
     public void onError(String response, int requestCode) {
+        Toast.makeText(ChangePwdActivity.this, response, Toast.LENGTH_SHORT).show();
 
     }
 
@@ -87,6 +99,10 @@ public class ChangePwdActivity extends BaseActivity implements NetworkListener {
             hideKeyboard();
             Toast.makeText(ChangePwdActivity.this, getString(R.string.toast_confirm_pwd), Toast.LENGTH_SHORT).show();
 
+        }else if(!etNewPwd.getText().toString().equals(etConfirmPwd.getText().toString()))
+        {
+            bool=false;
+            Toast.makeText(ChangePwdActivity.this, getString(R.string.toast_pwd_retype_pwd_same), Toast.LENGTH_SHORT).show();
         }
         return bool;
     }
