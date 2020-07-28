@@ -21,9 +21,10 @@
         app:cardCornerRadius="1dp"
         android:layout_height="130dp">-->
         <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/img"
             android:layout_width="match_parent"
             android:layout_height="130dp"
-            android:src="@drawable/learn"
+            android:src="@mipmap/placeholder"
             android:scaleType="fitXY"
 
             /><!--</androidx.cardview.widget.CardView>-->
@@ -31,7 +32,6 @@
         android:id="@+id/tvInstructorname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Martin Paul"
         android:layout_marginTop="@dimen/_5sdp"
         android:layout_marginEnd="@dimen/_5sdp"
         android:layout_marginStart="@dimen/_5sdp"
@@ -43,11 +43,10 @@
         android:id="@+id/tvNoOfCourses"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Masterclass"
         android:layout_marginEnd="@dimen/_5sdp"
         android:layout_marginStart="@dimen/_5sdp"
         android:textColor="@color/font1"
-        android:textSize="@dimen/_12ssp"
+        android:textSize="@dimen/_9ssp"
         android:paddingBottom="@dimen/_10ssp"
         />
 

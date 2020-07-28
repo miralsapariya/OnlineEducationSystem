@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -11,19 +12,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.onlineeducationsyestem.R;
 import com.onlineeducationsyestem.interfaces.OnItemClick;
+import com.onlineeducationsyestem.model.Home;
+import com.onlineeducationsyestem.util.AppUtils;
 
 import java.util.ArrayList;
 
 public class HomeAdpterCategory extends RecyclerView.Adapter<HomeAdpterCategory.ViewHolder>
         {
 
-    private ArrayList<String> listProduct;
+    private ArrayList<Home.List1> listProduct;
     private LayoutInflater mInflater;
     private OnItemClick onItemClick;
     private Context context;
 
     public HomeAdpterCategory(Context context,
-                             ArrayList<String> listProduct,OnItemClick onItemClick) {
+                             ArrayList<Home.List1> listProduct,OnItemClick onItemClick) {
         this.mInflater = LayoutInflater.from(context);
         this.context =context;
         this.listProduct = listProduct;
@@ -39,7 +42,7 @@ public class HomeAdpterCategory extends RecyclerView.Adapter<HomeAdpterCategory.
 
     @Override
     public void onBindViewHolder(final HomeAdpterCategory.ViewHolder holder, final int position) {
-        final  String data = listProduct.get(position);
+        final  Home.List1 data = listProduct.get(position);
 
         holder.llMAin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,6 +52,9 @@ public class HomeAdpterCategory extends RecyclerView.Adapter<HomeAdpterCategory.
             }
         });
 
+        holder.tvName.setText(data.getCategoryName());
+        holder.tvNoOfCourses.setText(data.getTotalCourse()+" "+context.getResources().getString(R.string.courses));
+        AppUtils.loadImageWithPicasso(data.getCategoryIcon() , holder.img, context, 0, 0);
 
     }
 
@@ -59,13 +65,14 @@ public class HomeAdpterCategory extends RecyclerView.Adapter<HomeAdpterCategory.
         return listProduct.size();
     }
 
-    public  String getItem(int id) {
+    public  Home.List1 getItem(int id) {
         return listProduct.get(id);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView tvName,tvNoOfCourses;
         public LinearLayout llMAin;
+        public ImageView img;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -73,7 +80,7 @@ public class HomeAdpterCategory extends RecyclerView.Adapter<HomeAdpterCategory.
             tvName =itemView.findViewById(R.id.tvName);
             tvNoOfCourses =itemView.findViewById(R.id.tvNoOfCourses);
             llMAin =itemView.findViewById(R.id.llMAin);
-
+            img =itemView.findViewById(R.id.img);
         }
     }
 }

@@ -6,10 +6,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.onlineeducationsyestem.R;
+import com.onlineeducationsyestem.model.Home;
+import com.onlineeducationsyestem.util.AppUtils;
+
+import java.util.ArrayList;
 
 public class ImageAdapter extends PagerAdapter {
     Context context;
@@ -20,9 +25,12 @@ public class ImageAdapter extends PagerAdapter {
     };
 
     LayoutInflater mLayoutInflater;
+    private ArrayList<Home.BannersList> list;
 
-    public ImageAdapter(Context context){
+    public ImageAdapter(Context context, ArrayList<Home.BannersList> list)
+    {
         this.context=context;
+        this.list = list;
         mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
     @Override
@@ -40,7 +48,12 @@ public class ImageAdapter extends PagerAdapter {
         View itemView = mLayoutInflater.inflate(R.layout.pager_item, container, false);
 
         ImageView imageView =  itemView.findViewById(R.id.imageView);
-        imageView.setImageResource(GalImages[position]);
+        TextView title =itemView.findViewById(R.id.title);
+        TextView tvSubTitle =itemView.findViewById(R.id.tvSubTitle);
+
+        AppUtils.loadImageWithPicasso(list.get(position).getBannerImage() , imageView, context, 0, 0);
+        title.setText(list.get(position).getBannerTitle());
+        tvSubTitle.setText(list.get(position).getBannerDescription());
 
         container.addView(itemView);
 

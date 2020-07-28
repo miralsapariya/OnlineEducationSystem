@@ -16,15 +16,18 @@
     android:orientation="vertical"
     android:background="@drawable/round_rect"
     android:padding="@dimen/_10ssp"
+    android:layoutDirection="locale"
+    android:textDirection="locale"
     android:layout_height="wrap_content">
 
 
 
 
     <ImageView
+        android:id="@+id/img"
         android:layout_width="@dimen/_40sdp"
         android:layout_height="@dimen/_40sdp"
-        android:src="@drawable/design"
+        android:src="@mipmap/placeholder"
         />
 
     <TextView
@@ -32,7 +35,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/_11ssp"
-        android:text="Design"
         android:singleLine="true"
         android:textColor="@color/black"
         />
@@ -42,7 +44,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/_9ssp"
-        android:text="1150 Courses"
         android:textColor="@color/font1"
         />
 

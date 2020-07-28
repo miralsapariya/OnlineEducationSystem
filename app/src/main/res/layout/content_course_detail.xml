@@ -29,7 +29,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="300dp"
-            android:background="@drawable/learn">
+            android:background="@mipmap/placeholder">
 
             <View
                 android:layout_width="match_parent"
@@ -105,6 +105,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
+                android:visibility="gone"
                 android:gravity="center"
                 android:orientation="vertical"
 
@@ -127,6 +128,7 @@
 
             <View
                 android:layout_width="1dp"
+                android:visibility="gone"
                 android:layout_height="match_parent"
                 android:background="@color/border_color" />
 
@@ -306,6 +308,7 @@
             android:layout_marginEnd="@dimen/_10sdp"
             android:text="Lecture (305)"
             android:textSize="@dimen/_9sdp"
+            android:visibility="gone"
 
             />
 
@@ -337,6 +340,11 @@
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/_12ssp" />
 
+        <LinearLayout
+            android:id="@+id/llCreatedByInstructor"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -459,6 +467,8 @@
 
 
             </LinearLayout>
+        </LinearLayout>
+
         </LinearLayout>
     </LinearLayout>
 

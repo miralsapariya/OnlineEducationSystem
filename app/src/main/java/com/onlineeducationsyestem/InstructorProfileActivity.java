@@ -47,7 +47,7 @@ public class InstructorProfileActivity extends BaseActivity implements OnInstruc
         rvCourses.setAdapter(instructorProfileCoursesAdpter);
 
         rvPopularInsructor =findViewById(R.id.rvPopularInsructor);
-        popularInstructorAdapter = new HomeAdapterInstructor(InstructorProfileActivity.this,list,this);
+        //popularInstructorAdapter = new HomeAdapterInstructor(InstructorProfileActivity.this,list,this);
         rvPopularInsructor.setLayoutManager(new LinearLayoutManager(InstructorProfileActivity.this, LinearLayoutManager.HORIZONTAL, false));
         rvPopularInsructor.setHasFixedSize(true);
         rvPopularInsructor.setItemAnimator(new DefaultItemAnimator());

@@ -1,6 +1,7 @@
 package com.onlineeducationsyestem;
 
 import android.os.Bundle;
+import android.widget.LinearLayout;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -21,6 +22,7 @@ public class CourseDetailActivity extends BaseActivity {
     private RecyclerView rvCourse;
     private CourseDetailCourseIncludesAdapter courseDetailCourseIncludesAdapter;
     private NonScrollExpandableListView expandableView;
+    private LinearLayout llCreatedByInstructor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +44,8 @@ public class CourseDetailActivity extends BaseActivity {
     {
 
         rvCourse =findViewById(R.id.rvCourse);
+        llCreatedByInstructor =findViewById(R.id.llCreatedByInstructor);
+
 
         ArrayList<String> list =new ArrayList<>();
         list.add("djkjf");

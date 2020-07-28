@@ -23,6 +23,8 @@ import com.onlineeducationsyestem.util.AppSharedPreference;
 import com.onlineeducationsyestem.util.AppUtils;
 
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import retrofit2.Call;
 
@@ -170,6 +172,11 @@ public class SignUpActivity extends BaseActivity implements NetworkListener
             hideKeyboard();
             Toast.makeText(SignUpActivity.this, getString(R.string.toast_password), Toast.LENGTH_SHORT).show();
 
+        }else if(!isValidPassword(etPassword.getText().toString())) {
+            bool=false;
+            hideKeyboard();
+            Toast.makeText(SignUpActivity.this, getString(R.string.toast_pwd_match), Toast.LENGTH_SHORT).show();
+
         }
         return bool;
     }
@@ -179,4 +186,20 @@ public class SignUpActivity extends BaseActivity implements NetworkListener
                 getSystemService(Activity.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(llMain.getWindowToken(), 0);
     }
+    public static boolean isValidPassword(final String password) {
+
+        Pattern pattern;
+        Matcher matcher;
+        //(?=.*\d)
+        // final String PASSWORD_PATTERN = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{6,}$";
+        //final String PASSWORD_PATTERN = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z#@$!%*?&]{6,}$";
+        final String PASSWORD_PATTERN = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z#@$!%*?&0-9]{6,}$";
+
+        pattern = Pattern.compile(PASSWORD_PATTERN);
+        matcher = pattern.matcher(password);
+
+        return matcher.matches();
+
+    }
+
 }

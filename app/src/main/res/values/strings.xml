@@ -114,6 +114,8 @@
     <string name="wrong">Wrong</string>
     <string name="pls_wait">Please wait</string>
     <string name="report">Report</string>
+    <string name="toast_pwd_match">Password should contains special
+        character,upper case and lowercase character and should be minimum 6 character</string>
 
     <string name="toast_name">Please enter name</string>
     <string name="toast_email">Please enter email</string>

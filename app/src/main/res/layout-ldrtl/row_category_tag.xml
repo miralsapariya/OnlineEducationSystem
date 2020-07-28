@@ -40,6 +40,12 @@
 
     </RelativeLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_gravity="end"
+        android:gravity="end"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
 
     <com.github.tommykw.tagview.TagView
         android:id="@+id/tagCategory"
@@ -48,8 +54,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:stroke_width="1dp"
-        android:gravity="start"
-        android:layout_gravity="start"
+        android:layout_alignParentEnd="true"
+        android:gravity="end"
+        android:layout_gravity="end"
         android:textDirection="locale"
         android:layoutDirection="locale"
         app:stroke_color="@color/border_color"
@@ -60,6 +67,6 @@
         app:vertical_spacing="@dimen/spacing_small"
         app:text_font_size="6sp"
         app:corner_radius="2dp"
-        app:text_color="#000000" />
+        app:text_color="#000000" /></LinearLayout>
 
 </LinearLayout>

@@ -20,6 +20,8 @@ import com.onlineeducationsyestem.util.AppSharedPreference;
 import com.onlineeducationsyestem.util.AppUtils;
 
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import retrofit2.Call;
 
@@ -103,9 +105,30 @@ public class ChangePwdActivity extends BaseActivity implements NetworkListener {
         {
             bool=false;
             Toast.makeText(ChangePwdActivity.this, getString(R.string.toast_pwd_retype_pwd_same), Toast.LENGTH_SHORT).show();
+        }else if(!isValidPassword(etNewPwd.getText().toString())) {
+            bool=false;
+            hideKeyboard();
+            Toast.makeText(ChangePwdActivity.this, getString(R.string.toast_pwd_match), Toast.LENGTH_SHORT).show();
+
         }
         return bool;
     }
+    public static boolean isValidPassword(final String password) {
+
+        Pattern pattern;
+        Matcher matcher;
+        //(?=.*\d)
+        // final String PASSWORD_PATTERN = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{6,}$";
+        //final String PASSWORD_PATTERN = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z#@$!%*?&]{6,}$";
+        final String PASSWORD_PATTERN = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z#@$!%*?&0-9]{6,}$";
+
+        pattern = Pattern.compile(PASSWORD_PATTERN);
+        matcher = pattern.matcher(password);
+
+        return matcher.matches();
+
+    }
+
     private void hideKeyboard()
     {
         InputMethodManager imm = (InputMethodManager)

@@ -27,5 +27,12 @@ public class ServerConstents {
     public static int GET_PROFILE=7;
     public static int EDIT_PROFILE=8;
     public static int CATEGORY=9;
+    public static int HOME =10;
+    public static int COURSE_LIST=11;
+    //home screen type
+    public static String HOME_TYPE_COURSE="1";
+    public static String HOME_TYPE_CATEGORY="2";
+    public static String HOME_TYPE_POPULAR_INSTRUCTOR="3";
+
 
 }

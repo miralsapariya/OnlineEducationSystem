@@ -164,7 +164,6 @@ public class EditUserProfileActivity extends BaseActivity implements NetworkList
         if (AppSharedPreference.getInstance().getString(this, AppSharedPreference.LANGUAGE_SELECTED) == null ||
                 AppSharedPreference.getInstance().getString(EditUserProfileActivity.this, AppSharedPreference.LANGUAGE_SELECTED).equalsIgnoreCase(AppConstant.ENG_LANG))
         {
-
             lang =
                     RequestBody.create(
                             okhttp3.MultipartBody.FORM, AppConstant.ENG_LANG);
@@ -273,7 +272,8 @@ public class EditUserProfileActivity extends BaseActivity implements NetworkList
         if(requestCode == ServerConstents.GET_PROFILE) {
             GetProfile data = (GetProfile) response;
 
-            Picasso.with(this).load(data.getData().get(0).getProfilePicture()).into(imgUser);
+            Picasso.with(this).load(data.getData().get(0).
+                    getProfilePicture()).into(imgUser);
             etName.setText(data.getData().get(0).getName());
             etEmail.setText(data.getData().get(0).getEmail());
             etPhone.setText(data.getData().get(0).getPhoneNo());

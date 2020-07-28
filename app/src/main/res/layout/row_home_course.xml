@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout android:orientation="vertical"
-    android:layout_height="wrap_content"
+    android:layout_height="230dp"
     android:layout_width="wrap_content"
     android:layout_margin="@dimen/_4sdp"
     android:layoutDirection="locale"
@@ -18,16 +18,17 @@
     android:layoutDirection="locale"
     android:textDirection="locale"
     android:background="@drawable/shadow_round_rect"
-    android:layout_height="wrap_content">
+    android:layout_height="230dp">
 
     <!--<androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         app:cardCornerRadius="1dp"
         android:layout_height="130dp">-->
     <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/img"
         android:layout_width="match_parent"
-        android:layout_height="130dp"
-        android:src="@drawable/learn"
+        android:layout_height="120dp"
+        android:src="@mipmap/placeholder"
         android:scaleType="fitXY"
 
         /><!--</androidx.cardview.widget.CardView>-->
@@ -41,7 +42,7 @@
         android:layout_marginEnd="@dimen/_5sdp"
         android:singleLine="false"
         android:maxLines="3"
-        android:text="Graphic design"
+        android:text="Graphic design dfddh jkhgjfhgjfhgjfhgjfhgjdbdjdhfgjhgjfjgjfhfhjfhgjfhjgfhjgh"
         android:textColor="@color/black"
         android:textDirection="locale"
         android:textSize="@dimen/_11ssp" />
@@ -51,6 +52,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Masterclass"
+        android:visibility="gone"
         android:layout_marginEnd="@dimen/_5sdp"
         android:layout_marginStart="@dimen/_5sdp"
         android:textColor="@color/black"
@@ -63,7 +65,6 @@
         android:id="@+id/tvInstructorname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hardy Pal"
         android:textDirection="locale"
         android:layout_marginEnd="@dimen/_5sdp"
         android:layout_marginStart="@dimen/_5sdp"
@@ -72,9 +73,11 @@
         />
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:orientation="horizontal"
-        android:layout_gravity="end"
+        android:layout_gravity="end|bottom"
+        android:gravity="bottom"
         android:layout_marginTop="@dimen/_5sdp"
         android:paddingBottom="@dimen/_4sdp"
 
@@ -85,6 +88,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="500"
+            android:gravity="bottom"
+            android:layout_gravity="bottom"
             android:layout_marginEnd="@dimen/_5sdp"
             android:layout_marginStart="@dimen/_5sdp"
             android:textSize="@dimen/_9ssp"
@@ -94,7 +99,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="$500"
+            android:gravity="bottom"
             android:textStyle="bold"
+            android:layout_gravity="bottom"
             android:textColor="@color/colorPrimary"
             android:layout_marginEnd="@dimen/_5sdp"
             android:textSize="@dimen/_10ssp"

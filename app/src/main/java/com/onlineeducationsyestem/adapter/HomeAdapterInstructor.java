@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -11,19 +12,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.onlineeducationsyestem.R;
 import com.onlineeducationsyestem.interfaces.OnInstructorsClick;
+import com.onlineeducationsyestem.model.Home;
+import com.onlineeducationsyestem.util.AppUtils;
 
 import java.util.ArrayList;
 
 public class HomeAdapterInstructor extends RecyclerView.Adapter<HomeAdapterInstructor.ViewHolder>
        {
 
-    private ArrayList<String> listProduct;
+    private ArrayList<Home.List1> listProduct;
     private LayoutInflater mInflater;
     private OnInstructorsClick onItemClick;
     private Context context;
 
     public HomeAdapterInstructor(Context context,
-                              ArrayList<String> listProduct,OnInstructorsClick onItemClick) {
+                                 ArrayList<Home.List1> listProduct, OnInstructorsClick onItemClick) {
         this.mInflater = LayoutInflater.from(context);
         this.context =context;
         this.listProduct = listProduct;
@@ -39,7 +42,7 @@ public class HomeAdapterInstructor extends RecyclerView.Adapter<HomeAdapterInstr
 
     @Override
     public void onBindViewHolder(final HomeAdapterInstructor.ViewHolder holder, final int position) {
-        final  String data = listProduct.get(position);
+        final  Home.List1 data = listProduct.get(position);
 
         holder.llInstructor.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,6 +50,10 @@ public class HomeAdapterInstructor extends RecyclerView.Adapter<HomeAdapterInstr
                 onItemClick.onInstructorClick(position);
             }
         });
+    holder.tvInstructorname.setText(data.getName());
+    holder.tvNoOfCourses.setText(data.getTotalCourse()+" "+context.getString(R.string.courses));
+
+        AppUtils.loadImageWithPicasso(data.getProfilePicture() , holder.img, context, 0, 0);
 
 
     }
@@ -58,12 +65,13 @@ public class HomeAdapterInstructor extends RecyclerView.Adapter<HomeAdapterInstr
         return listProduct.size();
     }
 
-    public  String getItem(int id) {
+    public  Home.List1 getItem(int id) {
         return listProduct.get(id);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView tvInstructorname,tvNoOfCourses;
+        public ImageView img;
         private LinearLayout llInstructor;
 
         public ViewHolder(View itemView) {
@@ -72,6 +80,8 @@ public class HomeAdapterInstructor extends RecyclerView.Adapter<HomeAdapterInstr
             tvNoOfCourses =itemView.findViewById(R.id.tvNoOfCourses);
             tvInstructorname =itemView.findViewById(R.id.tvInstructorname);
             llInstructor =itemView.findViewById(R.id.llInstructor);
+            img =itemView.findViewById(R.id.img);
+
         }
     }
 }

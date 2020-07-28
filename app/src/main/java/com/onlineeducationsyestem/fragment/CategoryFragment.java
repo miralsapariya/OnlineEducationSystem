@@ -40,6 +40,7 @@ public class CategoryFragment extends BaseFragment implements OnItemClick, Netwo
     private View view;
     private RecyclerView recyclerView,rvSubCat;
     private TextView tvNameCategory;
+    Category data;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,6 +57,7 @@ public class CategoryFragment extends BaseFragment implements OnItemClick, Netwo
     public void onGridClick(int pos) {
 
         Intent intent = new Intent(activity, SubCategoryActivity.class);
+        intent.putExtra("category_id", data.getData().get(0).getAllCategoriesList().get(pos).getId());
         startActivity(intent);
     }
 
@@ -94,8 +96,7 @@ public class CategoryFragment extends BaseFragment implements OnItemClick, Netwo
     @Override
     public void onSuccess(int responseCode, Object response, int requestCode) {
         if(requestCode == ServerConstents.CATEGORY) {
-            Category data = (Category) response;
-
+            data= (Category) response;
 
             tvNameCategory.setText(data.getData().get(0).getCategoryLabel());
             //top cat

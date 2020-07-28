@@ -3,8 +3,10 @@ package com.onlineeducationsyestem.network;
 
 import com.onlineeducationsyestem.model.BaseBean;
 import com.onlineeducationsyestem.model.Category;
+import com.onlineeducationsyestem.model.CourseList;
 import com.onlineeducationsyestem.model.ForgotPwd;
 import com.onlineeducationsyestem.model.GetProfile;
+import com.onlineeducationsyestem.model.Home;
 import com.onlineeducationsyestem.model.User;
 
 import java.util.HashMap;
@@ -88,5 +90,13 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("categorieslist")
     Call<Category> categoryList(@FieldMap HashMap<String, String> map);
+
+    @FormUrlEncoded
+    @POST("homescreen")
+    Call<Home> getHome(@FieldMap HashMap<String, String> map);
+
+    @FormUrlEncoded
+    @POST("courselist")
+    Call<CourseList> getCourseList(@FieldMap HashMap<String, String> map);
 
 }
