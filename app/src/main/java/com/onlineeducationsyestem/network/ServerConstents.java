@@ -29,6 +29,8 @@ public class ServerConstents {
     public static int CATEGORY=9;
     public static int HOME =10;
     public static int COURSE_LIST=11;
+    public static int WHISH_LIST=12;
+    public static int DETAIL=13;
     //home screen type
     public static String HOME_TYPE_COURSE="1";
     public static String HOME_TYPE_CATEGORY="2";

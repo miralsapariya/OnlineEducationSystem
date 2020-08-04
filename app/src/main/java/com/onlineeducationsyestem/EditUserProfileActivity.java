@@ -138,6 +138,8 @@ public class EditUserProfileActivity extends BaseActivity implements NetworkList
 
     private void editProfile()
     {
+        String lang="";
+
         AppUtils.showDialog(this, getString(R.string.pls_wait));
         ApiInterface apiInterface = RestApi.getConnection(ApiInterface.class, ServerConstents.API_URL);
 
@@ -160,7 +162,7 @@ public class EditUserProfileActivity extends BaseActivity implements NetworkList
         RequestBody phone =
                 RequestBody.create(
                         okhttp3.MultipartBody.FORM, etPhone.getText().toString());
-        RequestBody lang;
+        /*RequestBody lang;
         if (AppSharedPreference.getInstance().getString(this, AppSharedPreference.LANGUAGE_SELECTED) == null ||
                 AppSharedPreference.getInstance().getString(EditUserProfileActivity.this, AppSharedPreference.LANGUAGE_SELECTED).equalsIgnoreCase(AppConstant.ENG_LANG))
         {
@@ -172,8 +174,14 @@ public class EditUserProfileActivity extends BaseActivity implements NetworkList
              lang =
                     RequestBody.create(
                             okhttp3.MultipartBody.FORM, AppConstant.ARABIC_LANG);
+        }*/
+        if (AppSharedPreference.getInstance().getString(EditUserProfileActivity.this, AppSharedPreference.LANGUAGE_SELECTED) == null ||
+                AppSharedPreference.getInstance().getString(EditUserProfileActivity.this, AppSharedPreference.LANGUAGE_SELECTED).equalsIgnoreCase(AppConstant.ENG_LANG)) {
+            lang = AppConstant.ENG_LANG;
+        }else
+        {
+            lang= AppConstant.ARABIC_LANG;
         }
-
 
         RequestBody userId = RequestBody.create(
                 okhttp3.MultipartBody.FORM,AppSharedPreference.getInstance().getString(EditUserProfileActivity.this, AppSharedPreference.USERID));
@@ -183,12 +191,10 @@ public class EditUserProfileActivity extends BaseActivity implements NetworkList
                         okhttp3.MultipartBody.FORM, etPhone.getText().toString());
 
         if(body != null) {
-            Call<GetProfile> call = apiInterface.editProfile(
+            Call<GetProfile> call = apiInterface.editProfile(lang,
                     AppSharedPreference.getInstance().getString(EditUserProfileActivity.this, AppSharedPreference.ACCESS_TOKEN),
-                    ServerConstents.HEADER_ACCEPT,
                     userId,
                     name,email,phone,
-                    lang,
                     body
                     );
 
@@ -196,12 +202,10 @@ public class EditUserProfileActivity extends BaseActivity implements NetworkList
 
         }else
         {
-            Call<GetProfile> call = apiInterface.editProfile(
+            Call<GetProfile> call = apiInterface.editProfile(lang,
                     AppSharedPreference.getInstance().getString(EditUserProfileActivity.this, AppSharedPreference.ACCESS_TOKEN),
-                    ServerConstents.HEADER_ACCEPT,
                     userId,
-                    name,email,phone,
-                    lang
+                    name,email,phone
             );
 
             ApiCall.getInstance().hitService(EditUserProfileActivity.this, call, this, ServerConstents.EDIT_PROFILE);
@@ -212,23 +216,22 @@ public class EditUserProfileActivity extends BaseActivity implements NetworkList
 
     private void getProfile()
     {
-
+        String lang ="";
         AppUtils.showDialog(this, getString(R.string.pls_wait));
         ApiInterface apiInterface = RestApi.getConnection(ApiInterface.class, ServerConstents.API_URL);
         final HashMap params = new HashMap<>();
         params.put("user_id", AppSharedPreference.getInstance().getString(EditUserProfileActivity.this, AppSharedPreference.USERID));
         if (AppSharedPreference.getInstance().getString(EditUserProfileActivity.this, AppSharedPreference.LANGUAGE_SELECTED) == null ||
                 AppSharedPreference.getInstance().getString(EditUserProfileActivity.this, AppSharedPreference.LANGUAGE_SELECTED).equalsIgnoreCase(AppConstant.ENG_LANG)) {
-            params.put("language", AppConstant.ENG_LANG);
+            lang = AppConstant.ENG_LANG;
         }else
         {
-            params.put("language", AppConstant.ARABIC_LANG);
+            lang= AppConstant.ARABIC_LANG;
         }
 
-        Call<GetProfile> call = apiInterface.getProfile(
+        Call<GetProfile> call = apiInterface.getProfile(lang,
                 AppSharedPreference.getInstance().
                         getString(EditUserProfileActivity.this, AppSharedPreference.ACCESS_TOKEN),
-                ServerConstents.HEADER_ACCEPT,
                 params);
 
         ApiCall.getInstance().hitService(EditUserProfileActivity.this, call, this, ServerConstents.GET_PROFILE);

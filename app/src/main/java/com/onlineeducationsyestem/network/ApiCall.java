@@ -110,10 +110,12 @@ public class ApiCall {
                 } catch (JSONException e) {
                     AppUtils.dismissDialog();
                     e.printStackTrace();
+                    Log.d("ERROR IN PRSING ", ""+e.getMessage());
                     //commanDialogError(context);
                     networkListener.onFailure();
                 } catch (Exception e) {
                     AppUtils.dismissDialog();
+                    Log.d("ERROR IN PRSING ", ""+e.getMessage());
                     e.printStackTrace();
                     //commanDialogError(context);
                     networkListener.onFailure();
@@ -122,6 +124,7 @@ public class ApiCall {
 
             @Override
             public void onFailure(Call<T> call, Throwable t) {
+                Log.d("ERROR IN PRSING ", ""+t.getMessage());
                 //commanDialogError(context);
                 networkListener.onFailure();
                 AppUtils.dismissDialog();

@@ -29,7 +29,14 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="300dp"
-            android:background="@mipmap/placeholder">
+            >
+            <ImageView
+                android:id="@+id/imgCourse"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:scaleType="fitXY"
+                android:background="@mipmap/placeholder"
+                />
 
             <View
                 android:layout_width="match_parent"
@@ -47,21 +54,22 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="0dp"
+                    android:singleLine="false"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="start"
+                    android:visibility="invisible"
                     android:layoutDirection="locale"
-                    android:text="Courses -12 Courses in 1"
                     android:textColor="@color/white"
                     android:textDirection="locale"
                     android:textSize="@dimen/_13ssp" />
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvOldPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="end"
-                    android:text="500"
-                    android:textColor="@color/font1"
+                    android:textColor="@color/grey_bg"
                     android:textSize="@dimen/_10ssp" />
             </LinearLayout>
 
@@ -73,21 +81,21 @@
                 android:layout_marginEnd="@dimen/_5sdp">
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvCourseTitle"
                     android:layout_width="0dp"
+                    android:maxLines="2"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="start"
-                    android:text="The complete digital marketing"
                     android:textColor="@color/white"
                     android:textDirection="locale"
                     android:textSize="@dimen/_13ssp" />
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvNewPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="end"
-                    android:text="$ 300"
-
                     android:textColor="@color/colorPrimary"
                     android:textDirection="locale"
                     android:textSize="@dimen/_13ssp" />
@@ -148,10 +156,10 @@
                     android:src="@drawable/ic_people" />
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvSubscriber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="1,01,200"
                     android:textColor="@color/font1"
                     android:textDirection="locale" />
 
@@ -173,6 +181,7 @@
                 >
 
                 <ImageView
+                    android:id="@+id/imgWhishList"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_heart" />
@@ -198,9 +207,9 @@
             android:padding="@dimen/_10sdp">
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTitle1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="The Complete Digital marketing courses-12 courses in 1"
                 android:textColor="@color/black"
                 android:textDirection="locale"
                 android:textSize="@dimen/_13ssp" />
@@ -215,10 +224,10 @@
                 android:textSize="@dimen/_11ssp" />
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvCourseDetail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_2sdp"
-                android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book"
                 android:textColor="@color/font1"
                 android:textDirection="locale"
                 android:textSize="@dimen/_9ssp" />
@@ -231,12 +240,13 @@
                 android:textColor="@color/colorPrimary"
                 android:textDirection="locale"
                 android:textSize="@dimen/_9ssp"
-
+                android:visibility="gone"
                 />
 
         </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvCourseIncludetitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
@@ -293,6 +303,7 @@
         </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvCurriculum"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
@@ -319,6 +330,8 @@
             android:layout_marginTop="@dimen/_10sdp"
             android:background="@color/white"
             android:divider="@null"
+            android:groupIndicator="@null"
+            android:childIndicator="@null"
             android:listSelector="@android:color/transparent"
             android:padding="@dimen/_10sdp" />
 
@@ -346,6 +359,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvCreateBy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
@@ -354,11 +368,13 @@
             android:textSize="@dimen/_13sdp" />
 
         <LinearLayout
+            android:id="@+id/llCreatedBy"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
             android:background="@color/white"
             android:paddingStart="@dimen/_10sdp"
+            android:visibility="gone"
             android:paddingEnd="@dimen/_10sdp">
 
             <LinearLayout
@@ -385,6 +401,7 @@
                     android:layout_height="wrap_content">
 
                     <TextView
+                        android:id="@+id/tvStudent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_3sdp"
@@ -397,7 +414,6 @@
                         android:textSize="@dimen/_12ssp" />
 
                     <TextView
-                        android:id="@+id/tvCourse"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_3sdp"
@@ -419,6 +435,7 @@
                     android:layout_marginTop="@dimen/_2sdp">
 
                     <TextView
+                        android:id="@+id/tvCourse"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_2sdp"
@@ -451,6 +468,7 @@
                     android:layout_marginTop="@dimen/_2sdp">
 
                     <TextView
+                        android:id="@+id/tvViewProfile"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_2sdp"

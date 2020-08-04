@@ -1,28 +1,33 @@
 package com.onlineeducationsyestem.adapter;
 
 import android.content.Context;
+import android.graphics.Paint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.onlineeducationsyestem.R;
 import com.onlineeducationsyestem.interfaces.OnNewCourseClick;
+import com.onlineeducationsyestem.model.SubCategory;
+import com.onlineeducationsyestem.util.AppUtils;
 
 import java.util.ArrayList;
 
 public class SubAdpterCourses extends RecyclerView.Adapter<SubAdpterCourses.ViewHolder>
          {
 
-    private ArrayList<String> listProduct;
+    private ArrayList<SubCategory.CourseList> listProduct;
     private LayoutInflater mInflater;
     private OnNewCourseClick onItemClick;
     private Context context;
 
     public SubAdpterCourses(Context context,
-                            ArrayList<String> listProduct, OnNewCourseClick onItemClick) {
+                            ArrayList<SubCategory.CourseList> listProduct, OnNewCourseClick onItemClick) {
         this.mInflater = LayoutInflater.from(context);
         this.context =context;
         this.listProduct = listProduct;
@@ -38,9 +43,16 @@ public class SubAdpterCourses extends RecyclerView.Adapter<SubAdpterCourses.View
 
     @Override
     public void onBindViewHolder(final SubAdpterCourses.ViewHolder holder, int position) {
-        final  String data = listProduct.get(position);
+        final SubCategory.CourseList data = listProduct.get(position);
 
+        Log.d("instructor name :: ", data.getInstructorName()+"");
+        holder.tvName.setText(data.getCourseName());
+        holder.tvInstructorname.setText(data.getInstructorName());
+        holder.tvOldPrice.setText(data.getCourseOldPrice());
+        holder.tvOldPrice.setPaintFlags( holder.tvOldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
+        holder.tvNewPrice.setText(data.getCoursePrice());
+        AppUtils.loadImageWithPicasso(data.getImage() , holder.img, context, 0, 0);
 
     }
 
@@ -51,12 +63,13 @@ public class SubAdpterCourses extends RecyclerView.Adapter<SubAdpterCourses.View
         return listProduct.size();
     }
 
-    public  String getItem(int id) {
+    public SubCategory.CourseList getItem(int id) {
         return listProduct.get(id);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView tvName,tvSubName,tvInstructorname;
+        public TextView tvName,tvSubName,tvInstructorname,tvOldPrice,tvNewPrice;
+        private ImageView img;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -64,7 +77,9 @@ public class SubAdpterCourses extends RecyclerView.Adapter<SubAdpterCourses.View
             tvSubName =itemView.findViewById(R.id.tvSubName);
             tvName =itemView.findViewById(R.id.tvName);
             tvInstructorname =itemView.findViewById(R.id.tvInstructorname);
-
+            tvOldPrice =itemView.findViewById(R.id.tvOldPrice);
+            tvNewPrice =itemView.findViewById(R.id.tvNewPrice);
+            img =itemView.findViewById(R.id.img);
         }
     }
 }

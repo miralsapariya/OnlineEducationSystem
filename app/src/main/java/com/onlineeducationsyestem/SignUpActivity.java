@@ -81,6 +81,7 @@ public class SignUpActivity extends BaseActivity implements NetworkListener
 
     private void hintRegister()
     {
+        String lang="";
         AppUtils.showDialog(this, getString(R.string.pls_wait));
         ApiInterface apiInterface = RestApi.getConnection(ApiInterface.class, ServerConstents.API_URL);
         final HashMap params = new HashMap<>();
@@ -90,15 +91,15 @@ public class SignUpActivity extends BaseActivity implements NetworkListener
         params.put("phone_no", etPhone.getText().toString());
         params.put("device_token", "1234");
         params.put("device_type", ServerConstents.DEVICE_TYPE);
-        if (AppSharedPreference.getInstance().getString(this, AppSharedPreference.LANGUAGE_SELECTED) == null ||
+        if (AppSharedPreference.getInstance().getString(SignUpActivity.this, AppSharedPreference.LANGUAGE_SELECTED) == null ||
                 AppSharedPreference.getInstance().getString(SignUpActivity.this, AppSharedPreference.LANGUAGE_SELECTED).equalsIgnoreCase(AppConstant.ENG_LANG)) {
-            params.put("language", AppConstant.ENG_LANG);
+            lang = AppConstant.ENG_LANG;
         }else
         {
-            params.put("language", AppConstant.ARABIC_LANG);
+            lang= AppConstant.ARABIC_LANG;
         }
 
-        Call<User> call = apiInterface.register(params);
+        Call<User> call = apiInterface.register(lang,params);
         ApiCall.getInstance().hitService(SignUpActivity.this, call, this, ServerConstents.LOGIN);
     }
 

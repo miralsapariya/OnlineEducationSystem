@@ -42,7 +42,7 @@ public class RestApi {
 
                             Request request = original.newBuilder()
                                    // .header("api-key", ServerConstents.API_KEY)
-                                   // .addHeader("Authorization", mAuth)
+                                    .addHeader("Accept", ServerConstents.HEADER_ACCEPT)
                                     .method(original.method(), original.body())
                                     .build();
                             return chain.proceed(request);

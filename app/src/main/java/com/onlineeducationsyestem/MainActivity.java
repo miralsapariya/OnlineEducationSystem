@@ -3,7 +3,6 @@ package com.onlineeducationsyestem;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -75,9 +74,6 @@ public class MainActivity extends BaseActivity {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
-        Log.d("in  main activty :: ", "configration chage :: ");
-        // your code here, you can use newConfig.locale if you need to check the language
-        // or just re-set all the labels to desired string resource
     }
 
 
@@ -112,9 +108,7 @@ public class MainActivity extends BaseActivity {
                         loadFragment(new HomeFragment());
                         break;
                     case R.id.page_2:
-                        imgSearch.setVisibility(View.GONE);
-                        toolbar_title.setText(getString(R.string.category));
-                        loadFragment(new CategoryFragment());
+                       gotoCategory();
                         break;
                     case R.id.page_3 :
 
@@ -137,6 +131,13 @@ public class MainActivity extends BaseActivity {
                 return true;
             }
         });
+    }
+
+    public void gotoCategory()
+    {
+        imgSearch.setVisibility(View.GONE);
+        toolbar_title.setText(getString(R.string.category));
+        loadFragment(new CategoryFragment());
     }
 
 

@@ -31,7 +31,6 @@
             android:layout_height="wrap_content"
             android:textSize="@dimen/_12sdp"
             android:textColor="@color/black"
-            android:text="Course Introduction"
             android:textDirection="locale"
             />
         <androidx.appcompat.widget.AppCompatTextView

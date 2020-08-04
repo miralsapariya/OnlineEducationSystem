@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.onlineeducationsyestem.CourseDetailActivity;
 import com.onlineeducationsyestem.PopularInstructorActivity;
 import com.onlineeducationsyestem.R;
 import com.onlineeducationsyestem.SubCategoryActivity;
@@ -18,6 +19,7 @@ import com.onlineeducationsyestem.TrendingCourseActivity;
 import com.onlineeducationsyestem.interfaces.OnInstructorsClick;
 import com.onlineeducationsyestem.interfaces.OnItemClick;
 import com.onlineeducationsyestem.interfaces.OnNewCourseClick;
+import com.onlineeducationsyestem.interfaces.OnViewAllClick;
 import com.onlineeducationsyestem.model.Home;
 import com.onlineeducationsyestem.network.ServerConstents;
 
@@ -29,14 +31,17 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>
     private ArrayList<Home.Datum> listProduct;
     private LayoutInflater mInflater;
     private OnItemClick onItemClick;
+    private OnViewAllClick onViewAllClick;
     private Context context;
+    ArrayList<Home.List1> list;
 
     public HomeAdapter(Context context,
-                       ArrayList<Home.Datum> listProduct,OnItemClick onItemClick) {
+                       ArrayList<Home.Datum> listProduct,OnItemClick onItemClick,OnViewAllClick onViewAllClick) {
         this.mInflater = LayoutInflater.from(context);
         this.context =context;
         this.listProduct = listProduct;
         this.onItemClick = onItemClick;
+        this.onViewAllClick = onViewAllClick;
     }
 
     @Override
@@ -57,7 +62,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>
                     new HomeAdpterCourses(context, data.getList(), new OnNewCourseClick() {
                         @Override
                         public void onNewCourseClick(int pos) {
-
+                            Intent intent =new Intent(context, CourseDetailActivity.class);
+                            intent.putExtra("course_id", data.getList().get(pos).getId()+"");
+                            context.startActivity(intent);
 
                         }
                     });
@@ -84,14 +91,25 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>
 
         else if(data.getType().equals(ServerConstents.HOME_TYPE_CATEGORY))
         {
+            list=new ArrayList<>();
+            list=data.getList();
             HomeAdpterCategory homeAdapter =
                     new HomeAdpterCategory(context, data.getList(),this);
 
             holder.rvHorizonatal.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
             holder.rvHorizonatal.setHasFixedSize(true);
-            holder.rvHorizonatal.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
             holder.rvHorizonatal.setItemAnimator(new DefaultItemAnimator());
             holder.rvHorizonatal.setAdapter(homeAdapter);
+
+            holder.tvViewAll.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    onViewAllClick.onViewAll();
+
+                }
+            });
+
         }else {
             HomeAdapterInstructor homeAdapter =
                     new HomeAdapterInstructor(context, data.getList(), new OnInstructorsClick() {
@@ -124,6 +142,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>
     public void onGridClick(int pos) {
 
         Intent intent=new Intent(context, SubCategoryActivity.class);
+        intent.putExtra("cat_id", list.get(pos).getId()+"");
+        intent.putExtra("cat_name", list.get(pos).getCategoryName());
         context.startActivity(intent);
     }
 

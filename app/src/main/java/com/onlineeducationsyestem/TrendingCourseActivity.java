@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -33,9 +34,10 @@ public class TrendingCourseActivity extends BaseActivity implements OnItemClick 
 
     private TrendingCourseAdapter trendingCourseAdapter;
     private RecyclerView rvTrendingCourse;
-    private String title="",from="";
+    private String title="",from="",subcat_id="";
     private ImageView imgBack;
-    private TextView tvTitle;
+    private TextView tvTitle,tvNoData;
+    private ArrayList<CourseList.Courseslist> courseList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,15 +59,22 @@ public class TrendingCourseActivity extends BaseActivity implements OnItemClick 
     @Override
     public void onGridClick(int pos) {
 
+
         Intent intent =new Intent(TrendingCourseActivity.this,CourseDetailActivity.class);
+        intent.putExtra("course_id", courseList.get(pos).getId()+"");
         startActivity(intent);
 
     }
 
     private void initUI()
     {
+        rvTrendingCourse =findViewById(R.id.rvTrendingCourse);
+        tvNoData=findViewById(R.id.tvNoData);
         title = getIntent().getExtras().getString("title");
         from =getIntent().getExtras().getString("from");
+
+        subcat_id=getIntent().getExtras().getString("subcat_id");
+
 
         tvTitle.setText(title);
         imgBack = findViewById(R.id.imgBack);
@@ -80,32 +89,23 @@ public class TrendingCourseActivity extends BaseActivity implements OnItemClick 
                 hintCourseList();
         }
 
-        ArrayList<String> list=new ArrayList<>();
-        list.add("ghjhjhjhj");
-        list.add("kjkj");
-        list.add("ghjhjhjhj");
-        list.add("kjkj");
 
-        rvTrendingCourse =findViewById(R.id.rvTrendingCourse);
-        trendingCourseAdapter= new TrendingCourseAdapter(TrendingCourseActivity.this, list,this);
-        rvTrendingCourse.setItemAnimator(new DefaultItemAnimator());
-        LinearLayoutManager manager = new LinearLayoutManager(TrendingCourseActivity.this);
-        rvTrendingCourse.setLayoutManager(manager);
-        rvTrendingCourse.setAdapter(trendingCourseAdapter);
+
     }
 
     private void hintCourseList()
     {
+        String lang="";
         AppUtils.showDialog(this, getString(R.string.pls_wait));
         ApiInterface apiInterface = RestApi.getConnection(ApiInterface.class, ServerConstents.API_URL);
         final HashMap params = new HashMap<>();
 
-        if (AppSharedPreference.getInstance().getString(this, AppSharedPreference.LANGUAGE_SELECTED) == null ||
+        if (AppSharedPreference.getInstance().getString(TrendingCourseActivity.this, AppSharedPreference.LANGUAGE_SELECTED) == null ||
                 AppSharedPreference.getInstance().getString(TrendingCourseActivity.this, AppSharedPreference.LANGUAGE_SELECTED).equalsIgnoreCase(AppConstant.ENG_LANG)) {
-            params.put("language", AppConstant.ENG_LANG);
+            lang = AppConstant.ENG_LANG;
         }else
         {
-            params.put("language", AppConstant.ARABIC_LANG);
+            lang= AppConstant.ARABIC_LANG;
         }
 
         if(from.equals("new_courses"))
@@ -116,11 +116,10 @@ public class TrendingCourseActivity extends BaseActivity implements OnItemClick 
             params.put("is_trending", "1");
         }else
         {
-            params.put("sub_category_id", "");
+            params.put("sub_category_id", subcat_id);
         }
 
-        Call<CourseList> call = apiInterface.getCourseList(params);
-
+        Call<CourseList> call = apiInterface.getCourseList(lang,params);
         ApiCall.getInstance().hitService(TrendingCourseActivity.this, call, this, ServerConstents.COURSE_LIST);
 
     }
@@ -128,13 +127,29 @@ public class TrendingCourseActivity extends BaseActivity implements OnItemClick 
     @Override
     public void onSuccess(int responseCode, Object response, int requestCode) {
         CourseList data=(CourseList) response;
+        courseList =new ArrayList<>();
+        courseList.addAll(data.getData().get(0).getCourseslist());
 
+        if(data.getData().get(0).getCourseslist().size() > 0) {
+            rvTrendingCourse.setVisibility(View.VISIBLE);
+            tvNoData.setVisibility(View.GONE);
 
+            trendingCourseAdapter = new TrendingCourseAdapter(TrendingCourseActivity.this, data.getData().get(0).getCourseslist(), this);
+            rvTrendingCourse.setItemAnimator(new DefaultItemAnimator());
+            LinearLayoutManager manager = new LinearLayoutManager(TrendingCourseActivity.this);
+            rvTrendingCourse.setLayoutManager(manager);
+            rvTrendingCourse.setAdapter(trendingCourseAdapter);
+        }else {
+            rvTrendingCourse.setVisibility(View.GONE);
+            tvNoData.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
     public void onError(String response, int requestCode) {
-
+        Toast.makeText(TrendingCourseActivity.this, response, Toast.LENGTH_SHORT).show();
+        rvTrendingCourse.setVisibility(View.GONE);
+        tvNoData.setVisibility(View.VISIBLE);
     }
 
     @Override

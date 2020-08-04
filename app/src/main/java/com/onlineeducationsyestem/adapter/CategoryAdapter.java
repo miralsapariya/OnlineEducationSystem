@@ -1,6 +1,8 @@
 package com.onlineeducationsyestem.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.github.tommykw.tagview.DataTransform;
 import com.github.tommykw.tagview.TagView;
 import com.onlineeducationsyestem.R;
+import com.onlineeducationsyestem.TrendingCourseActivity;
 import com.onlineeducationsyestem.interfaces.OnSubItemClick;
 import com.onlineeducationsyestem.model.Category;
 
@@ -47,7 +50,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
        holder.tvNameCategory.setText(data.getCategoryName());
 
-
        /* List<Category.SubCategory> list = new ArrayList<>();
         Item i= new Item(1, "It certification");
         list.add(i);
@@ -72,7 +74,14 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         holder.tagCategory.setClickListener(new TagView.TagClickListener<Category.SubCategory>() {
             @Override
             public void onTagClick(Category.SubCategory item) {
-                item.getId();
+
+                Log.d("======= >>",item.getId()+"");
+                Intent intent =new Intent(context, TrendingCourseActivity.class);
+                intent.putExtra("title", item.getSubCategoryName());
+                intent.putExtra("from", "");
+                intent.putExtra("subcat_id", item.getId()+"");
+
+                context.startActivity(intent);
             }
         });
 

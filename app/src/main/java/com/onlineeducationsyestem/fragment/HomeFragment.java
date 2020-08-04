@@ -11,11 +11,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import com.onlineeducationsyestem.MainActivity;
 import com.onlineeducationsyestem.R;
 import com.onlineeducationsyestem.adapter.HomeAdapter;
 import com.onlineeducationsyestem.adapter.ImageAdapter;
 import com.onlineeducationsyestem.interfaces.NetworkListener;
 import com.onlineeducationsyestem.interfaces.OnItemClick;
+import com.onlineeducationsyestem.interfaces.OnViewAllClick;
 import com.onlineeducationsyestem.model.Home;
 import com.onlineeducationsyestem.network.ApiCall;
 import com.onlineeducationsyestem.network.ApiInterface;
@@ -31,7 +33,7 @@ import java.util.HashMap;
 import retrofit2.Call;
 
 
-public class HomeFragment extends BaseFragment  implements OnItemClick , NetworkListener {
+public class HomeFragment extends BaseFragment  implements OnItemClick , OnViewAllClick, NetworkListener {
 
     private View view;
     private ImageAdapter adapter;
@@ -66,17 +68,18 @@ public class HomeFragment extends BaseFragment  implements OnItemClick , Network
 
     private void hintHome()
     {
+        String lang="";
         AppUtils.showDialog(activity, getString(R.string.pls_wait));
         ApiInterface apiInterface = RestApi.getConnection(ApiInterface.class, ServerConstents.API_URL);
         final HashMap params = new HashMap<>();
         if (AppSharedPreference.getInstance().getString(activity, AppSharedPreference.LANGUAGE_SELECTED) == null ||
                 AppSharedPreference.getInstance().getString(activity, AppSharedPreference.LANGUAGE_SELECTED).equalsIgnoreCase(AppConstant.ENG_LANG)) {
-            params.put("language", AppConstant.ENG_LANG);
+            lang = AppConstant.ENG_LANG;
         }else
         {
-            params.put("language", AppConstant.ARABIC_LANG);
+            lang= AppConstant.ARABIC_LANG;
         }
-        Call<Home> call = apiInterface.getHome(params);
+        Call<Home> call = apiInterface.getHome(lang,params);
 
         ApiCall.getInstance().hitService(activity, call, this, ServerConstents.HOME);
 
@@ -103,7 +106,7 @@ public class HomeFragment extends BaseFragment  implements OnItemClick , Network
 
             data.getData().remove(0);
             HomeAdapter homeAdapter =
-                    new HomeAdapter(activity, data.getData(),this);
+                    new HomeAdapter(activity, data.getData(),this,this);
 
             recyclerView.setItemAnimator(new DefaultItemAnimator());
             LinearLayoutManager manager = new LinearLayoutManager(activity);
@@ -112,6 +115,11 @@ public class HomeFragment extends BaseFragment  implements OnItemClick , Network
 
         }
 
+    }
+
+    @Override
+    public void onViewAll() {
+        ((MainActivity)activity).gotoCategory();
     }
 
     @Override

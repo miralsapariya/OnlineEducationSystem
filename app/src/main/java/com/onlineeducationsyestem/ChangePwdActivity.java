@@ -16,6 +16,7 @@ import com.onlineeducationsyestem.network.ApiCall;
 import com.onlineeducationsyestem.network.ApiInterface;
 import com.onlineeducationsyestem.network.RestApi;
 import com.onlineeducationsyestem.network.ServerConstents;
+import com.onlineeducationsyestem.util.AppConstant;
 import com.onlineeducationsyestem.util.AppSharedPreference;
 import com.onlineeducationsyestem.util.AppUtils;
 
@@ -41,16 +42,26 @@ public class ChangePwdActivity extends BaseActivity implements NetworkListener {
 
     private void changePwd()
     {
+        String lang="";
         AppUtils.showDialog(this, getString(R.string.pls_wait));
         ApiInterface apiInterface = RestApi.getConnection(ApiInterface.class, ServerConstents.API_URL);
         final HashMap params = new HashMap<>();
         params.put("current_password", etOldPwd.getText().toString());
         params.put("new_password", etNewPwd.getText().toString());
         params.put("confirm_password", etConfirmPwd.getText().toString());
-        Call<BaseBean> call = apiInterface.changePwd(
+
+        if (AppSharedPreference.getInstance().getString(ChangePwdActivity.this, AppSharedPreference.LANGUAGE_SELECTED) == null ||
+                AppSharedPreference.getInstance().getString(ChangePwdActivity.this, AppSharedPreference.LANGUAGE_SELECTED).equalsIgnoreCase(AppConstant.ENG_LANG)) {
+            lang = AppConstant.ENG_LANG;
+        }else
+        {
+            lang= AppConstant.ARABIC_LANG;
+        }
+
+        Call<BaseBean> call = apiInterface.changePwd(lang,
                 AppSharedPreference.getInstance().
                         getString(ChangePwdActivity.this, AppSharedPreference.ACCESS_TOKEN),
-                ServerConstents.HEADER_ACCEPT,
+
                 params);
 
         ApiCall.getInstance().hitService(ChangePwdActivity.this, call, this, ServerConstents.CHANGE_PWD);

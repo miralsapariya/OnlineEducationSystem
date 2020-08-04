@@ -1,7 +1,14 @@
 package com.onlineeducationsyestem;
 
+import android.graphics.Paint;
 import android.os.Bundle;
+import android.text.Html;
+import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -10,19 +17,35 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.onlineeducationsyestem.adapter.CourseDetailCourseIncludesAdapter;
 import com.onlineeducationsyestem.adapter.ExpandedCourseDetail;
-import com.onlineeducationsyestem.model.ContentItem;
-import com.onlineeducationsyestem.model.Header;
+import com.onlineeducationsyestem.interfaces.NetworkListener;
+import com.onlineeducationsyestem.model.BaseBean;
+import com.onlineeducationsyestem.model.CourseDetail;
+import com.onlineeducationsyestem.network.ApiCall;
+import com.onlineeducationsyestem.network.ApiInterface;
+import com.onlineeducationsyestem.network.RestApi;
+import com.onlineeducationsyestem.network.ServerConstents;
+import com.onlineeducationsyestem.util.AppConstant;
+import com.onlineeducationsyestem.util.AppSharedPreference;
+import com.onlineeducationsyestem.util.AppUtils;
 import com.onlineeducationsyestem.widget.NonScrollExpandableListView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class CourseDetailActivity extends BaseActivity {
+import retrofit2.Call;
+
+public class CourseDetailActivity extends BaseActivity implements NetworkListener {
 
     private RecyclerView rvCourse;
     private CourseDetailCourseIncludesAdapter courseDetailCourseIncludesAdapter;
     private NonScrollExpandableListView expandableView;
-    private LinearLayout llCreatedByInstructor;
+    private LinearLayout llCreatedByInstructor,llCreatedBy;
+    private ImageView imgWhishList;
+    private String course_id;
+    private ImageView imgCourse,imgUser;
+    private TextView tvCourseTitle,tvCourseDetail,tvNewPrice,
+            tvOldPrice,tvSubscriber,tvTitle1,tvCourseIncludetitle,tvCurriculum,
+            tvStudent,tvCourse,tvViewProfile,tvCreateBy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,69 +57,196 @@ public class CourseDetailActivity extends BaseActivity {
 
     }
 
-    private void initToolbar()
-    {
+    private void initToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
     }
 
-    private void initUI()
-    {
+    private void initUI() {
+        Bundle extras = getIntent().getExtras();
 
-        rvCourse =findViewById(R.id.rvCourse);
-        llCreatedByInstructor =findViewById(R.id.llCreatedByInstructor);
+        if (extras != null) {
+            course_id = extras.getString("course_id");
+        }
+        rvCourse = findViewById(R.id.rvCourse);
+        imgCourse=findViewById(R.id.imgCourse);
+        imgUser=findViewById(R.id.imgUser);
+        tvStudent=findViewById(R.id.tvStudent);
+        tvCourse =findViewById(R.id.tvCourse);
+        tvCreateBy=findViewById(R.id.tvCreateBy);
+        tvCourseTitle =findViewById(R.id.tvCourseTitle);
+        tvCourseDetail =findViewById(R.id.tvCourseDetail);
+        tvNewPrice =findViewById(R.id.tvNewPrice);
+        tvOldPrice =findViewById(R.id.tvOldPrice);
+        tvSubscriber=findViewById(R.id.tvSubscriber);
+        tvTitle1 =findViewById(R.id.tvTitle1);
+        tvCourseIncludetitle =findViewById(R.id.tvCourseIncludetitle);
+        tvCurriculum=findViewById(R.id.tvCurriculum);
+        tvViewProfile =findViewById(R.id.tvViewProfile);
 
+        llCreatedByInstructor = findViewById(R.id.llCreatedByInstructor);
+        llCreatedBy =findViewById(R.id.llCreatedBy);
 
-        ArrayList<String> list =new ArrayList<>();
-        list.add("djkjf");
-        list.add("hfjd");
-        list.add("dkjfkjd");
-        list.add("dkjd");
-
-        courseDetailCourseIncludesAdapter =
-                new CourseDetailCourseIncludesAdapter(CourseDetailActivity.this, list);
-        rvCourse.setItemAnimator(new DefaultItemAnimator());
-        LinearLayoutManager manager = new LinearLayoutManager(CourseDetailActivity.this);
-        rvCourse.setLayoutManager(manager);
-        rvCourse.setAdapter(courseDetailCourseIncludesAdapter);
-
-        ArrayList<Header> listDataHeader = new ArrayList<Header>();
-        HashMap<Header, ArrayList<ContentItem>> listDataChild = new HashMap<Header, ArrayList<ContentItem>>();
-
-        Header h1 =new Header("Add-on",true);
-        listDataHeader.add(h1);
-
-        ArrayList<ContentItem> contentItems = new ArrayList<ContentItem>();
-        ContentItem c1=new ContentItem();
-        c1.setName("Minced pork");
-        contentItems.add(c1);
-        ContentItem c11=new ContentItem();
-        c11.setName("Minced pork");
-        contentItems.add(c11);
-
-        listDataChild.put(listDataHeader.get(0), contentItems);
-
-        expandableView =findViewById(R.id.expandableView);
-        ExpandedCourseDetail expandedCourseDetail =new ExpandedCourseDetail(CourseDetailActivity.this, listDataHeader, listDataChild);
-        expandableView.setAdapter(expandedCourseDetail);
-        expandableView.expandGroup(0);
-        expandedCourseDetail.notifyDataSetChanged();
-
-       /* expandableView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+        imgWhishList = findViewById(R.id.imgWhishList);
+        imgWhishList.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                parent.smoothScrollToPosition(groupPosition);
+            public void onClick(View view) {
 
-                if (parent.isGroupExpanded(groupPosition)) {
-                    ImageView imageView = v.findViewById(R.id.imgIndicator);
-                    imageView.setImageDrawable(getResources().getDrawable(R.mipmap.minus));
-                } else {
-                    ImageView imageView = v.findViewById(R.id.imgIndicator);
-                    imageView.setImageDrawable(getResources().getDrawable(R.mipmap.plus));
+                if (AppUtils.isInternetAvailable(CourseDetailActivity.this)) {
+
+                    if (AppSharedPreference.getInstance().getString(CourseDetailActivity.this, AppSharedPreference.USERID) == null) {
+                        Toast.makeText(CourseDetailActivity.this, getString(R.string.toast_login_first), Toast.LENGTH_SHORT).show();
+                    } else {
+                        hintWhishList();
+                    }
+
                 }
-                return false    ;
             }
-        });*/
+        });
 
+
+        if (AppUtils.isInternetAvailable(CourseDetailActivity.this)) {
+
+            hintCourseDetail();
+        }
+
+
+    }
+
+    private void hintCourseDetail() {
+
+        String lang="";
+        AppUtils.showDialog(this, getString(R.string.pls_wait));
+        ApiInterface apiInterface = RestApi.getConnection(ApiInterface.class, ServerConstents.API_URL);
+        final HashMap params = new HashMap<>();
+        params.put("id", course_id);
+        if (AppSharedPreference.getInstance().getString(CourseDetailActivity.this, AppSharedPreference.USERID) == null) {
+            params.put("user_id","");
+        } else {
+            params.put("user_id", AppSharedPreference.getInstance().getString(CourseDetailActivity.this, AppSharedPreference.USERID));
+        }
+
+        if (AppSharedPreference.getInstance().getString(CourseDetailActivity.this, AppSharedPreference.LANGUAGE_SELECTED) == null ||
+                AppSharedPreference.getInstance().getString(CourseDetailActivity.this, AppSharedPreference.LANGUAGE_SELECTED).equalsIgnoreCase(AppConstant.ENG_LANG))
+        {
+            lang = AppConstant.ENG_LANG;
+        }else
+        {
+            lang= AppConstant.ARABIC_LANG;
+        }
+        Call<CourseDetail> call = apiInterface.getCourseDetail(params);
+
+        ApiCall.getInstance().hitService(CourseDetailActivity.this, call, this, ServerConstents.DETAIL);
+
+    }
+
+    private void hintWhishList() {
+        String lang="";
+        AppUtils.showDialog(this, getString(R.string.pls_wait));
+        ApiInterface apiInterface = RestApi.getConnection(ApiInterface.class, ServerConstents.API_URL);
+        final HashMap params = new HashMap<>();
+        params.put("course_id", course_id);
+
+        if (AppSharedPreference.getInstance().getString(CourseDetailActivity.this, AppSharedPreference.LANGUAGE_SELECTED) == null ||
+                AppSharedPreference.getInstance().getString(CourseDetailActivity.this, AppSharedPreference.LANGUAGE_SELECTED).equalsIgnoreCase(AppConstant.ENG_LANG)) {
+            lang = AppConstant.ENG_LANG;
+        }else {
+            lang= AppConstant.ARABIC_LANG;
+        }
+        Call<BaseBean> call = apiInterface.addWhishList(lang,
+                AppSharedPreference.getInstance().
+                        getString(CourseDetailActivity.this, AppSharedPreference.ACCESS_TOKEN),
+
+                params);
+
+        ApiCall.getInstance().hitService(CourseDetailActivity.this, call, this, ServerConstents.WHISH_LIST);
+
+    }
+
+    @Override
+    public void onSuccess(int responseCode, Object response, int requestCode) {
+
+        if(requestCode == ServerConstents.WHISH_LIST) {
+            BaseBean data = (BaseBean) response;
+            if (data.getStatus() == ServerConstents.CODE_SUCCESS) {
+                imgWhishList.setImageResource(R.drawable.ic_whishlisted);
+                Toast.makeText(CourseDetailActivity.this, data.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }else
+        {
+            CourseDetail data = (CourseDetail) response;
+
+            if (data.getStatus() == ServerConstents.CODE_SUCCESS) {
+                AppUtils.loadImageWithPicasso
+                        (data.getData().get(0).getImage() , imgCourse, CourseDetailActivity.this, 0, 0);
+                tvCourseTitle.setText(data.getData().get(0).getCourseName());
+                tvTitle1.setText(data.getData().get(0).getCourseName());
+
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                    tvCourseDetail.setText(Html.fromHtml(data.getData().get(0).getDescription(),Html.FROM_HTML_MODE_LEGACY));
+                } else {
+                    tvCourseDetail.setText(Html.fromHtml(data.getData().get(0).getDescription()));
+                }
+
+                tvNewPrice.setText(data.getData().get(0).getCoursePrice());
+                tvOldPrice.setText(data.getData().get(0).getCourseOldPrice());
+                tvOldPrice.setPaintFlags( tvOldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                tvSubscriber.setText(data.getData().get(0).getTotalSubscriber()+"");
+                tvCurriculum.setText(data.getData().get(0).getCourseIncludeTitle());
+                if(data.getData().get(0).getIsWishlist() == 1)
+                {
+                    imgWhishList.setImageResource(R.drawable.ic_whishlisted);
+                }else
+                {
+                    imgWhishList.setImageResource(R.drawable.ic_heart);
+                }
+                tvCourseIncludetitle.setText(data.getData().get(0).getCourseIncludeTitle());
+
+
+                courseDetailCourseIncludesAdapter =
+                        new CourseDetailCourseIncludesAdapter(CourseDetailActivity.this, data.getData().get(0).getCourseInclude());
+                rvCourse.setItemAnimator(new DefaultItemAnimator());
+                LinearLayoutManager manager = new LinearLayoutManager(CourseDetailActivity.this);
+                rvCourse.setLayoutManager(manager);
+                rvCourse.setAdapter(courseDetailCourseIncludesAdapter);
+
+                //
+
+                ArrayList<CourseDetail.SectionDetail> listDataHeader = new ArrayList<CourseDetail.SectionDetail>();
+                HashMap<CourseDetail.SectionDetail, ArrayList<CourseDetail.SectionSlideDetail>> listDataChild = new HashMap<CourseDetail.SectionDetail, ArrayList<CourseDetail.SectionSlideDetail>>();
+
+                listDataHeader.addAll(data.getData().get(0).getSectionDetails());
+
+                expandableView = findViewById(R.id.expandableView);
+                ExpandedCourseDetail expandedCourseDetail = new ExpandedCourseDetail(CourseDetailActivity.this, data.getData().get(0).getSectionDetails());
+                expandableView.setAdapter(expandedCourseDetail);
+                expandableView.expandGroup(0);
+                expandedCourseDetail.notifyDataSetChanged();
+
+                //
+                if(data.getData().get(0).getCreatedBy().equalsIgnoreCase("instructor")) {
+                    llCreatedBy.setVisibility(View.VISIBLE);
+                    AppUtils.loadImageWithPicasso(data.getData().get(0).getInstructorDetails().getProfileImage() , imgUser, CourseDetailActivity.this, 0, 0);
+                    tvCourse.setText(data.getData().get(0).getInstructorDetails().getTotalCourse()+"");
+                    tvStudent.setText(data.getData().get(0).getInstructorDetails().getTotalStudents()+"");
+
+                    tvCreateBy.setText(getString(R.string.create_by)+" "+data.getData().get(0).getInstructorDetails().getInstructorName());
+                }else {
+                    llCreatedBy.setVisibility(View.GONE);
+
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onError(String response, int requestCode) {
+        Toast.makeText(CourseDetailActivity.this, response, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onFailure() {
+
+        Log.d("in failed :: ", "============== ");
     }
 }

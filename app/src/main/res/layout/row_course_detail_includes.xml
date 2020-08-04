@@ -17,7 +17,6 @@
             android:id="@+id/img"
             android:layout_width="@dimen/_20sdp"
             android:layout_height="@dimen/_20sdp"
-            android:src="@mipmap/ic_cart"
             />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -25,7 +24,6 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="@string/home"
             android:gravity="start"
             android:textDirection="locale"
             style="@style/edittext_grevity"

@@ -14,10 +14,12 @@
         android:padding="@dimen/_7sdp">
 
         <ImageView
+            android:id="@+id/img"
             android:layout_width="@dimen/_90sdp"
             android:layout_height="@dimen/_80sdp"
             android:layout_gravity="center"
-            android:src="@drawable/learn"
+            android:src="@mipmap/placeholder"
+            android:scaleType="fitXY"
 
             />
     </LinearLayout>
@@ -43,7 +45,6 @@
             android:layout_marginEnd="@dimen/_2sdp"
             android:layout_weight="1"
             android:singleLine="true"
-            android:text="Data Science Introduction"
             android:textColor="@color/black"
             android:textDirection="locale"
             android:textSize="@dimen/_12ssp" />
@@ -52,7 +53,6 @@
             android:id="@+id/tvPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="500"
             android:textColor="@color/black"
             android:textDirection="locale"
             android:textSize="@dimen/_12ssp" />
@@ -65,21 +65,21 @@
           >
 
             <TextView
+                android:id="@+id/tvDescription"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_2sdp"
                 android:layout_marginEnd="@dimen/_2sdp"
                 android:layout_weight="1"
                 android:singleLine="true"
-                android:text="Data Science Introduction"
                 android:textColor="@color/font1"
                 android:textDirection="locale"
                 android:textSize="@dimen/_9ssp" />
 
             <TextView
+                android:id="@+id/tvPriceOld"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="500"
                 android:textColor="@color/font1"
                 android:textDirection="locale"
                 android:textSize="@dimen/_9ssp" />
@@ -91,13 +91,13 @@
             >
 
             <TextView
+                android:id="@+id/tvDate"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_2sdp"
                 android:layout_marginEnd="@dimen/_2sdp"
                 android:layout_weight="1"
                 android:singleLine="true"
-                android:text="Pblished on 18/5/2020"
                 android:textColor="@color/font1"
                 android:textDirection="locale"
                 android:textSize="@dimen/_9ssp" />
@@ -110,6 +110,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         <TextView
+            android:id="@+id/catName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/round_rect_orange"
@@ -117,7 +118,6 @@
             android:textSize="@dimen/_9ssp"
             android:gravity="start"
             android:textColor="@color/colorPrimary"
-            android:text="Data Science"
             android:padding="@dimen/_4sdp"
             />
 

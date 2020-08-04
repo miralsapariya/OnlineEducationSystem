@@ -1,33 +1,36 @@
 package com.onlineeducationsyestem.adapter;
 
 import android.content.Context;
-import android.content.Intent;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.onlineeducationsyestem.CourseDetailActivity;
 import com.onlineeducationsyestem.R;
 import com.onlineeducationsyestem.interfaces.OnItemClick;
+import com.onlineeducationsyestem.model.CourseList;
+import com.onlineeducationsyestem.util.AppUtils;
 
 import java.util.ArrayList;
 
 public class TrendingCourseAdapter extends RecyclerView.Adapter<TrendingCourseAdapter.ViewHolder> {
 
-    private ArrayList<String> listProduct;
+    private ArrayList<CourseList.Courseslist> listProduct;
     private LayoutInflater mInflater;
     private Context context;
     private OnItemClick onItemClick;
 
     public TrendingCourseAdapter(Context context,
-                                 ArrayList<String> listProduct,OnItemClick onItemClick) {
+                                 ArrayList<CourseList.Courseslist> listProduct, OnItemClick onItemClick) {
         this.mInflater = LayoutInflater.from(context);
         this.context = context;
         this.listProduct = listProduct;
+        this.onItemClick =onItemClick;
     }
 
     @Override
@@ -39,15 +42,24 @@ public class TrendingCourseAdapter extends RecyclerView.Adapter<TrendingCourseAd
 
     @Override
     public void onBindViewHolder(final TrendingCourseAdapter.ViewHolder holder, final int position) {
-        final String data = listProduct.get(position);
+        final CourseList.Courseslist data = listProduct.get(position);
 
         holder.llMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context , CourseDetailActivity.class);
-                context.startActivity(intent);
+               onItemClick.onGridClick(position);
             }
         });
+
+        holder.tvCourse.setText(data.getCourseName());
+        holder.tvPrice.setText(data.getCoursePrice());
+        holder.catName.setText(data.getCategoryName());
+        holder.tvDate.setText(data.getPublishOn());
+        holder.tvPriceOld.setText(data.getCourseOldPrice());
+        holder.tvPriceOld.setPaintFlags( holder.tvPriceOld.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        holder.tvDescription.setText(data.getInstructorName());
+        AppUtils.loadImageWithPicasso(data.getImage() , holder.img, context, 0, 0);
+
     }
 
 
@@ -56,13 +68,14 @@ public class TrendingCourseAdapter extends RecyclerView.Adapter<TrendingCourseAd
         return listProduct.size();
     }
 
-    public String getItem(int id) {
+    public CourseList.Courseslist getItem(int id) {
         return listProduct.get(id);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView tvCourse, tvPrice;
+        public TextView tvCourse, tvPrice,catName,tvDate,tvPriceOld,tvDescription;
         private LinearLayout llMain;
+        private ImageView img;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -70,6 +83,12 @@ public class TrendingCourseAdapter extends RecyclerView.Adapter<TrendingCourseAd
             llMain = itemView.findViewById(R.id.llMain);
             tvCourse = itemView.findViewById(R.id.tvCourse);
             tvPrice = itemView.findViewById(R.id.tvPrice);
+            llMain = itemView.findViewById(R.id.llMain);
+            catName = itemView.findViewById(R.id.catName);
+            tvDate = itemView.findViewById(R.id.tvDate);
+            tvPriceOld = itemView.findViewById(R.id.tvPriceOld);
+            tvDescription = itemView.findViewById(R.id.tvDescription);
+            img =itemView.findViewById(R.id.img);
         }
     }
 }

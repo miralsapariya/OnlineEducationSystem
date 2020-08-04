@@ -117,6 +117,7 @@
     <string name="toast_pwd_match">Password should contains special
         character,upper case and lowercase character and should be minimum 6 character</string>
 
+    <string name="no_record">No record found</string>
     <string name="toast_name">Please enter name</string>
     <string name="toast_email">Please enter email</string>
     <string name="toast_phone">Please enter phone</string>
@@ -131,4 +132,5 @@
     <string name="toast_confirm_pwd">Please enter confirm password.</string>
     <string name="toast_pwd_retype_pwd_same">Password and retype passsword should be same</string>
     <string name="text_unable_to_select_image">Unable to select image</string>
+    <string name="toast_login_first">Please login first to add course in whishlist.</string>
 </resources>

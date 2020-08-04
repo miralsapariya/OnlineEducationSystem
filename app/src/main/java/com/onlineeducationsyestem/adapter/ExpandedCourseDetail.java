@@ -9,31 +9,25 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.onlineeducationsyestem.R;
-import com.onlineeducationsyestem.model.ContentItem;
-import com.onlineeducationsyestem.model.Header;
+import com.onlineeducationsyestem.model.CourseDetail;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 public class ExpandedCourseDetail extends BaseExpandableListAdapter {
 
     private Context _context;
-    private List<Header> _listDataHeader; // header titles
+    private ArrayList<CourseDetail.SectionDetail> _listDataHeader; // header titles
     // child data in format of header title, child title
-    private HashMap<Header , ArrayList<ContentItem>> _listDataChild;
 
-    public ExpandedCourseDetail(Context context, List<Header> listDataHeader,
-                                HashMap<Header, ArrayList<ContentItem>> listChildData) {
+    public ExpandedCourseDetail(Context context, ArrayList<CourseDetail.SectionDetail> listDataHeader) {
         this._context = context;
         this._listDataHeader = listDataHeader;
-        this._listDataChild = listChildData;
     }
 
     @Override
     public Object getChild(int groupPosition, int childPosititon) {
-        return this._listDataChild.get(this._listDataHeader.get(groupPosition))
-                .get(childPosititon);
+
+        return _listDataHeader.get(groupPosition).getSectionSlideDetails().get(childPosititon);
     }
 
     @Override
@@ -45,7 +39,7 @@ public class ExpandedCourseDetail extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
-        final ContentItem childText = (ContentItem) getChild(groupPosition, childPosition);
+        final CourseDetail.SectionSlideDetail childText = (CourseDetail.SectionSlideDetail) getChild(groupPosition, childPosition);
 
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
@@ -55,14 +49,16 @@ public class ExpandedCourseDetail extends BaseExpandableListAdapter {
 
         TextView tvId =  convertView
                 .findViewById(R.id.tvId);
+        TextView tvName =convertView.findViewById(R.id.tvName);
 
-        // radio.setText(childText.getName());
+        tvId.setText(childPosition+1 +"");
+        tvName.setText(childText.getSlideName());
         return convertView;
     }
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return this._listDataChild.get(this._listDataHeader.get(groupPosition))
+        return _listDataHeader.get(groupPosition).getSectionSlideDetails()
                 .size();
     }
 
@@ -84,7 +80,7 @@ public class ExpandedCourseDetail extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
-        Header headerTitle = (Header) getGroup(groupPosition);
+        CourseDetail.SectionDetail headerTitle = (CourseDetail.SectionDetail) getGroup(groupPosition);
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -93,6 +89,8 @@ public class ExpandedCourseDetail extends BaseExpandableListAdapter {
 
         TextView tvName = (TextView) convertView
                 .findViewById(R.id.tvName);
+
+
         ImageView imgIndicator = convertView.findViewById(R.id.imgIndicator);
 
         if(isExpanded)
@@ -103,7 +101,7 @@ public class ExpandedCourseDetail extends BaseExpandableListAdapter {
             imgIndicator.setImageDrawable(_context.getResources().getDrawable(R.mipmap.plus));
 
         }
-        // tvchoice.setText(headerTitle.getHeader());
+        tvName.setText(headerTitle.getSectionName());
 
         // ExpandableListView mExpandableListView = (ExpandableListView) parent;
         // mExpandableListView.expandGroup(groupPosition);

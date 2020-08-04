@@ -118,76 +118,82 @@ public class ForgotPwdActivity extends AppCompatActivity implements NetworkListe
 
     private void hintResetPwd()
     {
+        String lang="";
         AppUtils.showDialog(this, getString(R.string.pls_wait));
         ApiInterface apiInterface = RestApi.getConnection(ApiInterface.class, ServerConstents.API_URL);
         final HashMap params = new HashMap<>();
         params.put("user_id", userId);
         params.put("new_password", etNewPwd.getText().toString());
-        if (AppSharedPreference.getInstance().getString(this, AppSharedPreference.LANGUAGE_SELECTED) == null ||
+        if (AppSharedPreference.getInstance().getString(ForgotPwdActivity.this, AppSharedPreference.LANGUAGE_SELECTED) == null ||
                 AppSharedPreference.getInstance().getString(ForgotPwdActivity.this, AppSharedPreference.LANGUAGE_SELECTED).equalsIgnoreCase(AppConstant.ENG_LANG)) {
-            params.put("language", AppConstant.ENG_LANG);
+            lang = AppConstant.ENG_LANG;
         }else
         {
-            params.put("language", AppConstant.ARABIC_LANG);
+            lang= AppConstant.ARABIC_LANG;
         }
 
-        Call<BaseBean> call = apiInterface.resetPwd(params);
+        Call<BaseBean> call = apiInterface.resetPwd(lang,params);
         ApiCall.getInstance().hitService(ForgotPwdActivity.this, call, this, ServerConstents.RESET);
 
     }
 
     private void hintResend()
     {
+        String lang="";
         AppUtils.showDialog(this, getString(R.string.pls_wait));
         ApiInterface apiInterface = RestApi.getConnection(ApiInterface.class, ServerConstents.API_URL);
         final HashMap params = new HashMap<>();
         params.put("phone_no", phone);
-        if (AppSharedPreference.getInstance().getString(this, AppSharedPreference.LANGUAGE_SELECTED) == null ||
+        if (AppSharedPreference.getInstance().getString(ForgotPwdActivity.this, AppSharedPreference.LANGUAGE_SELECTED) == null ||
                 AppSharedPreference.getInstance().getString(ForgotPwdActivity.this, AppSharedPreference.LANGUAGE_SELECTED).equalsIgnoreCase(AppConstant.ENG_LANG)) {
-            params.put("language", AppConstant.ENG_LANG);
+            lang = AppConstant.ENG_LANG;
         }else
         {
-            params.put("language", AppConstant.ARABIC_LANG);
+            lang= AppConstant.ARABIC_LANG;
         }
 
-        Call<BaseBean> call = apiInterface.resend(params);
+        Call<BaseBean> call = apiInterface.resend(lang,params);
         ApiCall.getInstance().hitService(ForgotPwdActivity.this, call, this, ServerConstents.RESEND);
 
     }
 
     private void hintOtp()
     {
+        String lang="";
         AppUtils.showDialog(this, getString(R.string.pls_wait));
         ApiInterface apiInterface = RestApi.getConnection(ApiInterface.class, ServerConstents.API_URL);
         final HashMap params = new HashMap<>();
         params.put("otp", etOtp.getText().toString());
         params.put("phone_no", phone);
-        if (AppSharedPreference.getInstance().getString(this, AppSharedPreference.LANGUAGE_SELECTED) == null ||
+        if (AppSharedPreference.getInstance().getString(ForgotPwdActivity.this, AppSharedPreference.LANGUAGE_SELECTED) == null ||
                 AppSharedPreference.getInstance().getString(ForgotPwdActivity.this, AppSharedPreference.LANGUAGE_SELECTED).equalsIgnoreCase(AppConstant.ENG_LANG)) {
-            params.put("language", AppConstant.ENG_LANG);
-        }else {
-            params.put("language", AppConstant.ARABIC_LANG);
+            lang = AppConstant.ENG_LANG;
+        }else
+        {
+            lang= AppConstant.ARABIC_LANG;
         }
 
-        Call<User> call = apiInterface.otp(params);
+        Call<User> call = apiInterface.otp(lang,params);
         ApiCall.getInstance().hitService(ForgotPwdActivity.this, call, this, ServerConstents.OTP);
 
     }
     private void hintPhone()
     {
+        String lang="";
         phone =etPhone.getText().toString();
         AppUtils.showDialog(this, getString(R.string.pls_wait));
         ApiInterface apiInterface = RestApi.getConnection(ApiInterface.class, ServerConstents.API_URL);
         final HashMap params = new HashMap<>();
         params.put("phone_no", etPhone.getText().toString());
-        if (AppSharedPreference.getInstance().getString(this, AppSharedPreference.LANGUAGE_SELECTED) == null ||
+        if (AppSharedPreference.getInstance().getString(ForgotPwdActivity.this, AppSharedPreference.LANGUAGE_SELECTED) == null ||
                 AppSharedPreference.getInstance().getString(ForgotPwdActivity.this, AppSharedPreference.LANGUAGE_SELECTED).equalsIgnoreCase(AppConstant.ENG_LANG)) {
-            params.put("language", AppConstant.ENG_LANG);
-        }else {
-            params.put("language", AppConstant.ARABIC_LANG);
+            lang = AppConstant.ENG_LANG;
+        }else
+        {
+            lang= AppConstant.ARABIC_LANG;
         }
 
-        Call<ForgotPwd> call = apiInterface.forgotPWD(params);
+        Call<ForgotPwd> call = apiInterface.forgotPWD(lang,params);
         ApiCall.getInstance().hitService(ForgotPwdActivity.this, call, this, ServerConstents.SEND_OTP);
 
     }

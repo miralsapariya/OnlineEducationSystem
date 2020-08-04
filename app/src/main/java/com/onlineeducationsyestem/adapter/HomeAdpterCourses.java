@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -41,7 +42,7 @@ public class HomeAdpterCourses extends RecyclerView.Adapter<HomeAdpterCourses.Vi
     }
 
     @Override
-    public void onBindViewHolder(final HomeAdpterCourses.ViewHolder holder, int position) {
+    public void onBindViewHolder(final HomeAdpterCourses.ViewHolder holder, final int position) {
         final  Home.List1 data = listProduct.get(position);
 
         holder.tvName.setText(data.getCourseName());
@@ -53,6 +54,12 @@ public class HomeAdpterCourses extends RecyclerView.Adapter<HomeAdpterCourses.Vi
         holder.tvNewPrice.setText(data.getCoursePrice());
         AppUtils.loadImageWithPicasso(data.getImage() , holder.img, context, 0, 0);
 
+        holder.llMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onItemClick.onNewCourseClick(position);
+            }
+        });
     }
 
 
@@ -69,6 +76,7 @@ public class HomeAdpterCourses extends RecyclerView.Adapter<HomeAdpterCourses.Vi
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView tvName,tvSubName,tvInstructorname,tvOldPrice,tvNewPrice;
         private ImageView img;
+        private LinearLayout llMain;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -79,6 +87,8 @@ public class HomeAdpterCourses extends RecyclerView.Adapter<HomeAdpterCourses.Vi
             tvOldPrice =itemView.findViewById(R.id.tvOldPrice);
             tvNewPrice =itemView.findViewById(R.id.tvNewPrice);
             img =itemView.findViewById(R.id.img);
+            llMain =itemView.findViewById(R.id.llMain);
+
         }
     }
 }

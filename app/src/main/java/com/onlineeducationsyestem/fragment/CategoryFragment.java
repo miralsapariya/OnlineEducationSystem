@@ -57,7 +57,8 @@ public class CategoryFragment extends BaseFragment implements OnItemClick, Netwo
     public void onGridClick(int pos) {
 
         Intent intent = new Intent(activity, SubCategoryActivity.class);
-        intent.putExtra("category_id", data.getData().get(0).getAllCategoriesList().get(pos).getId());
+        intent.putExtra("cat_id", data.getData().get(0).getAllCategoriesList().get(pos).getId()+"");
+        intent.putExtra("cat_name", data.getData().get(0).getAllCategoriesList().get(pos).getCategoryName());
         startActivity(intent);
     }
 
@@ -76,18 +77,18 @@ public class CategoryFragment extends BaseFragment implements OnItemClick, Netwo
 
     private void getCategory()
     {
+        String lang="";
         AppUtils.showDialog(activity, getString(R.string.pls_wait));
         ApiInterface apiInterface = RestApi.getConnection(ApiInterface.class, ServerConstents.API_URL);
         final HashMap params = new HashMap<>();
-
         if (AppSharedPreference.getInstance().getString(activity, AppSharedPreference.LANGUAGE_SELECTED) == null ||
                 AppSharedPreference.getInstance().getString(activity, AppSharedPreference.LANGUAGE_SELECTED).equalsIgnoreCase(AppConstant.ENG_LANG)) {
-            params.put("language", AppConstant.ENG_LANG);
+            lang = AppConstant.ENG_LANG;
         }else
         {
-            params.put("language", AppConstant.ARABIC_LANG);
+            lang= AppConstant.ARABIC_LANG;
         }
-        Call<User> call = apiInterface.categoryList(params);
+        Call<User> call = apiInterface.categoryList(lang,params);
         ApiCall.getInstance().hitService(activity, call, this, ServerConstents.CATEGORY);
     }
 

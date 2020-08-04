@@ -3,10 +3,12 @@ package com.onlineeducationsyestem.network;
 
 import com.onlineeducationsyestem.model.BaseBean;
 import com.onlineeducationsyestem.model.Category;
+import com.onlineeducationsyestem.model.CourseDetail;
 import com.onlineeducationsyestem.model.CourseList;
 import com.onlineeducationsyestem.model.ForgotPwd;
 import com.onlineeducationsyestem.model.GetProfile;
 import com.onlineeducationsyestem.model.Home;
+import com.onlineeducationsyestem.model.SubCategory;
 import com.onlineeducationsyestem.model.User;
 
 import java.util.HashMap;
@@ -34,69 +36,79 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST("login")
-    Call<User> login(@FieldMap HashMap<String, String> map);
+    Call<User> login(@Header("language") String lang,@FieldMap HashMap<String, String> map);
 
     @FormUrlEncoded
     @POST("register")
-    Call<User> register(@FieldMap HashMap<String, String> map);
+    Call<User> register(@Header("language") String lang,@FieldMap HashMap<String, String> map);
 
     @FormUrlEncoded
     @POST("verify")
-    Call<User> otp(@FieldMap HashMap<String, String> map);
+    Call<User> otp(@Header("language") String lang,@FieldMap HashMap<String, String> map);
 
     @FormUrlEncoded
     @POST("resend")
-    Call<BaseBean> resend(@FieldMap HashMap<String, String> map);
+    Call<BaseBean> resend(@Header("language") String lang,@FieldMap HashMap<String, String> map);
 
     @FormUrlEncoded
     @POST("change_password")
-    Call<BaseBean> changePwd(@Header("Authorization")String auth,@Header("Accept") String headr,@FieldMap HashMap<String, String> map);
+    Call<BaseBean> changePwd(@Header("language") String lang,@Header("Authorization")String auth,@FieldMap HashMap<String, String> map);
 
     @FormUrlEncoded
     @POST("forgotpassword")
-    Call<ForgotPwd> forgotPWD(@FieldMap HashMap<String, String> map);
+    Call<ForgotPwd> forgotPWD(@Header("language") String lang,@FieldMap HashMap<String, String> map);
 
     @FormUrlEncoded
     @POST("reset_password")
-    Call<BaseBean> resetPwd(@FieldMap HashMap<String, String> map);
+    Call<BaseBean> resetPwd(@Header("language") String lang,@FieldMap HashMap<String, String> map);
 
     @FormUrlEncoded
     @POST("get_profile")
-    Call<GetProfile> getProfile(@Header("Authorization")String auth,@Header("Accept") String headr,@FieldMap HashMap<String, String> map);
+    Call<GetProfile> getProfile(@Header("language") String lang,@Header("Authorization")String auth,@FieldMap HashMap<String, String> map);
 
     @Multipart
     @POST("edit_profile")
-    Call<GetProfile> editProfile(@Header("Authorization")String auth,
-                                 @Header("Accept") String headr,
+    Call<GetProfile> editProfile(@Header("language") String lang,
+                                 @Header("Authorization")String auth,
                                  @Part("user_id") RequestBody userId,
                                  @Part("name") RequestBody name,
                                  @Part("email") RequestBody email,
                                  @Part("phone_no") RequestBody phone,
-                                 @Part("language") RequestBody lang,
                                  @Part MultipartBody.Part file);
 
     @Multipart
     @POST("edit_profile")
-    Call<GetProfile> editProfile(@Header("Authorization")String auth,
-                                 @Header("Accept") String headr,
+    Call<GetProfile> editProfile(@Header("language") String lang,
+                                 @Header("Authorization")String auth,
                                  @Part("user_id") RequestBody userId,
                                  @Part("name") RequestBody name,
                                  @Part("email") RequestBody email,
-                                 @Part("phone_no") RequestBody phone,
-                                 @Part("language") RequestBody lang
+                                 @Part("phone_no") RequestBody phone
                                 );
 
 
     @FormUrlEncoded
     @POST("categorieslist")
-    Call<Category> categoryList(@FieldMap HashMap<String, String> map);
+    Call<Category> categoryList(@Header("language") String lang,@FieldMap HashMap<String, String> map);
 
     @FormUrlEncoded
     @POST("homescreen")
-    Call<Home> getHome(@FieldMap HashMap<String, String> map);
+    Call<Home> getHome(@Header("language") String lang,@FieldMap HashMap<String, String> map);
 
     @FormUrlEncoded
     @POST("courselist")
-    Call<CourseList> getCourseList(@FieldMap HashMap<String, String> map);
+    Call<CourseList> getCourseList(@Header("language") String lang,@FieldMap HashMap<String, String> map);
 
+    @FormUrlEncoded
+    @POST("categories_details")
+    Call<SubCategory> getSubCat(@Header("language") String lang,@FieldMap HashMap<String, String> map);
+
+    @FormUrlEncoded
+    @POST("addwishlist")
+    Call<BaseBean> addWhishList(@Header("language") String lang,@Header("Authorization")String auth,@FieldMap HashMap<String, String> map);
+
+
+    @FormUrlEncoded
+    @POST("coursedetails")
+    Call<CourseDetail> getCourseDetail(/*@Header("language") String lang,*/@FieldMap HashMap<String, String> map);
 }

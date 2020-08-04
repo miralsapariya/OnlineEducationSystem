@@ -1,6 +1,8 @@
 package com.onlineeducationsyestem.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,21 +13,23 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.onlineeducationsyestem.R;
+import com.onlineeducationsyestem.TrendingCourseActivity;
 import com.onlineeducationsyestem.interfaces.OnItemClick;
 import com.onlineeducationsyestem.interfaces.OnNewCourseClick;
+import com.onlineeducationsyestem.model.SubCategory;
 
 import java.util.ArrayList;
 
 public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.ViewHolder>
        {
 
-    private ArrayList<String> listProduct;
+    private ArrayList<SubCategory.SubCategory_> listProduct;
     private LayoutInflater mInflater;
     private OnItemClick onItemClick;
     private Context context;
 
     public SubCategoryAdapter(Context context,
-                              ArrayList<String> listProduct, OnItemClick onItemClick) {
+                              ArrayList<SubCategory.SubCategory_> listProduct, OnItemClick onItemClick) {
         this.mInflater = LayoutInflater.from(context);
         this.context =context;
         this.listProduct = listProduct;
@@ -41,20 +45,17 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
 
     @Override
     public void onBindViewHolder(final SubCategoryAdapter.ViewHolder holder, int position) {
-        final  String data = listProduct.get(position);
-
-        ArrayList<String> list =new ArrayList<>();
-        list.add("adsdsd");
-        list.add("adsdsd");
-        list.add("adsdsd");
-        list.add("adsdsd");
+        final  SubCategory.SubCategory_ data = listProduct.get(position);
 
 
-            SubAdpterCourses homeAdapter =
-                    new SubAdpterCourses(context, list, new OnNewCourseClick() {
+        holder.tvNameCategory.setText(data.getSubCategoryName());
+
+        Log.d("course list :: ", data.getCourseList().size()+"");
+
+        SubAdpterCourses homeAdapter =
+                    new SubAdpterCourses(context, data.getCourseList(), new OnNewCourseClick() {
                         @Override
                         public void onNewCourseClick(int pos) {
-
 
                         }
                     });
@@ -63,6 +64,18 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
             holder.rvHorizonatal.setHasFixedSize(true);
             holder.rvHorizonatal.setItemAnimator(new DefaultItemAnimator());
             holder.rvHorizonatal.setAdapter(homeAdapter);
+
+            holder.tvViewAll.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Intent intent =new Intent(context, TrendingCourseActivity.class);
+                    intent.putExtra("title", data.getSubCategoryName());
+                        intent.putExtra("from", "sub_cat");
+                        intent.putExtra("subcat_id", data.getId()+"");
+                    context.startActivity(intent);
+                }
+            });
 
     }
 
@@ -73,12 +86,12 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
         return listProduct.size();
     }
 
-    public  String getItem(int id) {
+    public  SubCategory.SubCategory_ getItem(int id) {
         return listProduct.get(id);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView tvNameCategory;
+        public TextView tvNameCategory,tvViewAll;
         private RecyclerView rvHorizonatal;
 
         public ViewHolder(View itemView) {
@@ -86,6 +99,7 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
 
             tvNameCategory =itemView.findViewById(R.id.tvNameCategory);
             rvHorizonatal =itemView.findViewById(R.id.rvHorizonatal);
+            tvViewAll =itemView.findViewById(R.id.tvViewAll);
 
         }
     }

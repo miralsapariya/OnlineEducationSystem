@@ -18,6 +18,7 @@ import com.onlineeducationsyestem.network.ApiCall;
 import com.onlineeducationsyestem.network.ApiInterface;
 import com.onlineeducationsyestem.network.RestApi;
 import com.onlineeducationsyestem.network.ServerConstents;
+import com.onlineeducationsyestem.util.AppConstant;
 import com.onlineeducationsyestem.util.AppSharedPreference;
 import com.onlineeducationsyestem.util.AppUtils;
 
@@ -91,6 +92,7 @@ public class LoginActivity extends BaseActivity implements NetworkListener {
 
     private void hintLogin()
     {
+        String lang="";
         AppUtils.showDialog(this, getString(R.string.pls_wait));
         ApiInterface apiInterface = RestApi.getConnection(ApiInterface.class, ServerConstents.API_URL);
         final HashMap params = new HashMap<>();
@@ -98,7 +100,15 @@ public class LoginActivity extends BaseActivity implements NetworkListener {
         params.put("password", etPassword.getText().toString());
         params.put("device_token", "1234");
         params.put("device_type", ServerConstents.DEVICE_TYPE);
-        Call<User> call = apiInterface.login(params);
+
+        if (AppSharedPreference.getInstance().getString(LoginActivity.this, AppSharedPreference.LANGUAGE_SELECTED) == null ||
+                AppSharedPreference.getInstance().getString(LoginActivity.this, AppSharedPreference.LANGUAGE_SELECTED).equalsIgnoreCase(AppConstant.ENG_LANG)) {
+           lang = AppConstant.ENG_LANG;
+        }else
+        {
+            lang= AppConstant.ARABIC_LANG;
+        }
+        Call<User> call = apiInterface.login(lang,params);
 
         ApiCall.getInstance().hitService(LoginActivity.this, call, this, ServerConstents.LOGIN);
 

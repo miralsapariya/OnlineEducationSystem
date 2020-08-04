@@ -11,19 +11,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.onlineeducationsyestem.R;
 import com.onlineeducationsyestem.interfaces.OnItemClick;
+import com.onlineeducationsyestem.model.CourseDetail;
+import com.onlineeducationsyestem.util.AppUtils;
 
 import java.util.ArrayList;
 
 public class CourseDetailCourseIncludesAdapter extends RecyclerView.Adapter<CourseDetailCourseIncludesAdapter.ViewHolder>
          {
 
-    private ArrayList<String> listProduct;
+    private ArrayList<CourseDetail.CourseInclude> listProduct;
     private LayoutInflater mInflater;
     private OnItemClick onItemClick;
     private Context context;
 
     public CourseDetailCourseIncludesAdapter(Context context,
-                                             ArrayList<String> listProduct) {
+                                             ArrayList<CourseDetail.CourseInclude> listProduct) {
         this.mInflater = LayoutInflater.from(context);
         this.context =context;
         this.listProduct = listProduct;
@@ -39,9 +41,10 @@ public class CourseDetailCourseIncludesAdapter extends RecyclerView.Adapter<Cour
 
     @Override
     public void onBindViewHolder(final CourseDetailCourseIncludesAdapter.ViewHolder holder, int position) {
-        final String data = listProduct.get(position);
+        final CourseDetail.CourseInclude data = listProduct.get(position);
 
-
+        AppUtils.loadImageWithPicasso(data.getIncludeIcon() , holder.img, context, 0, 0);
+        holder.tvCatName.setText(data.getIncludeTitle());
     }
 
 
@@ -50,13 +53,12 @@ public class CourseDetailCourseIncludesAdapter extends RecyclerView.Adapter<Cour
         return listProduct.size();
     }
 
-    public  String getItem(int id) {
+    public  CourseDetail.CourseInclude getItem(int id) {
         return listProduct.get(id);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView img;
-
         public TextView tvCatName;
 
         public ViewHolder(View itemView) {
