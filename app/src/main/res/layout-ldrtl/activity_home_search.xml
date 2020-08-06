@@ -53,8 +53,8 @@
                 android:drawablePadding="@dimen/_7sdp"
                 android:background="@null"
                 android:imeOptions="actionDone"
-                android:drawableStart="@drawable/ic_search"
-                android:drawableEnd="@drawable/ic_close"
+                android:drawableEnd="@drawable/ic_search"
+                android:drawableStart="@drawable/ic_close"
                 /></LinearLayout>
 
         </androidx.appcompat.widget.Toolbar>

@@ -5,8 +5,10 @@ import com.onlineeducationsyestem.model.BaseBean;
 import com.onlineeducationsyestem.model.Category;
 import com.onlineeducationsyestem.model.CourseDetail;
 import com.onlineeducationsyestem.model.CourseList;
+import com.onlineeducationsyestem.model.DefaultCategory;
 import com.onlineeducationsyestem.model.ForgotPwd;
 import com.onlineeducationsyestem.model.GetProfile;
+import com.onlineeducationsyestem.model.GlobalSearch;
 import com.onlineeducationsyestem.model.Home;
 import com.onlineeducationsyestem.model.SubCategory;
 import com.onlineeducationsyestem.model.User;
@@ -64,7 +66,9 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST("get_profile")
-    Call<GetProfile> getProfile(@Header("language") String lang,@Header("Authorization")String auth,@FieldMap HashMap<String, String> map);
+    Call<GetProfile> getProfile(@Header("language") String lang
+            ,@Header("Authorization")String auth,
+                                @FieldMap HashMap<String, String> map);
 
     @Multipart
     @POST("edit_profile")
@@ -107,8 +111,14 @@ public interface ApiInterface {
     @POST("addwishlist")
     Call<BaseBean> addWhishList(@Header("language") String lang,@Header("Authorization")String auth,@FieldMap HashMap<String, String> map);
 
-
     @FormUrlEncoded
     @POST("coursedetails")
-    Call<CourseDetail> getCourseDetail(/*@Header("language") String lang,*/@FieldMap HashMap<String, String> map);
+    Call<CourseDetail> getCourseDetail(@Header("language") String lang,@FieldMap HashMap<String, String> map);
+
+    @POST("globalsearch")
+    Call<DefaultCategory> getDefaultCategory(@Header("language") String lang);
+
+    @FormUrlEncoded
+    @POST("globalsearch")
+    Call<GlobalSearch> getDefaultCategory(@Header("language") String lang,@FieldMap HashMap<String, String> map);
 }

@@ -1,9 +1,9 @@
 package com.onlineeducationsyestem;
 
+import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.Html;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -39,13 +39,13 @@ public class CourseDetailActivity extends BaseActivity implements NetworkListene
     private RecyclerView rvCourse;
     private CourseDetailCourseIncludesAdapter courseDetailCourseIncludesAdapter;
     private NonScrollExpandableListView expandableView;
-    private LinearLayout llCreatedByInstructor,llCreatedBy;
-    private ImageView imgWhishList;
+    private LinearLayout llCreatedByInstructor,llCurriculum;
+    private ImageView imgWhishList,imgBack;
     private String course_id;
     private ImageView imgCourse,imgUser;
     private TextView tvCourseTitle,tvCourseDetail,tvNewPrice,
             tvOldPrice,tvSubscriber,tvTitle1,tvCourseIncludetitle,tvCurriculum,
-            tvStudent,tvCourse,tvViewProfile,tvCreateBy;
+            tvStudent,tvCourse,tvViewProfile,tvCreateBy,tvMoreSection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,10 +83,17 @@ public class CourseDetailActivity extends BaseActivity implements NetworkListene
         tvCourseIncludetitle =findViewById(R.id.tvCourseIncludetitle);
         tvCurriculum=findViewById(R.id.tvCurriculum);
         tvViewProfile =findViewById(R.id.tvViewProfile);
+        tvMoreSection =findViewById(R.id.tvMoreSection);
 
         llCreatedByInstructor = findViewById(R.id.llCreatedByInstructor);
-        llCreatedBy =findViewById(R.id.llCreatedBy);
-
+        llCurriculum =findViewById(R.id.llCurriculum);
+        imgBack =findViewById(R.id.imgBack);
+        imgBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         imgWhishList = findViewById(R.id.imgWhishList);
         imgWhishList.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,7 +141,7 @@ public class CourseDetailActivity extends BaseActivity implements NetworkListene
         {
             lang= AppConstant.ARABIC_LANG;
         }
-        Call<CourseDetail> call = apiInterface.getCourseDetail(params);
+        Call<CourseDetail> call = apiInterface.getCourseDetail(lang,params);
 
         ApiCall.getInstance().hitService(CourseDetailActivity.this, call, this, ServerConstents.DETAIL);
 
@@ -172,9 +179,9 @@ public class CourseDetailActivity extends BaseActivity implements NetworkListene
                 imgWhishList.setImageResource(R.drawable.ic_whishlisted);
                 Toast.makeText(CourseDetailActivity.this, data.getMessage(), Toast.LENGTH_SHORT).show();
             }
-        }else
-        {
-            CourseDetail data = (CourseDetail) response;
+        }else {
+
+           final  CourseDetail data = (CourseDetail) response;
 
             if (data.getStatus() == ServerConstents.CODE_SUCCESS) {
                 AppUtils.loadImageWithPicasso
@@ -192,7 +199,7 @@ public class CourseDetailActivity extends BaseActivity implements NetworkListene
                 tvOldPrice.setText(data.getData().get(0).getCourseOldPrice());
                 tvOldPrice.setPaintFlags( tvOldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                 tvSubscriber.setText(data.getData().get(0).getTotalSubscriber()+"");
-                tvCurriculum.setText(data.getData().get(0).getCourseIncludeTitle());
+                tvCurriculum.setText(data.getData().get(0).getSectionTitle());
                 if(data.getData().get(0).getIsWishlist() == 1)
                 {
                     imgWhishList.setImageResource(R.drawable.ic_whishlisted);
@@ -210,29 +217,58 @@ public class CourseDetailActivity extends BaseActivity implements NetworkListene
                 rvCourse.setLayoutManager(manager);
                 rvCourse.setAdapter(courseDetailCourseIncludesAdapter);
 
-                //
+                //cocurriculam
 
-                ArrayList<CourseDetail.SectionDetail> listDataHeader = new ArrayList<CourseDetail.SectionDetail>();
-                HashMap<CourseDetail.SectionDetail, ArrayList<CourseDetail.SectionSlideDetail>> listDataChild = new HashMap<CourseDetail.SectionDetail, ArrayList<CourseDetail.SectionSlideDetail>>();
+                if(data.getData().get(0).getSectionDetails().size() > 0) {
+                    llCurriculum.setVisibility(View.VISIBLE);
+                    ArrayList<CourseDetail.SectionDetail> listDataHeader = new ArrayList<CourseDetail.SectionDetail>();
+                    HashMap<CourseDetail.SectionDetail, ArrayList<CourseDetail.SectionSlideDetail>> listDataChild = new HashMap<CourseDetail.SectionDetail, ArrayList<CourseDetail.SectionSlideDetail>>();
 
-                listDataHeader.addAll(data.getData().get(0).getSectionDetails());
+                    if (data.getData().get(0).getSectionDetails().size() > 3) {
+                        tvMoreSection.setVisibility(View.VISIBLE);
+                    } else {
+                        tvMoreSection.setVisibility(View.GONE);
+                    }
+                    if (data.getData().get(0).getSectionDetails().size() > 3) {
+                        for (int i = 0; i < 3; i++) {
+                            listDataHeader.add(data.getData().get(0).getSectionDetails().get(i));
+                        }
+                    } else {
+                        listDataHeader.addAll(data.getData().get(0).getSectionDetails());
+                    }
 
-                expandableView = findViewById(R.id.expandableView);
-                ExpandedCourseDetail expandedCourseDetail = new ExpandedCourseDetail(CourseDetailActivity.this, data.getData().get(0).getSectionDetails());
-                expandableView.setAdapter(expandedCourseDetail);
-                expandableView.expandGroup(0);
-                expandedCourseDetail.notifyDataSetChanged();
 
+                    expandableView = findViewById(R.id.expandableView);
+                    ExpandedCourseDetail expandedCourseDetail = new ExpandedCourseDetail(CourseDetailActivity.this, listDataHeader);
+                    expandableView.setAdapter(expandedCourseDetail);
+                    expandableView.expandGroup(0);
+                    expandedCourseDetail.notifyDataSetChanged();
+
+                    tvMoreSection.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                            Intent intent = new Intent(CourseDetailActivity.this, MoreSectionActivity.class);
+                            intent.putExtra("listData", data.getData().get(0).getSectionDetails());
+                            startActivity(intent);
+
+                        }
+                    });
+
+                }else
+                {
+                    llCurriculum.setVisibility(View.GONE);
+                }
                 //
                 if(data.getData().get(0).getCreatedBy().equalsIgnoreCase("instructor")) {
-                    llCreatedBy.setVisibility(View.VISIBLE);
+                    llCreatedByInstructor.setVisibility(View.VISIBLE);
                     AppUtils.loadImageWithPicasso(data.getData().get(0).getInstructorDetails().getProfileImage() , imgUser, CourseDetailActivity.this, 0, 0);
                     tvCourse.setText(data.getData().get(0).getInstructorDetails().getTotalCourse()+"");
                     tvStudent.setText(data.getData().get(0).getInstructorDetails().getTotalStudents()+"");
 
-                    tvCreateBy.setText(getString(R.string.create_by)+" "+data.getData().get(0).getInstructorDetails().getInstructorName());
+                    tvCreateBy.setText(data.getData().get(0).getInstructorDetails().getInstructorName());
                 }else {
-                    llCreatedBy.setVisibility(View.GONE);
+                    llCreatedByInstructor.setVisibility(View.GONE);
 
                 }
             }
@@ -247,6 +283,5 @@ public class CourseDetailActivity extends BaseActivity implements NetworkListene
     @Override
     public void onFailure() {
 
-        Log.d("in failed :: ", "============== ");
     }
 }

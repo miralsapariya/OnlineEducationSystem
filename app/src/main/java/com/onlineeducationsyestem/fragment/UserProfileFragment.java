@@ -126,6 +126,8 @@ public class UserProfileFragment extends BaseFragment implements OnItemClick , N
             public void onClick(View view) {
 
                 AppSharedPreference.getInstance().clearAllPrefs(activity);
+                llWithLogin.setVisibility(View.GONE);
+                tvSignIn.setVisibility(View.VISIBLE);
                 Intent intent = new Intent(activity, LoginActivity.class);
                 startActivity(intent);
             }
@@ -146,22 +148,21 @@ public class UserProfileFragment extends BaseFragment implements OnItemClick , N
 
     private void getProfile()
     {
+        String lang="";
         AppUtils.showDialog(activity, getString(R.string.pls_wait));
         ApiInterface apiInterface = RestApi.getConnection(ApiInterface.class, ServerConstents.API_URL);
         final HashMap params = new HashMap<>();
         params.put("user_id", AppSharedPreference.getInstance().getString(activity, AppSharedPreference.USERID));
         if (AppSharedPreference.getInstance().getString(activity, AppSharedPreference.LANGUAGE_SELECTED) == null ||
                 AppSharedPreference.getInstance().getString(activity, AppSharedPreference.LANGUAGE_SELECTED).equalsIgnoreCase(AppConstant.ENG_LANG)) {
-            params.put("language", AppConstant.ENG_LANG);
+            lang = AppConstant.ENG_LANG;
         }else
         {
-            params.put("language", AppConstant.ARABIC_LANG);
+            lang= AppConstant.ARABIC_LANG;
         }
-
-        Call<GetProfile> call = apiInterface.getProfile(
+        Call<GetProfile> call = apiInterface.getProfile(lang,
                 AppSharedPreference.getInstance().
                         getString(activity, AppSharedPreference.ACCESS_TOKEN),
-                ServerConstents.HEADER_ACCEPT,
                 params);
 
         ApiCall.getInstance().hitService(activity, call, this, ServerConstents.GET_PROFILE);

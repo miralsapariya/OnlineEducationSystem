@@ -5,25 +5,28 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.onlineeducationsyestem.R;
 import com.onlineeducationsyestem.interfaces.OnItemClick;
+import com.onlineeducationsyestem.model.DefaultCategory;
+import com.onlineeducationsyestem.util.AppUtils;
 
 import java.util.ArrayList;
 
 public class HomeSearchAdapter extends RecyclerView.Adapter<HomeSearchAdapter.ViewHolder>
-        implements OnItemClick {
+         {
 
-    private ArrayList<String> listProduct;
+    private ArrayList<DefaultCategory.Category> listProduct;
     private LayoutInflater mInflater;
     private OnItemClick onItemClick;
     private Context context;
 
     public HomeSearchAdapter(Context context,
-                                 ArrayList<String> listProduct,OnItemClick onItemClick) {
+                             ArrayList<DefaultCategory.Category> listProduct, OnItemClick onItemClick) {
         this.mInflater = LayoutInflater.from(context);
         this.context =context;
         this.listProduct = listProduct;
@@ -38,28 +41,34 @@ public class HomeSearchAdapter extends RecyclerView.Adapter<HomeSearchAdapter.Vi
     }
 
     @Override
-    public void onBindViewHolder(final HomeSearchAdapter.ViewHolder holder, int position) {
-        final String data = listProduct.get(position);
+    public void onBindViewHolder(final HomeSearchAdapter.ViewHolder holder, final int position) {
+        final DefaultCategory.Category data = listProduct.get(position);
 
+        AppUtils.loadImageWithPicasso(data.getCategoryIcon() , holder.img, context, 0, 0);
+
+        holder.tvCatName.setText(data.getCategoryName());
+        holder.llMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onItemClick.onGridClick(position);
+            }
+        });
 
     }
-    @Override
-    public void onGridClick(int pos) {
 
-    }
 
     @Override
     public int getItemCount() {
         return listProduct.size();
     }
 
-    public  String getItem(int id) {
+    public  DefaultCategory.Category getItem(int id) {
         return listProduct.get(id);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView img,imgNext;
-
+        public LinearLayout llMain;
         public TextView tvCatName;
 
         public ViewHolder(View itemView) {
@@ -68,7 +77,7 @@ public class HomeSearchAdapter extends RecyclerView.Adapter<HomeSearchAdapter.Vi
             tvCatName =itemView.findViewById(R.id.tvCatName);
             img =itemView.findViewById(R.id.img);
             imgNext =itemView.findViewById(R.id.imgNext);
-
+            llMain =itemView.findViewById(R.id.llMain);
         }
     }
 }
