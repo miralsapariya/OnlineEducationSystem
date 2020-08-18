@@ -146,7 +146,7 @@ public class TrendingCourseActivity extends BaseActivity implements OnItemClick 
     }
 
     @Override
-    public void onError(String response, int requestCode) {
+    public void onError(String response, int requestCode, int errorCode) {
         Toast.makeText(TrendingCourseActivity.this, response, Toast.LENGTH_SHORT).show();
         rvTrendingCourse.setVisibility(View.GONE);
         tvNoData.setVisibility(View.VISIBLE);

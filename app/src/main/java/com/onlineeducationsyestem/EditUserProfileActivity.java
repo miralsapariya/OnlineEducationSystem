@@ -288,7 +288,7 @@ public class EditUserProfileActivity extends BaseActivity implements NetworkList
     }
 
     @Override
-    public void onError(String response, int requestCode) {
+    public void onError(String response, int requestCode, int errorCode) {
         Toast.makeText(EditUserProfileActivity.this, response, Toast.LENGTH_SHORT).show();
 
     }

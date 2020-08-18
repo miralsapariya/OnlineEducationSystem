@@ -123,7 +123,7 @@ public class SubCategoryActivity extends BaseActivity implements OnItemClick, Ne
     }
 
     @Override
-    public void onError(String response, int requestCode) {
+    public void onError(String response, int requestCode, int errorCode) {
         Toast.makeText(SubCategoryActivity.this, response, Toast.LENGTH_SHORT).show();
 
     }

@@ -26,10 +26,12 @@ import com.onlineeducationsyestem.ChangePwdActivity;
 import com.onlineeducationsyestem.EditUserProfileActivity;
 import com.onlineeducationsyestem.LoginActivity;
 import com.onlineeducationsyestem.R;
+import com.onlineeducationsyestem.WebActivity;
 import com.onlineeducationsyestem.adapter.UserProfileAboutUsAdapter;
 import com.onlineeducationsyestem.adapter.UserProfileAdapter;
 import com.onlineeducationsyestem.interfaces.NetworkListener;
 import com.onlineeducationsyestem.interfaces.OnItemClick;
+import com.onlineeducationsyestem.interfaces.OnSubItemClick;
 import com.onlineeducationsyestem.model.GetProfile;
 import com.onlineeducationsyestem.network.ApiCall;
 import com.onlineeducationsyestem.network.ApiInterface;
@@ -45,7 +47,7 @@ import java.util.Locale;
 
 import retrofit2.Call;
 
-public class UserProfileFragment extends BaseFragment implements OnItemClick , NetworkListener {
+public class UserProfileFragment extends BaseFragment implements OnItemClick, OnSubItemClick, NetworkListener {
     private RecyclerView rvBasicSetting,rvAboutUs;
     private UserProfileAdapter userProfileAdapter;
     private UserProfileAboutUsAdapter userProfileAboutUsAdapter;
@@ -68,12 +70,12 @@ public class UserProfileFragment extends BaseFragment implements OnItemClick , N
     private void initUI(){
 
         ArrayList<String> list=new ArrayList<>();
-        list.add(getString(R.string.prefered_lang));
-       // list.add(getString(R.string.dasahboard));
+
+        // list.add(getString(R.string.dasahboard));
         list.add(getString(R.string.my_profile));
         list.add(getString(R.string.change_pwd_));
-       // list.add(getString(R.string.whishlist_));
-      //  list.add(getString(R.string.notification));
+        //list.add(getString(R.string.whishlist_));
+        //list.add(getString(R.string.notification));
 
         tvDate =view.findViewById(R.id.tvDate);
         tvCountry =view.findViewById(R.id.tvCountry);
@@ -87,6 +89,7 @@ public class UserProfileFragment extends BaseFragment implements OnItemClick , N
         rvBasicSetting.setAdapter(userProfileAdapter);
 
         ArrayList<String> listAboutUs=new ArrayList<>();
+        listAboutUs.add(getString(R.string.prefered_lang));
         listAboutUs.add(getString(R.string.about));
         listAboutUs.add(getString(R.string.faq));
         listAboutUs.add(getString(R.string.privacy_policy));
@@ -106,8 +109,7 @@ public class UserProfileFragment extends BaseFragment implements OnItemClick , N
         if (AppSharedPreference.getInstance().getString(activity, AppSharedPreference.USERID) == null) {
             llWithLogin.setVisibility(View.GONE);
             tvSignIn.setVisibility(View.VISIBLE);
-        }else
-        {
+        }else {
             llWithLogin.setVisibility(View.VISIBLE);
             tvSignIn.setVisibility(View.GONE);
         }
@@ -120,11 +122,10 @@ public class UserProfileFragment extends BaseFragment implements OnItemClick , N
                 startActivity(intent);
             }
         });
-        tvSignOut =view.findViewById(R.id.tvSignOut);
+
         tvSignOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 AppSharedPreference.getInstance().clearAllPrefs(activity);
                 llWithLogin.setVisibility(View.GONE);
                 tvSignIn.setVisibility(View.VISIBLE);
@@ -187,7 +188,7 @@ public class UserProfileFragment extends BaseFragment implements OnItemClick , N
     }
 
     @Override
-    public void onError(String response, int requestCode) {
+    public void onError(String response, int requestCode, int errorCode) {
         Toast.makeText(activity, response, Toast.LENGTH_SHORT).show();
 
     }
@@ -198,18 +199,36 @@ public class UserProfileFragment extends BaseFragment implements OnItemClick , N
     }
 
     @Override
+    public void onSubGridClick(int pos) {
+        if(pos == 0){
+            showBottomSheet();
+        }
+        else if(pos == 3)
+        {
+            Intent intent =new Intent(activity, WebActivity.class);
+            intent.putExtra("url", AppConstant.PRIVACY_POLICY);
+            startActivity(intent);
+        }else if(pos == 4)
+        {
+            Intent intent =new Intent(activity, WebActivity.class);
+            intent.putExtra("url", AppConstant.TERMS_CONDITION);
+            startActivity(intent);
+
+        }
+    }
+
+    @Override
     public void onGridClick(int pos) {
 
-        if(pos == 0)
+        /*if(pos == 0)
         {
-            Log.d("click in pref lang", "=========>");
             showBottomSheet();
 
-        }else if(pos == 1)
+        }else*/ if(pos == 0)
         {
             Intent intent =new Intent(activity, EditUserProfileActivity.class);
             startActivity(intent);
-        }else if(pos == 2)
+        }else if(pos == 1)
         {
             Intent intent =new Intent(activity, ChangePwdActivity.class);
             startActivity(intent);
@@ -237,7 +256,7 @@ public class UserProfileFragment extends BaseFragment implements OnItemClick , N
             @Override
             public void onClick(View view) {
 
-                Log.e("English..................", "Locale");
+              //  Log.e("English..................", "Locale");
                 String languageToLoad = "en"; // your language
                 Locale locale = new Locale(languageToLoad);
                 Locale.setDefault(locale);
@@ -261,7 +280,7 @@ public class UserProfileFragment extends BaseFragment implements OnItemClick , N
         tvArabic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.e("Arabic..................", "Locale");
+               // Log.e("Arabic..................", "Locale");
                 String languageToLoad = "ar"; // your language
                 Locale locale = new Locale(languageToLoad);
                 Locale.setDefault(locale);

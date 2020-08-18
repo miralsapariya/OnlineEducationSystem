@@ -53,6 +53,10 @@ public class CourseDetail implements Serializable
         @SerializedName("id")
         @Expose
         private Integer id;
+        @SerializedName("is_free")
+        @Expose
+        private Integer is_free;
+
         @SerializedName("course_name")
         @Expose
         private String courseName;
@@ -100,6 +104,14 @@ public class CourseDetail implements Serializable
 
         public void setId(Integer id) {
             this.id = id;
+        }
+
+        public Integer getIs_free() {
+            return is_free;
+        }
+
+        public void setIs_free(Integer is_free) {
+            this.is_free = is_free;
         }
 
         public String getCourseName() {

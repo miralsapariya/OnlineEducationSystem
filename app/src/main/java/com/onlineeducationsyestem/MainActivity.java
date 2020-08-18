@@ -15,9 +15,7 @@ import androidx.fragment.app.FragmentManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.onlineeducationsyestem.fragment.CategoryFragment;
 import com.onlineeducationsyestem.fragment.HomeFragment;
-import com.onlineeducationsyestem.fragment.MyCoursesFragment;
 import com.onlineeducationsyestem.fragment.UserProfileFragment;
-import com.onlineeducationsyestem.fragment.WhishListFragment;
 import com.onlineeducationsyestem.util.AppConstant;
 import com.onlineeducationsyestem.util.AppSharedPreference;
 
@@ -56,7 +54,6 @@ public class MainActivity extends BaseActivity {
                 config = new Configuration();
                 config.locale = locale;
                 getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-
 
             } else {
 
@@ -108,22 +105,24 @@ public class MainActivity extends BaseActivity {
                         loadFragment(new HomeFragment());
                         break;
                     case R.id.page_2:
-                       gotoCategory();
+                        imgSearch.setVisibility(View.GONE);
+                        toolbar_title.setText(getString(R.string.category));
+                        loadFragment(new CategoryFragment());
                         break;
                     case R.id.page_3 :
 
                         imgSearch.setVisibility(View.GONE);
                         toolbar_title.setText(getString(R.string.my_courses));
-                        loadFragment(new MyCoursesFragment());
+                        //loadFragment(new MyCoursesFragment());
                         break;
                     case R.id.page_4:
                         imgSearch.setVisibility(View.GONE);
                         toolbar_title.setText(getString(R.string.whishlist_));
-                        loadFragment(new WhishListFragment());
+                        //loadFragment(new WhishListFragment());
                         break;
                     case R.id.page_5:
                         imgSearch.setVisibility(View.GONE);
-                        toolbar_title.setText(getString(R.string.account_profile));
+                        toolbar_title.setText(getString(R.string.account));
                         loadFragment(new UserProfileFragment());
                         break;
 
@@ -135,6 +134,9 @@ public class MainActivity extends BaseActivity {
 
     public void gotoCategory()
     {
+
+        nav_view.getMenu().findItem(R.id.page_2).setChecked(true);
+
         imgSearch.setVisibility(View.GONE);
         toolbar_title.setText(getString(R.string.category));
         loadFragment(new CategoryFragment());

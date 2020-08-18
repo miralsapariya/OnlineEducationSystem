@@ -67,6 +67,7 @@ public class OTPActivity extends BaseActivity implements NetworkListener {
         }
         tvResend =findViewById(R.id.tvResend);
         tvResend.setEnabled(false);
+        tvResend.setVisibility(View.GONE);
         tvResend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -144,6 +145,7 @@ public class OTPActivity extends BaseActivity implements NetworkListener {
               if(!response_code.equals("403")) {
                   countDownTimer();
                   tvResend.setEnabled(false);
+                  tvResend.setVisibility(View.GONE);
               }
             }
         }else
@@ -172,7 +174,7 @@ public class OTPActivity extends BaseActivity implements NetworkListener {
     }
 
     @Override
-    public void onError(String response, int requestCode) {
+    public void onError(String response, int requestCode, int errorCode) {
 
         Toast.makeText(OTPActivity.this, response, Toast.LENGTH_SHORT).show();
 
@@ -198,6 +200,7 @@ public class OTPActivity extends BaseActivity implements NetworkListener {
                 // mTextField.setText("done!");
                 tvTimer.setText("Time Remaining (00:00)");
                 tvResend.setEnabled(true);
+                tvResend.setVisibility(View.VISIBLE);
             }
 
         }.start();

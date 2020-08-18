@@ -260,7 +260,7 @@ public class ForgotPwdActivity extends AppCompatActivity implements NetworkListe
         }.start();
     }
     @Override
-    public void onError(String response, int requestCode) {
+    public void onError(String response, int requestCode, int errorCode) {
         Toast.makeText(ForgotPwdActivity.this, response, Toast.LENGTH_SHORT).show();
 
     }

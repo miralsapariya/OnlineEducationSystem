@@ -65,6 +65,13 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
             holder.rvHorizonatal.setItemAnimator(new DefaultItemAnimator());
             holder.rvHorizonatal.setAdapter(homeAdapter);
 
+        if(data.getCourseList().size() > 3){
+            holder.tvViewAll.setVisibility(View.VISIBLE);
+        }else
+        {
+            holder.tvViewAll.setVisibility(View.GONE);
+        }
+
             holder.tvViewAll.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

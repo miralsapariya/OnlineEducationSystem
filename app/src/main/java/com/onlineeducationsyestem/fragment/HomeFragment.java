@@ -123,7 +123,7 @@ public class HomeFragment extends BaseFragment  implements OnItemClick , OnViewA
     }
 
     @Override
-    public void onError(String response, int requestCode) {
+    public void onError(String response, int requestCode, int errorCode) {
 
     }
 

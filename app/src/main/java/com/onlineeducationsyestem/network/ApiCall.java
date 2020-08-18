@@ -75,13 +75,14 @@ public class ApiCall {
                         JSONObject jsonObject=new JSONObject(response.errorBody().string());
                         Log.d("msg er :: ", jsonObject.get("message").toString());
 
-                        networkListener.onError(jsonObject.get("message").toString(), requestCode);
+                        networkListener.onError(jsonObject.get("message").toString(), requestCode,401);
                     }else if(response.code() == 403)
                     {
                         //otp not verify
+                        // remove whish list
                         AppUtils.dismissDialog();
                         JSONObject jsonObject=new JSONObject(response.errorBody().string());
-                        networkListener.onError(jsonObject.get("message").toString(), requestCode);
+                        networkListener.onError(jsonObject.get("message").toString(), requestCode,403);
 //
                     }
                         else {
@@ -102,7 +103,7 @@ public class ApiCall {
 //                            JSONObject jsonObject = new JSONObject(response.errorBody().string());
 
                         //commanDialogError(context);
-                        networkListener.onError(jsonObject.get("message").toString(), requestCode);
+                        networkListener.onError(jsonObject.get("message").toString(), requestCode,0);
 //                        }
 
 

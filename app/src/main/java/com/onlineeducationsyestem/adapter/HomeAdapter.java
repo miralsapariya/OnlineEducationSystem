@@ -74,6 +74,14 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>
             holder.rvHorizonatal.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
             holder.rvHorizonatal.setItemAnimator(new DefaultItemAnimator());
             holder.rvHorizonatal.setAdapter(homeAdapter);
+
+            if(data.getList().size() > 3){
+                holder.tvViewAll.setVisibility(View.VISIBLE);
+            }else
+            {
+                holder.tvViewAll.setVisibility(View.GONE);
+            }
+
             holder.tvViewAll.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -101,6 +109,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>
             holder.rvHorizonatal.setItemAnimator(new DefaultItemAnimator());
             holder.rvHorizonatal.setAdapter(homeAdapter);
 
+            if(data.getList().size() > 3){
+                holder.tvViewAll.setVisibility(View.VISIBLE);
+            }else
+            {
+                holder.tvViewAll.setVisibility(View.GONE);
+            }
+
             holder.tvViewAll.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -124,6 +139,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>
             holder.rvHorizonatal.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
             holder.rvHorizonatal.setItemAnimator(new DefaultItemAnimator());
             holder.rvHorizonatal.setAdapter(homeAdapter);
+
+            if(data.getList().size() > 3){
+                holder.tvViewAll.setVisibility(View.VISIBLE);
+            }else
+            {
+                holder.tvViewAll.setVisibility(View.GONE);
+            }
 
             holder.tvViewAll.setOnClickListener(new View.OnClickListener() {
                 @Override

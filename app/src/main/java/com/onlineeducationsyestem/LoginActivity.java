@@ -121,6 +121,7 @@ public class LoginActivity extends BaseActivity implements NetworkListener {
         {
             ArrayList<User.Datum> res= data.getData();
 
+            preference.putString(LoginActivity.this, AppSharedPreference.PWD, etPassword.getText().toString()+"");
             preference.putString(LoginActivity.this, AppSharedPreference.USERID, res.get(0).getUserId()+"");
             preference.putString(LoginActivity.this, AppSharedPreference.NAME, res.get(0).getName()+"");
             preference.putString(LoginActivity.this, AppSharedPreference.EMAIL, res.get(0).getEmail());
@@ -139,7 +140,7 @@ public class LoginActivity extends BaseActivity implements NetworkListener {
     }
 
     @Override
-    public void onError(String response, int requestCode) {
+    public void onError(String response, int requestCode, int errorCode) {
 
         Toast.makeText(LoginActivity.this, response, Toast.LENGTH_SHORT).show();
     }
@@ -175,7 +176,13 @@ public class LoginActivity extends BaseActivity implements NetworkListener {
             Toast.makeText(LoginActivity.this, getString(R.string.toast_email), Toast.LENGTH_SHORT).show();
 
             //L.showSnackbar(llLogin, getString(R.string.toast_pwd));
-        }else if(TextUtils.isEmpty(etPassword.getText().toString()))
+        }else if(! AppUtils.validEmail(etEmail.getText().toString()))
+         {
+             bool=false;
+             hideKeyboard();
+             Toast.makeText(LoginActivity.this, getString(R.string.toast_valid_email), Toast.LENGTH_SHORT).show();
+
+         }else if(TextUtils.isEmpty(etPassword.getText().toString()))
         {
             bool=false;
             hideKeyboard();

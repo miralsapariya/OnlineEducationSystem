@@ -24,11 +24,16 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layoutDirection="locale"
+        android:textDirection="locale"
+        android:descendantFocusability="blocksDescendants"
         android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="300dp"
+            android:layoutDirection="locale"
+            android:textDirection="locale"
             >
             <ImageView
                 android:id="@+id/imgCourse"
@@ -53,6 +58,8 @@
                 android:layout_marginStart="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:paddingBottom="4dp"
+                android:layoutDirection="locale"
+                android:textDirection="locale"
                 android:orientation="horizontal">
 
 
@@ -76,6 +83,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
+                    android:layoutDirection="locale"
+                    android:textDirection="locale"
                     >
 
 
@@ -103,6 +112,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
+            android:layoutDirection="locale"
+            android:textDirection="locale"
             android:padding="@dimen/_10sdp">
 
             <LinearLayout
@@ -110,10 +121,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:visibility="gone"
                 android:gravity="center"
                 android:orientation="vertical"
-
+                android:layoutDirection="locale"
+                android:textDirection="locale"
                 >
 
                 <ImageView
@@ -122,10 +133,11 @@
                     android:src="@drawable/ic_clock" />
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvDuration"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="29 hrs,25 min"
+                    android:text="0"
                     android:textColor="@color/font1"
                     android:textDirection="locale" />
 
@@ -133,7 +145,6 @@
 
             <View
                 android:layout_width="1dp"
-                android:visibility="gone"
                 android:layout_height="match_parent"
                 android:background="@color/border_color" />
 
@@ -220,13 +231,14 @@
                 android:textDirection="locale"
                 android:textSize="@dimen/_11ssp" />
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <WebView
                 android:id="@+id/tvCourseDetail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_2sdp"
                 android:textColor="@color/font1"
                 android:textDirection="locale"
+                android:layoutDirection="locale"
                 android:textSize="@dimen/_9ssp" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -252,7 +264,6 @@
             android:layout_marginEnd="@dimen/_10sdp"
             android:paddingTop="@dimen/_7sdp"
             android:paddingBottom="@dimen/_7sdp"
-            android:text="@string/course_includes"
             android:textSize="@dimen/_13sdp" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -493,6 +504,7 @@
 </androidx.core.widget.NestedScrollView>
 
     <Button
+        android:id="@+id/buyNow"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/buy_now"

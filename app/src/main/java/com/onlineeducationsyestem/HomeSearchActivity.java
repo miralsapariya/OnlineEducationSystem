@@ -76,7 +76,7 @@ public class HomeSearchActivity extends BaseActivity implements OnItemClick, Net
             data= (DefaultCategory) response;
 
             homeSearchAdapter =
-                    new HomeSearchAdapter(HomeSearchActivity.this, data.getData().getCategories(), this);
+                    new HomeSearchAdapter(HomeSearchActivity.this, data.getData().get(0).getCategories(), this);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
             LinearLayoutManager manager = new LinearLayoutManager(HomeSearchActivity.this);
             recyclerView.setLayoutManager(manager);
@@ -85,7 +85,7 @@ public class HomeSearchActivity extends BaseActivity implements OnItemClick, Net
     }
 
     @Override
-    public void onError(String response, int requestCode) {
+    public void onError(String response, int requestCode, int errorCode) {
 
     }
 
@@ -120,13 +120,12 @@ public class HomeSearchActivity extends BaseActivity implements OnItemClick, Net
     @Override
     public void onGridClick(int pos) {
         Intent intent = new Intent(HomeSearchActivity.this, SearchResultActivity.class);
-        intent.putExtra("cat_id", data.getData().getCategories().get(pos).getId()+"");
+        intent.putExtra("cat_id", data.getData().get(0).getCategories().get(pos).getId()+"");
         startActivity(intent);
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private void initToolbar()
-    {
+    private void initToolbar() {
         etSearch =findViewById(R.id.etSearch);
 
         etSearch.setOnTouchListener(new View.OnTouchListener() {

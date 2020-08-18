@@ -3,6 +3,7 @@ package com.onlineeducationsyestem;
 import android.app.Activity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 
 import com.onlineeducationsyestem.interfaces.NetworkListener;
 import com.onlineeducationsyestem.model.BaseBean;
+import com.onlineeducationsyestem.model.User;
 import com.onlineeducationsyestem.network.ApiCall;
 import com.onlineeducationsyestem.network.ApiInterface;
 import com.onlineeducationsyestem.network.RestApi;
@@ -20,6 +22,7 @@ import com.onlineeducationsyestem.util.AppConstant;
 import com.onlineeducationsyestem.util.AppSharedPreference;
 import com.onlineeducationsyestem.util.AppUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -31,7 +34,7 @@ public class ChangePwdActivity extends BaseActivity implements NetworkListener {
     private EditText etOldPwd,etNewPwd,etConfirmPwd;
     private TextView btnContinue;
     private LinearLayout llMain;
-
+    private AppSharedPreference preference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,20 +70,67 @@ public class ChangePwdActivity extends BaseActivity implements NetworkListener {
         ApiCall.getInstance().hitService(ChangePwdActivity.this, call, this, ServerConstents.CHANGE_PWD);
 
     }
+    private void hintLogin()
+    {
+        Log.d("call Login ", "====");
+
+        String lang="";
+        AppUtils.showDialog(this, getString(R.string.pls_wait));
+        ApiInterface apiInterface = RestApi.getConnection(ApiInterface.class, ServerConstents.API_URL);
+        final HashMap params = new HashMap<>();
+        params.put("email", AppSharedPreference.getInstance().getString(ChangePwdActivity.this, AppSharedPreference.EMAIL));
+        params.put("password", etNewPwd.getText().toString());
+        params.put("device_token", "1234");
+        params.put("device_type", ServerConstents.DEVICE_TYPE);
+
+        if (AppSharedPreference.getInstance().getString(ChangePwdActivity.this, AppSharedPreference.LANGUAGE_SELECTED) == null ||
+                AppSharedPreference.getInstance().getString(ChangePwdActivity.this, AppSharedPreference.LANGUAGE_SELECTED).equalsIgnoreCase(AppConstant.ENG_LANG)) {
+            lang = AppConstant.ENG_LANG;
+        }else
+        {
+            lang= AppConstant.ARABIC_LANG;
+        }
+        Call<User> call = apiInterface.login(lang,params);
+
+        ApiCall.getInstance().hitService(ChangePwdActivity.this, call, this, ServerConstents.LOGIN);
+
+    }
 
     @Override
     public void onSuccess(int responseCode, Object response, int requestCode) {
 
-        BaseBean data=(BaseBean) response;
-        if(data.getStatus()==ServerConstents.CODE_SUCCESS)
+        if(requestCode == ServerConstents.LOGIN)
         {
-            Toast.makeText(ChangePwdActivity.this, data.getMessage(), Toast.LENGTH_SHORT).show();
-            finish();
+            User data=(User) response;
+            if(data.getStatus()==ServerConstents.CODE_SUCCESS)
+            {
+                ArrayList<User.Datum> res= data.getData();
+
+                preference.putString(ChangePwdActivity.this, AppSharedPreference.PWD, etConfirmPwd.getText().toString()+"");
+                preference.putString(ChangePwdActivity.this, AppSharedPreference.USERID, res.get(0).getUserId()+"");
+                preference.putString(ChangePwdActivity.this, AppSharedPreference.NAME, res.get(0).getName()+"");
+                preference.putString(ChangePwdActivity.this, AppSharedPreference.EMAIL, res.get(0).getEmail());
+
+                preference.putString(ChangePwdActivity.this, AppSharedPreference.FIRST_NAME, res.get(0).getFirstName()+"");
+                preference.putString(ChangePwdActivity.this, AppSharedPreference.LAST_NAME, res.get(0).getLastName()+"");
+                preference.putString(ChangePwdActivity.this, AppSharedPreference.PROFILE_PIC, res.get(0).getProfilePicture());
+                preference.putString(ChangePwdActivity.this,AppSharedPreference.PHONE, res.get(0).getPhoneNo());
+                preference.putString(ChangePwdActivity.this, AppSharedPreference.ACCESS_TOKEN, "Bearer"+" "+res.get(0).getToken());
+
+              finish();
+            }
+        }else {
+            BaseBean data = (BaseBean) response;
+            if (data.getStatus() == ServerConstents.CODE_SUCCESS) {
+                Toast.makeText(ChangePwdActivity.this, data.getMessage(), Toast.LENGTH_SHORT).show();
+                // finish();
+                hintLogin();
+            }
         }
     }
 
     @Override
-    public void onError(String response, int requestCode) {
+    public void onError(String response, int requestCode, int errorCode) {
         Toast.makeText(ChangePwdActivity.this, response, Toast.LENGTH_SHORT).show();
 
     }
@@ -149,6 +199,7 @@ public class ChangePwdActivity extends BaseActivity implements NetworkListener {
 
     private void initUI()
     {
+        preference = AppSharedPreference.getInstance();
         llMain =findViewById(R.id.llMain);
         etOldPwd =findViewById(R.id.etOldPwd);
         etNewPwd =findViewById(R.id.etNewPwd);

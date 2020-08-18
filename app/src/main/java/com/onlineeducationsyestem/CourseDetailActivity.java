@@ -3,8 +3,9 @@ package com.onlineeducationsyestem;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.text.Html;
 import android.view.View;
+import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -43,9 +44,11 @@ public class CourseDetailActivity extends BaseActivity implements NetworkListene
     private ImageView imgWhishList,imgBack;
     private String course_id;
     private ImageView imgCourse,imgUser;
-    private TextView tvCourseTitle,tvCourseDetail,tvNewPrice,
+    private TextView tvCourseTitle,tvNewPrice,
             tvOldPrice,tvSubscriber,tvTitle1,tvCourseIncludetitle,tvCurriculum,
-            tvStudent,tvCourse,tvViewProfile,tvCreateBy,tvMoreSection;
+            tvStudent,tvCourse,tvViewProfile,tvCreateBy,tvMoreSection,tvDuration;
+    private Button buyNow;
+    private WebView tvCourseDetail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +75,8 @@ public class CourseDetailActivity extends BaseActivity implements NetworkListene
         imgCourse=findViewById(R.id.imgCourse);
         imgUser=findViewById(R.id.imgUser);
         tvStudent=findViewById(R.id.tvStudent);
+        tvDuration =findViewById(R.id.tvDuration);
+
         tvCourse =findViewById(R.id.tvCourse);
         tvCreateBy=findViewById(R.id.tvCreateBy);
         tvCourseTitle =findViewById(R.id.tvCourseTitle);
@@ -84,6 +89,7 @@ public class CourseDetailActivity extends BaseActivity implements NetworkListene
         tvCurriculum=findViewById(R.id.tvCurriculum);
         tvViewProfile =findViewById(R.id.tvViewProfile);
         tvMoreSection =findViewById(R.id.tvMoreSection);
+        buyNow =findViewById(R.id.buyNow);
 
         llCreatedByInstructor = findViewById(R.id.llCreatedByInstructor);
         llCurriculum =findViewById(R.id.llCurriculum);
@@ -189,10 +195,21 @@ public class CourseDetailActivity extends BaseActivity implements NetworkListene
                 tvCourseTitle.setText(data.getData().get(0).getCourseName());
                 tvTitle1.setText(data.getData().get(0).getCourseName());
 
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+              /*  if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                     tvCourseDetail.setText(Html.fromHtml(data.getData().get(0).getDescription(),Html.FROM_HTML_MODE_LEGACY));
                 } else {
                     tvCourseDetail.setText(Html.fromHtml(data.getData().get(0).getDescription()));
+                }*/
+
+                tvCourseDetail.getSettings().setJavaScriptEnabled(true);
+                tvCourseDetail.loadDataWithBaseURL(null, data.getData().get(0).getDescription(), "text/html", "utf-8", null);
+               // tvCourseDetail.loadData(data.getData().get(0).getDescription(), "text/html; charset=utf-8", "UTF-8");
+                if(data.getData().get(0).getIs_free() ==0)
+                {
+                    buyNow.setText(getString(R.string.buy_now));
+                }else
+                {
+                    buyNow.setText(getString(R.string.enroll_now));
                 }
 
                 tvNewPrice.setText(data.getData().get(0).getCoursePrice());
@@ -276,7 +293,10 @@ public class CourseDetailActivity extends BaseActivity implements NetworkListene
     }
 
     @Override
-    public void onError(String response, int requestCode) {
+    public void onError(String response, int requestCode, int errorCode) {
+        if(requestCode == ServerConstents.WHISH_LIST) {
+            imgWhishList.setImageResource(R.drawable.ic_heart);
+        }
         Toast.makeText(CourseDetailActivity.this, response, Toast.LENGTH_SHORT).show();
     }
 

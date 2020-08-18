@@ -242,7 +242,7 @@
         android:textSize="@dimen/_12ssp"
         android:background="@color/bg"
         android:textColor="@color/colorPrimary"
-        android:text="@string/sign_out"
+        android:text="@string/log_out"
         android:textDirection="locale"
         android:gravity="center_horizontal"
         android:layout_gravity="center_horizontal"
@@ -281,14 +281,12 @@
         android:textSize="@dimen/_12ssp"
         android:background="@color/bg"
         android:textColor="@color/colorPrimary"
-        android:text="@string/sign_in"
+        android:text="@string/login"
         android:textDirection="locale"
         android:gravity="center_horizontal"
         android:layout_gravity="center_horizontal"
 
         />
-
-
 
     <View
         android:layout_width="match_parent"

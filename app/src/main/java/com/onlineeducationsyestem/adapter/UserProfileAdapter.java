@@ -44,12 +44,9 @@ public class UserProfileAdapter extends RecyclerView.Adapter<UserProfileAdapter.
 
         if(position ==0)
         {
-            holder.img.setImageResource(R.mipmap.preferred_lang);
-        }else if(position ==1)
-        {
             holder.img.setImageResource(R.mipmap.my_profile);
         }
-        else if(position ==2)
+        else if(position ==1)
         {
             holder.img.setImageResource(R.mipmap.change_password);
         }/*else {

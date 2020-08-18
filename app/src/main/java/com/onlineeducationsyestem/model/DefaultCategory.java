@@ -5,48 +5,48 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 public class DefaultCategory implements Serializable
 {
 
-@SerializedName("status")
-@Expose
-private Integer status;
-@SerializedName("message")
-@Expose
-private String message;
-@SerializedName("data")
-@Expose
-private Data data;
-private final static long serialVersionUID = 2835948274634063666L;
+    @SerializedName("status")
+    @Expose
+    private Integer status;
+    @SerializedName("message")
+    @Expose
+    private String message;
+    @SerializedName("data")
+    @Expose
+    private List<Datum> data = null;
+    private final static long serialVersionUID = 8692990272188316752L;
 
-public Integer getStatus() {
-return status;
-}
+    public Integer getStatus() {
+        return status;
+    }
 
-public void setStatus(Integer status) {
-this.status = status;
-}
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
 
-public String getMessage() {
-return message;
-}
+    public String getMessage() {
+        return message;
+    }
 
-public void setMessage(String message) {
-this.message = message;
-}
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
-public Data getData() {
-return data;
-}
+    public List<Datum> getData() {
+        return data;
+    }
 
-public void setData(Data data) {
-this.data = data;
-}
+    public void setData(List<Datum> data) {
+        this.data = data;
+    }
+    //
 
-//
-
-    public class Data implements Serializable
+    public class Datum implements Serializable
     {
 
         @SerializedName("title")
@@ -55,7 +55,7 @@ this.data = data;
         @SerializedName("categories")
         @Expose
         private ArrayList<Category> categories = null;
-        private final static long serialVersionUID = -4768917766590660438L;
+        private final static long serialVersionUID = 8083280329208032982L;
 
         public String getTitle() {
             return title;
@@ -75,7 +75,6 @@ this.data = data;
 
     }
     //
-
     public class Category implements Serializable
     {
 

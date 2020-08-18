@@ -28,7 +28,7 @@ public interface NetworkListener {
      * @param response    - response in th error body
      * @param requestCode
      */
-    void onError(String response, int requestCode);
+    void onError(String response, int requestCode, int errorCode);
 
 
     /**

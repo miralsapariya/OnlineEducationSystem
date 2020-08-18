@@ -13,6 +13,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.onlineeducationsyestem.adapter.SearchResultAdapter;
 import com.onlineeducationsyestem.interfaces.NetworkListener;
@@ -31,7 +32,8 @@ import java.util.HashMap;
 
 import retrofit2.Call;
 
-public class SearchResultActivity extends AppCompatActivity implements NetworkListener, OnItemClick {
+public class SearchResultActivity extends AppCompatActivity
+        implements NetworkListener, OnItemClick , SwipeRefreshLayout.OnRefreshListener{
 
     String searchKeyword="",cat_id="";
     private ImageView imgBack;
@@ -39,7 +41,7 @@ public class SearchResultActivity extends AppCompatActivity implements NetworkLi
     private TextView tvNoData;
     private SearchResultAdapter searchResultAdapter;
     private ArrayList<GlobalSearch.Courseslist> list;
-
+    private SwipeRefreshLayout swipeRefresh;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +66,17 @@ public class SearchResultActivity extends AppCompatActivity implements NetworkLi
         });
         rvSearch=findViewById(R.id.rvSearch);
         tvNoData =findViewById(R.id.tvNoData);
+
+
+        swipeRefresh = findViewById(R.id.swipeRefresh);
+        swipeRefresh.setOnRefreshListener(this);
+
+        rvSearch.setHasFixedSize(true);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(SearchResultActivity.this);
+        rvSearch.setLayoutManager(mLayoutManager);
+        searchResultAdapter = new SearchResultAdapter(SearchResultActivity.this
+                , new ArrayList<GlobalSearch.Courseslist> () , this);
+        rvSearch.setAdapter(searchResultAdapter);
 
         if (AppUtils.isInternetAvailable(SearchResultActivity.this)) {
             hintGetSearchResult();
@@ -98,10 +111,19 @@ public class SearchResultActivity extends AppCompatActivity implements NetworkLi
         {
             params.put("cat_id", cat_id);
         }
+      //  page_no
+      //  page_limit
         Call<GlobalSearch> call = apiInterface.getDefaultCategory(lang,params);
         ApiCall.getInstance().hitService(SearchResultActivity.this, call, this, ServerConstents.DEFUALT_CAT);
 
     }
+
+    @Override
+    public void onRefresh() {
+
+    }
+
+
 
     @Override
     public void onSuccess(int responseCode, Object response, int requestCode) {
@@ -133,7 +155,7 @@ public class SearchResultActivity extends AppCompatActivity implements NetworkLi
     }
 
     @Override
-    public void onError(String response, int requestCode) {
+    public void onError(String response, int requestCode, int errorCode) {
         Toast.makeText(SearchResultActivity.this, response, Toast.LENGTH_SHORT).show();
         rvSearch.setVisibility(View.GONE);
         tvNoData.setVisibility(View.VISIBLE);

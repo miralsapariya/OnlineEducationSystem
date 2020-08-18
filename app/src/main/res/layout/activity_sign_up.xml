@@ -27,19 +27,16 @@
             android:src="@drawable/ic_back"
             android:textDirection="locale" />
 
-        <androidx.appcompat.widget.AppCompatTextView
+        <ImageView
             android:id="@+id/tv"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_weight="1"
             android:gravity="center_horizontal"
             android:layoutDirection="locale"
-            android:text="@string/logo"
-            android:visibility="gone"
+            android:src="@mipmap/ic_launcher"
             android:textColor="@color/colorPrimary"
             android:textDirection="locale"
-            android:textSize="@dimen/_22sdp"
             android:textStyle="bold" />
 
     </LinearLayout>
@@ -79,6 +76,7 @@
             android:drawablePadding="@dimen/_7sdp"
             android:hint="@string/full_name"
             android:inputType="text"
+            android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "
             android:layoutDirection="locale"
             android:singleLine="true"
 

@@ -116,7 +116,7 @@
                 android:drawableStart="@mipmap/phone"
                 android:drawablePadding="@dimen/_7sdp"
                 android:hint="@string/enter_otp"
-                android:inputType="text"
+                android:inputType="number"
                 android:layoutDirection="locale"
                 android:maxLength="12"
                 android:singleLine="true"

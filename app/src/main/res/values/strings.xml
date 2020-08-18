@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">OnlineEducationSyestem</string>
+    <string name="app_name">OnlineEducationSystem</string>
 
     <!--bottom nav-->
     <string name="home">Home</string>
@@ -28,6 +28,7 @@
     <string name="show_more">Show More</string>
     <string name="course_includes">Course Includes</string>
     <string name="buy_now">Buy Now</string>
+    <string name="enroll_now">Enroll Now</string>
     <string name="add_to_cart">Add to cart</string>
     <string name="whishlist">Wishlist</string>
     <string name="curriculum">Curriculum</string>
@@ -78,6 +79,8 @@
     <string name="country">Country</string>
     <string name="account_setting">Account Setting</string>
     <string name="sign_out">Sign Out</string>
+    <string name="log_out">Logout</string>
+
 
     <string name="prefered_lang">Preferred Language</string>
     <string name="dasahboard">Dashboard</string>
@@ -120,8 +123,11 @@
 
     <string name="no_record">No record found</string>
     <string name="toast_name">Please enter name</string>
+    <string name="toast_full_name">Please enter full name</string>
     <string name="toast_email">Please enter email</string>
+    <string name="toast_valid_email">Please enter valid email.</string>
     <string name="toast_phone">Please enter phone</string>
+    <string name="toast_phone_length">Phone number should be 10 digits.</string>
     <string name="toast_password">Please enter password</string>
     <string name="no_login">You haven\'t login, Please login first.</string>
     <string name="choose_lang">Choose Language</string>

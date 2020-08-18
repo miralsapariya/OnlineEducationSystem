@@ -160,6 +160,20 @@ public class AppUtils {
         return toast;
     }
 
+    public static boolean validEmail(String email) {
+        Pattern pattern = Patterns.EMAIL_ADDRESS;
+        return pattern.matcher(email).matches();
+    }
+
+    public static int countWordsUsingSplit(String input)
+    {
+        if (input == null || input.isEmpty())
+        { return 0; }
+        String[] words = input.split(" ");
+        return words.length;
+    }
+
+
     /**
      * Checks if the Internet connection is available.
      *

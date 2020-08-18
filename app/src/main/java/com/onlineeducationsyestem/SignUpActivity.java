@@ -126,17 +126,20 @@ public class SignUpActivity extends BaseActivity implements NetworkListener
     }
 
     @Override
-    public void onError(String response, int requestCode) {
+    public void onError(String response, int requestCode, int errorCode) {
         Toast.makeText(SignUpActivity.this, response, Toast.LENGTH_SHORT).show();
-        Intent intent =new Intent(SignUpActivity.this, OTPActivity.class);
-        intent.putExtra("name", etName.getText().toString());
-        intent.putExtra("password", etPassword.getText().toString());
-        intent.putExtra("email", etEmail.getText().toString());
-        intent.putExtra("phone", etPhone.getText().toString());
-        intent.putExtra("response_code", "403");
 
-        startActivity(intent);
-        finish();
+        if(errorCode == 403) {
+            Intent intent = new Intent(SignUpActivity.this, OTPActivity.class);
+            intent.putExtra("name", etName.getText().toString());
+            intent.putExtra("password", etPassword.getText().toString());
+            intent.putExtra("email", etEmail.getText().toString());
+            intent.putExtra("phone", etPhone.getText().toString());
+            intent.putExtra("response_code", "403");
+
+            startActivity(intent);
+            finish();
+        }
     }
 
     @Override
@@ -154,20 +157,45 @@ public class SignUpActivity extends BaseActivity implements NetworkListener
             Toast.makeText(SignUpActivity.this, getString(R.string.toast_name), Toast.LENGTH_SHORT).show();
            // L.showSnackbar(llLogin, getString(R.string.toast_Ic));
 
-        }else if(TextUtils.isEmpty(etEmail.getText().toString()))
+        }
+        else if(AppUtils.countWordsUsingSplit(etName.getText().toString()) <= 1)
+        {
+
+             bool=false;
+            hideKeyboard();
+            Toast.makeText(SignUpActivity.this, getString(R.string.toast_full_name), Toast.LENGTH_SHORT).show();
+
+        }
+
+        else if(TextUtils.isEmpty(etEmail.getText().toString()))
         {
             bool=false;
             hideKeyboard();
             Toast.makeText(SignUpActivity.this, getString(R.string.toast_email), Toast.LENGTH_SHORT).show();
 
             //L.showSnackbar(llLogin, getString(R.string.toast_pwd));
-        }else if(TextUtils.isEmpty(etPhone.getText().toString()))
+        }
+        else if(! AppUtils.validEmail(etEmail.getText().toString()))
+        {
+            bool=false;
+            hideKeyboard();
+            Toast.makeText(SignUpActivity.this, getString(R.string.toast_valid_email), Toast.LENGTH_SHORT).show();
+
+        }
+        else if(TextUtils.isEmpty(etPhone.getText().toString()))
         { bool=false;
             hideKeyboard();
             Toast.makeText(SignUpActivity.this, getString(R.string.toast_phone), Toast.LENGTH_SHORT).show();
 
+        }else if(etPhone.getText().toString().length() != 10)
+        {
+            bool=false;
+            hideKeyboard();
+            Toast.makeText(SignUpActivity.this, getString(R.string.toast_phone_length), Toast.LENGTH_SHORT).show();
 
-        }else if(TextUtils.isEmpty(etPassword.getText().toString()))
+        }
+
+        else if(TextUtils.isEmpty(etPassword.getText().toString()))
         {
             bool=false;
             hideKeyboard();

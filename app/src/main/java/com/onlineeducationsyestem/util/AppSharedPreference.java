@@ -19,19 +19,8 @@ public class AppSharedPreference {
     public static final String FULL_NAME = "full_name";
     public static final String EMAIL = "email";
     public static final String PHONE = "phone";
-    public static final String IC_CODE = "ic_code";
     public static final String PROFILE_PIC = "profile_name";
-    public static final String BANK_ACC_ID = "acc_id";
-    public static final String WE_CHAT_NO = "we_can_no";
-    public static final String HASH = "hashma";
-    public static final String SELFHASH="self_hash";
-    public static final String TIRE_LEVEL = "tier";
-    public static final String MERCHANT_ID = "merchant_id";
-    public static final String APP_VERSION = "app_version";
-    public static final String NOTIFICATION_TOGGLE = "notification_toggle";
-    public static final String ACCOUNTDETAILS = "account_details";
-    public static final String APP_OPEN_COUNT = "app_open_count";
-    public static final String QRIMG="qr_img";
+    public static final String PWD = "pwd";
 
 
     public static AppSharedPreference getInstance() {

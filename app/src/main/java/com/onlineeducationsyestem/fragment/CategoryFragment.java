@@ -126,7 +126,7 @@ public class CategoryFragment extends BaseFragment implements OnItemClick, Netwo
     }
 
     @Override
-    public void onError(String response, int requestCode) {
+    public void onError(String response, int requestCode, int errorCode) {
         Toast.makeText(activity, response, Toast.LENGTH_SHORT).show();
 
     }
