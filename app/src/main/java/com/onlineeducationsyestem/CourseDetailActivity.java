@@ -90,6 +90,16 @@ public class CourseDetailActivity extends BaseActivity implements NetworkListene
         tvViewProfile =findViewById(R.id.tvViewProfile);
         tvMoreSection =findViewById(R.id.tvMoreSection);
         buyNow =findViewById(R.id.buyNow);
+        buyNow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (AppSharedPreference.getInstance().getString(CourseDetailActivity.this, AppSharedPreference.USERID) == null) {
+                    AppUtils.loginAlert(CourseDetailActivity.this);
+                }else {
+                    callCart();
+                }
+            }
+        });
 
         llCreatedByInstructor = findViewById(R.id.llCreatedByInstructor);
         llCurriculum =findViewById(R.id.llCurriculum);
@@ -126,6 +136,29 @@ public class CourseDetailActivity extends BaseActivity implements NetworkListene
 
     }
 
+    private void callCart()
+    {
+        if (AppUtils.isInternetAvailable(CourseDetailActivity.this)) {
+            String lang="";
+            AppUtils.showDialog(CourseDetailActivity.this, getString(R.string.pls_wait));
+            ApiInterface apiInterface = RestApi.getConnection(ApiInterface.class, ServerConstents.API_URL);
+            final HashMap params = new HashMap<>();
+
+            params.put("course_id",course_id+"");
+            if (AppSharedPreference.getInstance().getString(CourseDetailActivity.this, AppSharedPreference.LANGUAGE_SELECTED) == null ||
+                    AppSharedPreference.getInstance().getString(CourseDetailActivity.this, AppSharedPreference.LANGUAGE_SELECTED).equalsIgnoreCase(AppConstant.ENG_LANG)) {
+                lang = AppConstant.ENG_LANG;
+            }else
+            {
+                lang= AppConstant.ARABIC_LANG;
+            }
+
+            Call<BaseBean> call = apiInterface.addToCart(lang,AppSharedPreference.getInstance().
+                    getString(CourseDetailActivity.this, AppSharedPreference.ACCESS_TOKEN),params);
+            ApiCall.getInstance().hitService(CourseDetailActivity.this, call, this, ServerConstents.CART);
+
+        }
+    }
     private void hintCourseDetail() {
 
         String lang="";
@@ -185,6 +218,11 @@ public class CourseDetailActivity extends BaseActivity implements NetworkListene
                 imgWhishList.setImageResource(R.drawable.ic_whishlisted);
                 Toast.makeText(CourseDetailActivity.this, data.getMessage(), Toast.LENGTH_SHORT).show();
             }
+        }else  if(requestCode == ServerConstents.CART){
+
+            BaseBean baseBean =(BaseBean) response;
+            Toast.makeText(CourseDetailActivity.this, baseBean.getMessage().toString(),Toast.LENGTH_SHORT).show();
+
         }else {
 
            final  CourseDetail data = (CourseDetail) response;

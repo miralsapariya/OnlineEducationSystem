@@ -2,6 +2,7 @@ package com.onlineeducationsyestem.network;
 
 
 import com.onlineeducationsyestem.model.BaseBean;
+import com.onlineeducationsyestem.model.CartList;
 import com.onlineeducationsyestem.model.Category;
 import com.onlineeducationsyestem.model.CourseDetail;
 import com.onlineeducationsyestem.model.CourseList;
@@ -10,6 +11,9 @@ import com.onlineeducationsyestem.model.ForgotPwd;
 import com.onlineeducationsyestem.model.GetProfile;
 import com.onlineeducationsyestem.model.GlobalSearch;
 import com.onlineeducationsyestem.model.Home;
+import com.onlineeducationsyestem.model.MyCourseList;
+import com.onlineeducationsyestem.model.MyWhishList;
+import com.onlineeducationsyestem.model.SectionCourse;
 import com.onlineeducationsyestem.model.SubCategory;
 import com.onlineeducationsyestem.model.User;
 
@@ -121,4 +125,34 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("globalsearch")
     Call<GlobalSearch> getDefaultCategory(@Header("language") String lang,@FieldMap HashMap<String, String> map);
+
+    @POST("mywishlist")
+    Call<MyWhishList> getWhishList(@Header("language") String lang,@Header("Authorization")String auth);
+
+    @POST("mycartlist")
+    Call<CartList> getCartList(@Header("language") String lang,@Header("Authorization")String auth);
+
+    @FormUrlEncoded
+    @POST("addtocart")
+    Call<BaseBean> addToCart(@Header("language") String lang,@Header("Authorization")String auth,@FieldMap HashMap<String, String> map);
+
+    @FormUrlEncoded
+    @POST("deletecart")
+    Call<BaseBean> deleteFromCart(@Header("language") String lang,@Header("Authorization")String auth,@FieldMap HashMap<String, String> map);
+
+    @FormUrlEncoded
+    @POST("applypromocode")
+    Call<BaseBean> applyPromo(@Header("language") String lang,@Header("Authorization")String auth,@FieldMap HashMap<String, String> map);
+
+    @FormUrlEncoded
+    @POST("proceedcheckout")
+    Call<BaseBean> doCheckOut(@Header("language") String lang,@Header("Authorization")String auth,@FieldMap HashMap<String, String> map);
+
+    @POST("mycourselist")
+    Call<MyCourseList> myCourseList(@Header("language") String lang, @Header("Authorization")String auth);
+
+    @FormUrlEncoded
+    @POST("startcourse")
+    Call<SectionCourse> startCourse(@Header("language") String lang, @Header("Authorization")String auth, @FieldMap HashMap<String, String> map);
+
 }

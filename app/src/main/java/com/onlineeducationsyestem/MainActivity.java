@@ -13,11 +13,14 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.onlineeducationsyestem.fragment.CartFragment;
 import com.onlineeducationsyestem.fragment.CategoryFragment;
 import com.onlineeducationsyestem.fragment.HomeFragment;
+import com.onlineeducationsyestem.fragment.MyCoursesFragment;
 import com.onlineeducationsyestem.fragment.UserProfileFragment;
 import com.onlineeducationsyestem.util.AppConstant;
 import com.onlineeducationsyestem.util.AppSharedPreference;
+import com.onlineeducationsyestem.util.AppUtils;
 
 import java.util.Locale;
 
@@ -35,16 +38,13 @@ public class MainActivity extends BaseActivity {
         setLanguage();
         setContentView(R.layout.activity_main);
 
-        toolbar_title =findViewById(R.id.toolbar_title);
-
-
+        toolbar_title = findViewById(R.id.toolbar_title);
         initBottomNavigationBar();
         loadFragment(new HomeFragment());
 
     }
 
-    private void setLanguage()
-    {
+    private void setLanguage() {
         if (AppSharedPreference.getInstance().getString(this, AppSharedPreference.LANGUAGE_SELECTED) != null) {
 
             if (AppSharedPreference.getInstance().getString(this, AppSharedPreference.LANGUAGE_SELECTED).equalsIgnoreCase(AppConstant.ENG_LANG)) {
@@ -67,6 +67,7 @@ public class MainActivity extends BaseActivity {
             }
         }
     }
+
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -81,15 +82,15 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    private void initBottomNavigationBar()
-    {
+    private void initBottomNavigationBar() {
         nav_view = findViewById(R.id.nav_view);
-        imgSearch= findViewById(R.id.imgSearch);
+        imgSearch = findViewById(R.id.imgSearch);
         imgSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                Intent intent =new Intent(MainActivity.this, HomeSearchActivity.class);;
+                Intent intent = new Intent(MainActivity.this, HomeSearchActivity.class);
+                ;
                 startActivity(intent);
 
             }
@@ -109,16 +110,25 @@ public class MainActivity extends BaseActivity {
                         toolbar_title.setText(getString(R.string.category));
                         loadFragment(new CategoryFragment());
                         break;
-                    case R.id.page_3 :
+                    case R.id.page_3:
 
                         imgSearch.setVisibility(View.GONE);
                         toolbar_title.setText(getString(R.string.my_courses));
-                        //loadFragment(new MyCoursesFragment());
+                        if (AppSharedPreference.getInstance().getString(MainActivity.this, AppSharedPreference.USERID) == null) {
+                            AppUtils.loginAlert(MainActivity.this);
+                        } else {
+                            loadFragment(new MyCoursesFragment());
+                        }
+
                         break;
                     case R.id.page_4:
                         imgSearch.setVisibility(View.GONE);
-                        toolbar_title.setText(getString(R.string.whishlist_));
-                        //loadFragment(new WhishListFragment());
+                        toolbar_title.setText(getString(R.string.cart));
+                        if (AppSharedPreference.getInstance().getString(MainActivity.this, AppSharedPreference.USERID) == null) {
+                            AppUtils.loginAlert(MainActivity.this);
+                        } else {
+                            loadFragment(new CartFragment());
+                        }
                         break;
                     case R.id.page_5:
                         imgSearch.setVisibility(View.GONE);
@@ -132,8 +142,7 @@ public class MainActivity extends BaseActivity {
         });
     }
 
-    public void gotoCategory()
-    {
+    public void gotoCategory() {
 
         nav_view.getMenu().findItem(R.id.page_2).setChecked(true);
 

@@ -13,8 +13,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.onlineeducationsyestem.adapter.TrendingCourseAdapter;
+import com.onlineeducationsyestem.interfaces.AddItemInCart;
 import com.onlineeducationsyestem.interfaces.NetworkListener;
 import com.onlineeducationsyestem.interfaces.OnItemClick;
+import com.onlineeducationsyestem.model.BaseBean;
 import com.onlineeducationsyestem.model.CourseList;
 import com.onlineeducationsyestem.network.ApiCall;
 import com.onlineeducationsyestem.network.ApiInterface;
@@ -29,7 +31,7 @@ import java.util.HashMap;
 
 import retrofit2.Call;
 
-public class TrendingCourseActivity extends BaseActivity implements OnItemClick , NetworkListener {
+public class TrendingCourseActivity extends BaseActivity implements OnItemClick, AddItemInCart, NetworkListener {
 
 
     private TrendingCourseAdapter trendingCourseAdapter;
@@ -92,6 +94,27 @@ public class TrendingCourseActivity extends BaseActivity implements OnItemClick 
 
 
     }
+    private void hintAddToCart(int pos)
+    {
+        String lang="";
+        AppUtils.showDialog(this, getString(R.string.pls_wait));
+        ApiInterface apiInterface = RestApi.getConnection(ApiInterface.class, ServerConstents.API_URL);
+        final HashMap params = new HashMap<>();
+
+        params.put("course_id",courseList.get(pos).getId()+"");
+        if (AppSharedPreference.getInstance().getString(TrendingCourseActivity.this, AppSharedPreference.LANGUAGE_SELECTED) == null ||
+                AppSharedPreference.getInstance().getString(TrendingCourseActivity.this, AppSharedPreference.LANGUAGE_SELECTED).equalsIgnoreCase(AppConstant.ENG_LANG)) {
+            lang = AppConstant.ENG_LANG;
+        }else
+        {
+            lang= AppConstant.ARABIC_LANG;
+        }
+
+        Call<BaseBean> call = apiInterface.addToCart(lang,AppSharedPreference.getInstance().
+                getString(TrendingCourseActivity.this, AppSharedPreference.ACCESS_TOKEN),params);
+        ApiCall.getInstance().hitService(TrendingCourseActivity.this, call, this, ServerConstents.CART);
+
+    }
 
     private void hintCourseList()
     {
@@ -126,34 +149,60 @@ public class TrendingCourseActivity extends BaseActivity implements OnItemClick 
 
     @Override
     public void onSuccess(int responseCode, Object response, int requestCode) {
-        CourseList data=(CourseList) response;
-        courseList =new ArrayList<>();
-        courseList.addAll(data.getData().get(0).getCourseslist());
 
-        if(data.getData().get(0).getCourseslist().size() > 0) {
-            rvTrendingCourse.setVisibility(View.VISIBLE);
-            tvNoData.setVisibility(View.GONE);
+        if(requestCode == ServerConstents.CART){
 
-            trendingCourseAdapter = new TrendingCourseAdapter(TrendingCourseActivity.this, data.getData().get(0).getCourseslist(), this);
-            rvTrendingCourse.setItemAnimator(new DefaultItemAnimator());
-            LinearLayoutManager manager = new LinearLayoutManager(TrendingCourseActivity.this);
-            rvTrendingCourse.setLayoutManager(manager);
-            rvTrendingCourse.setAdapter(trendingCourseAdapter);
+            BaseBean baseBean =(BaseBean) response;
+            Toast.makeText(TrendingCourseActivity.this, baseBean.getMessage().toString(),Toast.LENGTH_SHORT).show();
+
         }else {
-            rvTrendingCourse.setVisibility(View.GONE);
-            tvNoData.setVisibility(View.VISIBLE);
+            CourseList data = (CourseList) response;
+            courseList = new ArrayList<>();
+            courseList.addAll(data.getData().get(0).getCourseslist());
+
+            if (data.getData().get(0).getCourseslist().size() > 0) {
+                rvTrendingCourse.setVisibility(View.VISIBLE);
+                tvNoData.setVisibility(View.GONE);
+
+                trendingCourseAdapter = new TrendingCourseAdapter(TrendingCourseActivity.this, data.getData().get(0).getCourseslist(), this, this);
+                rvTrendingCourse.setItemAnimator(new DefaultItemAnimator());
+                LinearLayoutManager manager = new LinearLayoutManager(TrendingCourseActivity.this);
+                rvTrendingCourse.setLayoutManager(manager);
+                rvTrendingCourse.setAdapter(trendingCourseAdapter);
+            } else {
+                rvTrendingCourse.setVisibility(View.GONE);
+                tvNoData.setVisibility(View.VISIBLE);
+            }
         }
     }
 
     @Override
     public void onError(String response, int requestCode, int errorCode) {
-        Toast.makeText(TrendingCourseActivity.this, response, Toast.LENGTH_SHORT).show();
-        rvTrendingCourse.setVisibility(View.GONE);
-        tvNoData.setVisibility(View.VISIBLE);
+
+        if(requestCode == ServerConstents.CART){
+            Toast.makeText(TrendingCourseActivity.this, response, Toast.LENGTH_SHORT).show();
+
+        }else {
+            Toast.makeText(TrendingCourseActivity.this, response, Toast.LENGTH_SHORT).show();
+            rvTrendingCourse.setVisibility(View.GONE);
+            tvNoData.setVisibility(View.VISIBLE);
+        }
+    }
+    @Override
+    public void onFailure() {
+
     }
 
     @Override
-    public void onFailure() {
+    public void addToCart(int pos) {
+
+        if (AppUtils.isInternetAvailable(TrendingCourseActivity.this)) {
+            if (AppSharedPreference.getInstance().getString(TrendingCourseActivity.this, AppSharedPreference.USERID) == null) {
+                AppUtils.loginAlert(TrendingCourseActivity.this);
+            }else {
+                hintAddToCart(pos);
+            }
+        }
 
     }
 }

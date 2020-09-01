@@ -27,6 +27,7 @@ import com.onlineeducationsyestem.EditUserProfileActivity;
 import com.onlineeducationsyestem.LoginActivity;
 import com.onlineeducationsyestem.R;
 import com.onlineeducationsyestem.WebActivity;
+import com.onlineeducationsyestem.WhishListFragment;
 import com.onlineeducationsyestem.adapter.UserProfileAboutUsAdapter;
 import com.onlineeducationsyestem.adapter.UserProfileAdapter;
 import com.onlineeducationsyestem.interfaces.NetworkListener;
@@ -71,7 +72,7 @@ public class UserProfileFragment extends BaseFragment implements OnItemClick, On
 
         ArrayList<String> list=new ArrayList<>();
 
-        // list.add(getString(R.string.dasahboard));
+         list.add(getString(R.string.whishlist_));
         list.add(getString(R.string.my_profile));
         list.add(getString(R.string.change_pwd_));
         //list.add(getString(R.string.whishlist_));
@@ -220,11 +221,11 @@ public class UserProfileFragment extends BaseFragment implements OnItemClick, On
     @Override
     public void onGridClick(int pos) {
 
-        /*if(pos == 0)
+        if(pos == 0)
         {
-            showBottomSheet();
-
-        }else*/ if(pos == 0)
+            Intent intent = new Intent(activity, WhishListFragment.class);
+            startActivity(intent);
+        }else if(pos == 0)
         {
             Intent intent =new Intent(activity, EditUserProfileActivity.class);
             startActivity(intent);

@@ -162,19 +162,7 @@ public class EditUserProfileActivity extends BaseActivity implements NetworkList
         RequestBody phone =
                 RequestBody.create(
                         okhttp3.MultipartBody.FORM, etPhone.getText().toString());
-        /*RequestBody lang;
-        if (AppSharedPreference.getInstance().getString(this, AppSharedPreference.LANGUAGE_SELECTED) == null ||
-                AppSharedPreference.getInstance().getString(EditUserProfileActivity.this, AppSharedPreference.LANGUAGE_SELECTED).equalsIgnoreCase(AppConstant.ENG_LANG))
-        {
-            lang =
-                    RequestBody.create(
-                            okhttp3.MultipartBody.FORM, AppConstant.ENG_LANG);
-        }else
-        {
-             lang =
-                    RequestBody.create(
-                            okhttp3.MultipartBody.FORM, AppConstant.ARABIC_LANG);
-        }*/
+
         if (AppSharedPreference.getInstance().getString(EditUserProfileActivity.this, AppSharedPreference.LANGUAGE_SELECTED) == null ||
                 AppSharedPreference.getInstance().getString(EditUserProfileActivity.this, AppSharedPreference.LANGUAGE_SELECTED).equalsIgnoreCase(AppConstant.ENG_LANG)) {
             lang = AppConstant.ENG_LANG;

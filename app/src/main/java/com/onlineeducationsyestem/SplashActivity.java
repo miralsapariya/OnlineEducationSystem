@@ -7,6 +7,8 @@ import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.onlineeducationsyestem.util.AppSharedPreference;
+
 public class SplashActivity extends AppCompatActivity {
 
     private static int SPLASH_SCREEN_TIME_OUT = 2000;
@@ -28,10 +30,18 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
 
+                if (AppSharedPreference.getInstance().getString(SplashActivity.this, AppSharedPreference.USERID) == null) {
+                    Intent i = new Intent(SplashActivity.this,
+                            LoginActivity.class);
+                    startActivity(i);
+                    finish();
+                } else {
                     Intent i = new Intent(SplashActivity.this,
                             MainActivity.class);
                     startActivity(i);
                     finish();
+                }
+
 
 
             }

@@ -91,7 +91,8 @@
     <string name="notification">إشعارات</string>
     <string name="about_us">معلومات عنا</string>
     <string name="search_result">نتيجة البحث</string>
-
+    <string name="promo_code">رمز ترويجي</string>
+    <string name="apply">تطبيق</string>
     <string name="about">حول</string>
     <string name="faq">أسئلة وأجوبة</string>
     <string name="privacy_policy">سياسة خاصة</string>
@@ -141,4 +142,7 @@
     <string name="toast_pwd_retype_pwd_same">يجب أن تكون كلمة المرور وإعادة كتابة كلمة المرور متطابقة</string>
     <string name="text_unable_to_select_image">تعذر تحديد الصورة</string>
     <string name="toast_login_first">الرجاء تسجيل الدخول أولا لإضافة دورة في قائمة الأمنيات.</string>
+
+    <string name="login_alert">تنبيه تسجيل الدخول</string>
+    <string name="please_login">الرجاء تسجيل الدخول</string>
 </resources>

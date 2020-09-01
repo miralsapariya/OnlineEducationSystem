@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".WhishListActivity">
+    tools:context=".WhishListFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -35,7 +35,7 @@
                     android:layout_weight="1"
                     android:textDirection="locale"
                     android:gravity="center"
-                    android:text="@string/trending_course"
+                    android:text="@string/whishlist_"
                     android:textSize="@dimen/_12ssp"
                     style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
 

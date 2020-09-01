@@ -81,7 +81,6 @@
     <string name="sign_out">Sign Out</string>
     <string name="log_out">Logout</string>
 
-
     <string name="prefered_lang">Preferred Language</string>
     <string name="dasahboard">Dashboard</string>
     <string name="my_profile">My Profile</string>
@@ -140,4 +139,11 @@
     <string name="toast_pwd_retype_pwd_same">Password and retype passsword should be same</string>
     <string name="text_unable_to_select_image">Unable to select image</string>
     <string name="toast_login_first">Please login first to add course in whishlist.</string>
+
+    <string name="promo_code">Promo Code</string>
+    <string name="apply">Apply</string>
+
+    <string name="login_alert">Login Alert</string>
+    <string name="please_login">Please Login</string>
+    <string name="ok">OK</string>
 </resources>

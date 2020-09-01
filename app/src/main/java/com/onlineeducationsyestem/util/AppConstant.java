@@ -21,5 +21,8 @@ public class AppConstant {
     public static final int CAMERA = 1;
     public static User registerData=new User();
 
+    public static String COURSE_STATUS_RESUME="2";
+    public static String COURSE_STATUS_START="1";
+
 
 }

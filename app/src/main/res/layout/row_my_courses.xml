@@ -18,6 +18,7 @@
     android:layout_height="wrap_content">
 
     <ImageView
+        android:id="@+id/img"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:src="@drawable/learn"
@@ -38,7 +39,6 @@
         android:layout_height="wrap_content"
         android:textColor="@color/black"
         android:textSize="@dimen/_13ssp"
-        android:text="Microsof Excel- Excel from Begginner to advanced"
         />
         <ImageView
             android:layout_width="wrap_content"
@@ -82,9 +82,9 @@
                 />
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvProgress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/progress"
                 android:gravity="start"
                 android:layoutDirection="locale"
                 android:textSize="@dimen/_9ssp"
@@ -109,16 +109,18 @@
                 android:text="@string/end_date"
                 android:textSize="@dimen/_11ssp"
                 android:gravity="end"
+                android:visibility="gone"
                 android:layoutDirection="locale"
                 android:textDirection="locale"
                 android:textColor="@color/black"
                 />
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvEndDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="18/02/2020"
                 android:textSize="@dimen/_9ssp"
+                android:visibility="gone"
                 android:textDirection="locale"
                 android:textColor="@color/font1"
                 />
@@ -126,12 +128,12 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/tvCurseStatus"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/button"
         android:paddingTop="@dimen/_7sdp"
         android:paddingBottom="@dimen/_7sdp"
-        android:text="@string/start"
         android:paddingStart="1dp"
         android:paddingEnd="1dp"
         android:layout_gravity="center_vertical"

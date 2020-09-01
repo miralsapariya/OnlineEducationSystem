@@ -77,11 +77,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".WhishListActivity"
-            android:configChanges="locale"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".LoginActivity"
             android:configChanges="locale"
             android:screenOrientation="portrait"
@@ -146,6 +141,12 @@
             android:configChanges="locale"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".WhishListFragment"
+            android:configChanges="locale"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
 
         <provider
             android:name="androidx.core.content.FileProvider"

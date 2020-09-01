@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.onlineeducationsyestem.R;
+import com.onlineeducationsyestem.interfaces.AddItemInCart;
 import com.onlineeducationsyestem.interfaces.OnItemClick;
 import com.onlineeducationsyestem.model.CourseList;
 import com.onlineeducationsyestem.util.AppUtils;
@@ -24,13 +25,15 @@ public class TrendingCourseAdapter extends RecyclerView.Adapter<TrendingCourseAd
     private LayoutInflater mInflater;
     private Context context;
     private OnItemClick onItemClick;
+    private AddItemInCart addItemInCart;
 
     public TrendingCourseAdapter(Context context,
-                                 ArrayList<CourseList.Courseslist> listProduct, OnItemClick onItemClick) {
+                                 ArrayList<CourseList.Courseslist> listProduct, OnItemClick onItemClick, AddItemInCart addItemInCart) {
         this.mInflater = LayoutInflater.from(context);
         this.context = context;
         this.listProduct = listProduct;
         this.onItemClick =onItemClick;
+        this.addItemInCart =addItemInCart;
     }
 
     @Override
@@ -60,8 +63,14 @@ public class TrendingCourseAdapter extends RecyclerView.Adapter<TrendingCourseAd
         holder.tvDescription.setText(data.getInstructorName());
         AppUtils.loadImageWithPicasso(data.getImage() , holder.img, context, 0, 0);
 
-    }
+        holder.imgCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                addItemInCart.addToCart(position);
+            }
+        });
+    }
 
     @Override
     public int getItemCount() {
@@ -75,7 +84,7 @@ public class TrendingCourseAdapter extends RecyclerView.Adapter<TrendingCourseAd
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView tvCourse, tvPrice,catName,tvDate,tvPriceOld,tvDescription;
         private LinearLayout llMain;
-        private ImageView img;
+        private ImageView img,imgCart;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -89,6 +98,7 @@ public class TrendingCourseAdapter extends RecyclerView.Adapter<TrendingCourseAd
             tvPriceOld = itemView.findViewById(R.id.tvPriceOld);
             tvDescription = itemView.findViewById(R.id.tvDescription);
             img =itemView.findViewById(R.id.img);
+            imgCart =itemView.findViewById(R.id.imgCart);
         }
     }
 }

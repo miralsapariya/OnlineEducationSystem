@@ -32,6 +32,10 @@ public class ServerConstents {
     public static int WHISH_LIST=12;
     public static int DETAIL=13;
     public static int DEFUALT_CAT=14;
+    public static int CART=15;
+    public static int DELETE=16;
+    public static int PROMO=17;
+    public static int CHECKOUT=18;
     //home screen type
     public static String HOME_TYPE_COURSE="1";
     public static String HOME_TYPE_CATEGORY="2";

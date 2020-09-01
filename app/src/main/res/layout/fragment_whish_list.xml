@@ -8,7 +8,7 @@
     android:paddingEnd="@dimen/_10ssp"
     android:paddingStart="@dimen/_10ssp"
     android:paddingTop="?attr/actionBarSize"
-    tools:context=".fragment.WhishListFragment"
+    tools:context=".WhishListFragment"
    >
 
 

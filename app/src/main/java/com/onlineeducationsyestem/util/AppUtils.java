@@ -118,7 +118,7 @@ public class AppUtils {
     public static String audio = "audio";
     public static String content = "content";
     public static String file = "file";
-
+    public static  AlertDialog.Builder builder;
 
     /**
      * /**
@@ -129,6 +129,26 @@ public class AppUtils {
      **/
     public static Toast showToast(Context ctx, CharSequence msg) {
         return showToast(ctx, msg, Toast.LENGTH_LONG);
+    }
+
+    public static void loginAlert(Context context)
+    {
+        builder = new AlertDialog.Builder(context,R.style.MyDialogTheme);
+        builder.setMessage(context.getString(R.string.please_login))
+                .setCancelable(false)
+                .setPositiveButton(context.getResources().getText(R.string.ok), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        dialog.dismiss();
+                    }
+                });
+
+        //Creating dialog box
+        AlertDialog alert = builder.create();
+        //Setting the title manually
+        alert.setCancelable(true);
+        alert.setTitle(context.getString(R.string.login_alert));
+        alert.show();
     }
 
     public static void loadImageWithPicasso(String imagePath, ImageView iv, Context context, int width, int height) {

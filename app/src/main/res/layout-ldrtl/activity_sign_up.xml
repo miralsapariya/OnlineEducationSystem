@@ -19,6 +19,7 @@
         android:orientation="horizontal">
 
         <ImageView
+            android:id="@+id/imgBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -190,7 +191,7 @@
 
 
         <TextView
-            android:id="@+id/btnLogin"
+            android:id="@+id/btnSignUp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -223,6 +224,7 @@
 
                 />
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvLogin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/login"

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -11,18 +12,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.onlineeducationsyestem.R;
 import com.onlineeducationsyestem.interfaces.OnItemClick;
+import com.onlineeducationsyestem.model.MyWhishList;
+import com.onlineeducationsyestem.util.AppUtils;
 
 import java.util.ArrayList;
 
 public class WhishListAdapter extends RecyclerView.Adapter<WhishListAdapter.ViewHolder> {
 
-    private ArrayList<String> listProduct;
+    private ArrayList<MyWhishList.Courseslist> listProduct;
     private LayoutInflater mInflater;
     private Context context;
     private OnItemClick onItemClick;
 
     public WhishListAdapter(Context context,
-                            ArrayList<String> listProduct, OnItemClick onItemClick) {
+                            ArrayList<MyWhishList.Courseslist> listProduct, OnItemClick onItemClick) {
         this.mInflater = LayoutInflater.from(context);
         this.context = context;
         this.listProduct = listProduct;
@@ -38,7 +41,16 @@ public class WhishListAdapter extends RecyclerView.Adapter<WhishListAdapter.View
 
     @Override
     public void onBindViewHolder(final WhishListAdapter.ViewHolder holder, final int position) {
-        final String data = listProduct.get(position);
+        final MyWhishList.Courseslist data = listProduct.get(position);
+
+        AppUtils.loadImageWithPicasso(data.getImage() , holder.img, context, 0, 0);
+
+        holder.tvCourse.setText(data.getCourseName());
+        holder.tvPrice.setText(data.getCoursePrice());
+        holder.tvMainCat.setText(data.getCategoryName());
+        holder.tvInstructor.setText(data.getInstructorName());
+        holder.tvPublishOn.setText(data.getPublishOn());
+        holder.tvOldPrice.setText(data.getCourseOldPrice());
 
         holder.llMain.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,13 +66,14 @@ public class WhishListAdapter extends RecyclerView.Adapter<WhishListAdapter.View
         return listProduct.size();
     }
 
-    public String getItem(int id) {
+    public MyWhishList.Courseslist getItem(int id) {
         return listProduct.get(id);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView tvCourse, tvPrice;
+        public TextView tvCourse, tvPrice,tvMainCat,tvOldPrice,tvPublishOn,tvInstructor;
         private LinearLayout llMain;
+        private ImageView img;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -68,6 +81,11 @@ public class WhishListAdapter extends RecyclerView.Adapter<WhishListAdapter.View
             llMain = itemView.findViewById(R.id.llMain);
             tvCourse = itemView.findViewById(R.id.tvCourse);
             tvPrice = itemView.findViewById(R.id.tvPrice);
+            tvMainCat = itemView.findViewById(R.id.tvMainCat);
+            tvOldPrice = itemView.findViewById(R.id.tvOldPrice);
+            tvPublishOn = itemView.findViewById(R.id.tvPublishOn);
+            tvInstructor =itemView.findViewById(R.id.tvInstructor);
+            img =itemView.findViewById(R.id.img);
         }
     }
 }

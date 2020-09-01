@@ -42,11 +42,15 @@ public class UserProfileAdapter extends RecyclerView.Adapter<UserProfileAdapter.
     public void onBindViewHolder(final UserProfileAdapter.ViewHolder holder, final int position) {
         final String data = listProduct.get(position);
 
-        if(position ==0)
+        if(position == 0)
+        {
+            holder.img.setImageResource(R.mipmap.whish_list_bottom);
+        }
+        else if(position ==1)
         {
             holder.img.setImageResource(R.mipmap.my_profile);
         }
-        else if(position ==1)
+        else if(position ==2)
         {
             holder.img.setImageResource(R.mipmap.change_password);
         }/*else {

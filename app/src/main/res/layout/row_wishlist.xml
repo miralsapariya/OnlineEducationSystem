@@ -14,6 +14,7 @@
         android:padding="@dimen/_7sdp">
 
         <ImageView
+            android:id="@+id/img"
             android:layout_width="@dimen/_90sdp"
             android:layout_height="@dimen/_80sdp"
             android:layout_gravity="center"
@@ -65,18 +66,19 @@
 
 
             <TextView
+                android:id="@+id/tvInstructor"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_2sdp"
                 android:layout_marginEnd="@dimen/_2sdp"
                 android:layout_weight="1"
                 android:singleLine="true"
-                android:text="Data Science Introduction"
                 android:textColor="@color/font1"
                 android:textDirection="locale"
                 android:textSize="@dimen/_9ssp" />
 
             <TextView
+                android:id="@+id/tvOldPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="500"
@@ -91,6 +93,7 @@
             >
 
             <TextView
+                android:id="@+id/tvPublishOn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_2sdp"
@@ -114,6 +117,7 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content">
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvMainCat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/round_rect_orange"
@@ -131,6 +135,7 @@
                android:src="@drawable/ic_heart"
                android:textDirection="locale"
                android:layoutDirection="locale"
+               android:visibility="gone"
                />
 
         </LinearLayout>
