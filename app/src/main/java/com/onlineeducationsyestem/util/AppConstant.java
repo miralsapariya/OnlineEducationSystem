@@ -24,5 +24,14 @@ public class AppConstant {
     public static String COURSE_STATUS_RESUME="2";
     public static String COURSE_STATUS_START="1";
 
+    //
+    //QUESTION_TYPE
+    public static int SINGLE_CHOICE=1;
+    public static int MULTIPLE_CHOICE=2;
+    public static int SHORTING=3;
+    public static int STATEMENT=4;
+    public static int FILL_IN_THE_BLANK=5;
+    public static int MATRIX=6;
+
 
 }

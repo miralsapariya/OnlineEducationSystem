@@ -16,6 +16,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -46,6 +51,9 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
     implementation "com.squareup.retrofit2:converter-jackson:2.0.2"
+    //implementation 'com.google.android.exoplayer:exoplayer:2.7.2'
+    //com.google.android.exoplayer:exoplayer:rX.X.X
+    /*implementation 'com.google.android.exoplayer:exoplayer:2.10.8'*/
 
     //top corner img view
     // implementation 'com.joooonho:selectableroundedimageview:1.0.1'

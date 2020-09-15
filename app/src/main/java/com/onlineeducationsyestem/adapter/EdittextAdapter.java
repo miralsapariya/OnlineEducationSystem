@@ -1,7 +1,6 @@
 package com.onlineeducationsyestem.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,21 +9,21 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.onlineeducationsyestem.CourseDetailActivity;
 import com.onlineeducationsyestem.R;
 import com.onlineeducationsyestem.interfaces.OnItemClick;
+import com.onlineeducationsyestem.model.Exam;
 
 import java.util.ArrayList;
 
 public class EdittextAdapter extends RecyclerView.Adapter<EdittextAdapter.ViewHolder> {
 
-    private ArrayList<String> listProduct;
+    private ArrayList<Exam.Option> listProduct;
     private LayoutInflater mInflater;
     private Context context;
     private OnItemClick onItemClick;
 
     public EdittextAdapter(Context context,
-                           ArrayList<String> listProduct) {
+                           ArrayList<Exam.Option> listProduct) {
         this.mInflater = LayoutInflater.from(context);
         this.context = context;
         this.listProduct = listProduct;
@@ -39,15 +38,9 @@ public class EdittextAdapter extends RecyclerView.Adapter<EdittextAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(final EdittextAdapter.ViewHolder holder, final int position) {
-        final String data = listProduct.get(position);
+        final Exam.Option data = listProduct.get(position);
 
-        holder.llMain.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context , CourseDetailActivity.class);
-                context.startActivity(intent);
-            }
-        });
+
     }
 
 
@@ -56,20 +49,19 @@ public class EdittextAdapter extends RecyclerView.Adapter<EdittextAdapter.ViewHo
         return listProduct.size();
     }
 
-    public String getItem(int id) {
+    public Exam.Option getItem(int id) {
         return listProduct.get(id);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView tvCourse, tvPrice;
+        public TextView edittext;
         private LinearLayout llMain;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
             llMain = itemView.findViewById(R.id.llMain);
-            tvCourse = itemView.findViewById(R.id.tvCourse);
-            tvPrice = itemView.findViewById(R.id.tvPrice);
+            edittext=itemView.findViewById(R.id.edittext);
         }
     }
 }

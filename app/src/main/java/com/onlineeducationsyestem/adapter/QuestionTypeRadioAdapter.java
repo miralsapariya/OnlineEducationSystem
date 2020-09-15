@@ -9,17 +9,18 @@ import android.widget.RadioButton;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.onlineeducationsyestem.R;
+import com.onlineeducationsyestem.model.Exam;
 
 import java.util.ArrayList;
 
 public class QuestionTypeRadioAdapter extends RecyclerView.Adapter<QuestionTypeRadioAdapter.ViewHolder> {
 
-    private ArrayList<String> listProduct;
+    private ArrayList<Exam.Option> listProduct;
     private LayoutInflater mInflater;
     private Context context;
 
     public QuestionTypeRadioAdapter(Context context,
-                                 ArrayList<String> listProduct) {
+                                    ArrayList<Exam.Option> listProduct) {
         this.mInflater = LayoutInflater.from(context);
         this.context = context;
         this.listProduct = listProduct;
@@ -34,8 +35,19 @@ public class QuestionTypeRadioAdapter extends RecyclerView.Adapter<QuestionTypeR
 
     @Override
     public void onBindViewHolder(final QuestionTypeRadioAdapter.ViewHolder holder, final int position) {
-        final String data = listProduct.get(position);
-
+        final Exam.Option data = listProduct.get(position);
+        holder.radioOption.setText(data.getOption());
+        holder.radioOption.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (holder.radioOption.isChecked()) {
+                    data.setSelected(true);
+                } else {
+                    data.setSelected(false);
+                }
+                notifyDataSetChanged();
+            }
+        });
 
     }
 
@@ -45,16 +57,14 @@ public class QuestionTypeRadioAdapter extends RecyclerView.Adapter<QuestionTypeR
         return listProduct.size();
     }
 
-    public String getItem(int id) {
+    public Exam.Option getItem(int id) {
         return listProduct.get(id);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public RadioButton radioOption;
-
         public ViewHolder(View itemView) {
             super(itemView);
-
             radioOption = itemView.findViewById(R.id.radioOption);
         }
     }

@@ -109,10 +109,14 @@ public class UserCourseDetailActivity extends BaseActivity implements OnChildIte
         });
 
         course_id=getIntent().getExtras().getString("course_id");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         if (AppUtils.isInternetAvailable(UserCourseDetailActivity.this)) {
             getCourseDetail();
         }
-
     }
 
     @Override

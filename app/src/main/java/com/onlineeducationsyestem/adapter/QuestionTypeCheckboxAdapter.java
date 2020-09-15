@@ -9,17 +9,18 @@ import android.widget.CheckBox;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.onlineeducationsyestem.R;
+import com.onlineeducationsyestem.model.Exam;
 
 import java.util.ArrayList;
 
 public class QuestionTypeCheckboxAdapter extends RecyclerView.Adapter<QuestionTypeCheckboxAdapter.ViewHolder> {
 
-    private ArrayList<String> listProduct;
+    private ArrayList<Exam.Option> listProduct;
     private LayoutInflater mInflater;
     private Context context;
 
     public QuestionTypeCheckboxAdapter(Context context,
-                                       ArrayList<String> listProduct) {
+                                       ArrayList<Exam.Option> listProduct) {
         this.mInflater = LayoutInflater.from(context);
         this.context = context;
         this.listProduct = listProduct;
@@ -34,8 +35,22 @@ public class QuestionTypeCheckboxAdapter extends RecyclerView.Adapter<QuestionTy
 
     @Override
     public void onBindViewHolder(final QuestionTypeCheckboxAdapter.ViewHolder holder, final int position) {
-        final String data = listProduct.get(position);
+        final Exam.Option data = listProduct.get(position);
+        holder.checkbox.setText(data.getOption());
 
+        holder.checkbox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (holder.checkbox.isChecked()) {
+                    // Do something when checkbox is checked
+                    data.setSelected(true);
+                } else {
+                    // Do something when checkbox is unchecked
+                    data.setSelected(false);
+                }
+                notifyDataSetChanged();
+            }
+        });
 
     }
 
@@ -45,7 +60,7 @@ public class QuestionTypeCheckboxAdapter extends RecyclerView.Adapter<QuestionTy
         return listProduct.size();
     }
 
-    public String getItem(int id) {
+    public Exam.Option getItem(int id) {
         return listProduct.get(id);
     }
 

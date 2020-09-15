@@ -9,17 +9,19 @@ import android.widget.ImageView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.onlineeducationsyestem.R;
+import com.onlineeducationsyestem.model.Exam;
+import com.onlineeducationsyestem.util.AppUtils;
 
 import java.util.ArrayList;
 
 public class QuestionTypeMatrixImgOneAdapter extends RecyclerView.Adapter<QuestionTypeMatrixImgOneAdapter.ViewHolder> {
 
-    private ArrayList<String> listProduct;
+    private ArrayList<Exam.Option> listProduct;
     private LayoutInflater mInflater;
     private Context context;
 
     public QuestionTypeMatrixImgOneAdapter(Context context,
-                                           ArrayList<String> listProduct) {
+                                           ArrayList<Exam.Option> listProduct) {
         this.mInflater = LayoutInflater.from(context);
         this.context = context;
         this.listProduct = listProduct;
@@ -34,7 +36,10 @@ public class QuestionTypeMatrixImgOneAdapter extends RecyclerView.Adapter<Questi
 
     @Override
     public void onBindViewHolder(final QuestionTypeMatrixImgOneAdapter.ViewHolder holder, final int position) {
-        final String data = listProduct.get(position).toString();
+        final Exam.Option data = listProduct.get(position);
+
+        AppUtils.loadImageWithPicasso(data.getPath() , holder.img, context, 0, 0);
+
 
     }
 
@@ -44,7 +49,7 @@ public class QuestionTypeMatrixImgOneAdapter extends RecyclerView.Adapter<Questi
         return listProduct.size();
     }
 
-    public String getItem(int id) {
+    public Exam.Option getItem(int id) {
         return listProduct.get(id);
     }
 

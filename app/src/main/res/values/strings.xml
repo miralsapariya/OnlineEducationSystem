@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">OnlineEducationSystem</string>
+    <string name="app_name">ULowgic</string>
 
     <!--bottom nav-->
     <string name="home">Home</string>
@@ -85,7 +85,8 @@
     <string name="dasahboard">Dashboard</string>
     <string name="my_profile">My Profile</string>
     <string name="change_pwd_">Change Password</string>
-    <string name="whishlist_">Whishlist</string>
+    <string name="whishlist_">Wishlist</string>
+    <string name="my_whish_list">My WishList</string>
     <string name="notification">Notifications</string>
     <string name="about_us">About Us</string>
     <string name="search_result">Search Result</string>

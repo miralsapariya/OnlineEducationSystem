@@ -34,7 +34,6 @@
                     android:layout_weight="1"
                     android:textDirection="locale"
                     android:gravity="center"
-                    android:text="@string/course_detail"
                     android:textSize="@dimen/_12ssp"
                     style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
 

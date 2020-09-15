@@ -1,6 +1,7 @@
 package com.onlineeducationsyestem.adapter;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,8 @@ import com.onlineeducationsyestem.interfaces.CheckOutInCart;
 import com.onlineeducationsyestem.interfaces.DeleteItemInCart;
 import com.onlineeducationsyestem.interfaces.OnItemClick;
 import com.onlineeducationsyestem.model.CartList;
+import com.onlineeducationsyestem.util.AppConstant;
+import com.onlineeducationsyestem.util.AppSharedPreference;
 import com.onlineeducationsyestem.util.AppUtils;
 
 import java.util.ArrayList;
@@ -34,14 +37,14 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
 
     public CartListAdapter(Context context,
                            ArrayList<CartList.ListData> listProduct,
-                           OnItemClick onItemClick, DeleteItemInCart deleteItemInCart, ApplyPromoCode applyPromoCode,CheckOutInCart checkOutInCart) {
+                           OnItemClick onItemClick, DeleteItemInCart deleteItemInCart, ApplyPromoCode applyPromoCode, CheckOutInCart checkOutInCart) {
         this.mInflater = LayoutInflater.from(context);
         this.context = context;
         this.listProduct = listProduct;
         this.onItemClick = onItemClick;
-        this.deleteItemInCart =deleteItemInCart;
+        this.deleteItemInCart = deleteItemInCart;
         this.applyPromoCode = applyPromoCode;
-        this.checkOutInCart =checkOutInCart;
+        this.checkOutInCart = checkOutInCart;
     }
 
     @Override
@@ -55,13 +58,15 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
     public void onBindViewHolder(final CartListAdapter.ViewHolder holder, final int position) {
         final CartList.ListData data = listProduct.get(position);
 
-        AppUtils.loadImageWithPicasso(data.getImage() , holder.img, context, 0, 0);
+        AppUtils.loadImageWithPicasso(data.getImage(), holder.img, context, 0, 0);
 
         holder.tvCourseName.setText(data.getCourseName());
-        holder.tvPrice.setText(data.getCoursePrice()+"");
-        holder.tvDiscountPrice.setText(data.getCourseDiscount()+"");
+        holder.tvPrice.setText(data.getCoursePrice() + "");
+        holder.tvDiscountPrice.setText(data.getCourseDiscount() + "");
         holder.tvInstructor.setText(data.getInstructorName());
-        holder.tvOldPrice.setText(data.getCourseOldPrice()+"");
+        holder.tvOldPrice.setText(data.getCourseOldPrice() + "");
+        holder.tvOldPrice.setPaintFlags(holder.tvOldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+
         holder.imgDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,31 +74,35 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
             }
         });
 
-        final int amount =Integer.parseInt(data.getCoursePrice().substring(1))-data.getCourseDiscount();
+        final int amount = Integer.parseInt(data.getCoursePrice().substring(1)) - data.getCourseDiscount();
 
-        if(data.getCourseDiscount() == 0)
-        {
+        if (data.getCourseDiscount() == 0) {
             holder.llPromo.setVisibility(View.VISIBLE);
-        }else
-        {
+        } else {
             holder.llPromo.setVisibility(View.INVISIBLE);
+        }
+        if (AppSharedPreference.getInstance().getString(context, AppSharedPreference.LANGUAGE_SELECTED) == null ||
+                AppSharedPreference.getInstance().getString(context, AppSharedPreference.LANGUAGE_SELECTED).equalsIgnoreCase(AppConstant.ENG_LANG)) {
+
+            holder.tvApply.setBackground(context.getDrawable(R.drawable.round_rect_right));
+        } else {
+            holder.tvApply.setBackground(context.getDrawable(R.drawable.round_rect_left));
         }
 
         holder.tvApply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!TextUtils.isEmpty(holder.tvPromoCode.getText().toString()))
-                applyPromoCode.promoApply(position,holder.tvPromoCode.getText().toString());
+                if (!TextUtils.isEmpty(holder.tvPromoCode.getText().toString()))
+                    applyPromoCode.promoApply(position, holder.tvPromoCode.getText().toString());
 
             }
         });
 
 
-
         holder.buyWith.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                checkOutInCart.doCheckout(data.getCartid()+"",amount+"");
+                checkOutInCart.doCheckout(data.getCartid() + "", amount + "");
             }
         });
     }
@@ -109,10 +118,10 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView tvCourseName, tvInstructor,tvPrice,tvOldPrice,
-                tvDiscountPrice,buyWith,tvApply;
-        private LinearLayout llMain,llPromo;
-        private ImageView img,imgDelete;
+        public TextView tvCourseName, tvInstructor, tvPrice, tvOldPrice,
+                tvDiscountPrice, buyWith, tvApply;
+        private LinearLayout llMain, llPromo;
+        private ImageView img, imgDelete;
         private EditText tvPromoCode;
 
 
@@ -120,17 +129,17 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
             super(itemView);
 
             llMain = itemView.findViewById(R.id.llMain);
-            tvCourseName =itemView.findViewById(R.id.tvCourseName);
-            tvInstructor =itemView.findViewById(R.id.tvInstructor);
-            tvPrice =itemView.findViewById(R.id.tvPrice);
-            tvOldPrice =itemView.findViewById(R.id.tvOldPrice);
-            tvDiscountPrice =itemView.findViewById(R.id.tvDiscountPrice);
-            buyWith =itemView.findViewById(R.id.buyWith);
-            tvPromoCode =itemView.findViewById(R.id.tvPromoCode);
-            tvApply =itemView.findViewById(R.id.tvApply);
-            img =itemView.findViewById(R.id.img);
-            imgDelete=itemView.findViewById(R.id.imgDelete);
-            llPromo =itemView.findViewById(R.id.llPromo);
+            tvCourseName = itemView.findViewById(R.id.tvCourseName);
+            tvInstructor = itemView.findViewById(R.id.tvInstructor);
+            tvPrice = itemView.findViewById(R.id.tvPrice);
+            tvOldPrice = itemView.findViewById(R.id.tvOldPrice);
+            tvDiscountPrice = itemView.findViewById(R.id.tvDiscountPrice);
+            buyWith = itemView.findViewById(R.id.buyWith);
+            tvPromoCode = itemView.findViewById(R.id.tvPromoCode);
+            tvApply = itemView.findViewById(R.id.tvApply);
+            img = itemView.findViewById(R.id.img);
+            imgDelete = itemView.findViewById(R.id.imgDelete);
+            llPromo = itemView.findViewById(R.id.llPromo);
 
         }
     }

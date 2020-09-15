@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.onlineeducationsyestem.R;
+import com.onlineeducationsyestem.model.Exam;
 import com.onlineeducationsyestem.widget.ItemMoveCallback;
 
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ import java.util.Collections;
 
 public class QuestionTypeSingleSortingAdapter extends RecyclerView.Adapter<QuestionTypeSingleSortingAdapter.MyViewHolder> implements ItemMoveCallback.ItemTouchHelperContract {
 
-    private ArrayList<String> data;
+    private ArrayList<Exam.Option> data;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
@@ -31,7 +32,7 @@ public class QuestionTypeSingleSortingAdapter extends RecyclerView.Adapter<Quest
         }
     }
 
-    public QuestionTypeSingleSortingAdapter(ArrayList<String> data) {
+    public QuestionTypeSingleSortingAdapter(ArrayList<Exam.Option> data) {
         this.data = data;
     }
 
@@ -43,7 +44,7 @@ public class QuestionTypeSingleSortingAdapter extends RecyclerView.Adapter<Quest
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        holder.tvSort.setText(data.get(position).toString());
+        holder.tvSort.setText(data.get(position).getOption());
 
     }
 

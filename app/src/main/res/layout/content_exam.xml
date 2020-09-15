@@ -30,10 +30,10 @@
                 android:padding="@dimen/_10sdp">
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvCourse"
                     android:layout_width="match_parent"
                     android:textSize="@dimen/_12ssp"
                     android:layout_height="wrap_content"
-                    android:text="Complete Python Bootcamp : Go from zero"
                     android:textColor="@color/black" />
 
             </LinearLayout>
@@ -60,9 +60,9 @@
                         android:padding="@dimen/_3sdp">
 
                         <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvTestName"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Test"
                             android:gravity="start"
                             android:textDirection="locale"
                             android:layoutDirection="locale"
@@ -94,6 +94,7 @@
                         android:textDirection="locale" />
 
                     <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvOrder"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layoutDirection="locale"

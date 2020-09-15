@@ -9,17 +9,18 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.onlineeducationsyestem.R;
+import com.onlineeducationsyestem.model.Exam;
 
 import java.util.ArrayList;
 
 public class QuestionTypeMatrixOneAdapter extends RecyclerView.Adapter<QuestionTypeMatrixOneAdapter.ViewHolder> {
 
-    private ArrayList<String> listProduct;
+    private ArrayList<Exam.Option>  listProduct;
     private LayoutInflater mInflater;
     private Context context;
 
     public QuestionTypeMatrixOneAdapter(Context context,
-                                    ArrayList<String> listProduct) {
+                                        ArrayList<Exam.Option>  listProduct) {
         this.mInflater = LayoutInflater.from(context);
         this.context = context;
         this.listProduct = listProduct;
@@ -34,9 +35,9 @@ public class QuestionTypeMatrixOneAdapter extends RecyclerView.Adapter<QuestionT
 
     @Override
     public void onBindViewHolder(final QuestionTypeMatrixOneAdapter.ViewHolder holder, final int position) {
-        final String data = listProduct.get(position).toString();
+        final Exam.Option  data = listProduct.get(position);
 
-        holder.tvSort.setText(data);
+        holder.tvSort.setText(data.getOption());
     }
 
 
@@ -45,7 +46,7 @@ public class QuestionTypeMatrixOneAdapter extends RecyclerView.Adapter<QuestionT
         return listProduct.size();
     }
 
-    public String getItem(int id) {
+    public Exam.Option getItem(int id) {
         return listProduct.get(id);
     }
 

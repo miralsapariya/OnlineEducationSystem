@@ -72,7 +72,7 @@ public class UserProfileFragment extends BaseFragment implements OnItemClick, On
 
         ArrayList<String> list=new ArrayList<>();
 
-         list.add(getString(R.string.whishlist_));
+         list.add(getString(R.string.my_whish_list));
         list.add(getString(R.string.my_profile));
         list.add(getString(R.string.change_pwd_));
         //list.add(getString(R.string.whishlist_));
@@ -225,11 +225,11 @@ public class UserProfileFragment extends BaseFragment implements OnItemClick, On
         {
             Intent intent = new Intent(activity, WhishListFragment.class);
             startActivity(intent);
-        }else if(pos == 0)
+        }else if(pos == 1)
         {
             Intent intent =new Intent(activity, EditUserProfileActivity.class);
             startActivity(intent);
-        }else if(pos == 1)
+        }else if(pos == 2)
         {
             Intent intent =new Intent(activity, ChangePwdActivity.class);
             startActivity(intent);

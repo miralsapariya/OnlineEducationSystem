@@ -4,9 +4,11 @@ package com.onlineeducationsyestem.network;
 import com.onlineeducationsyestem.model.BaseBean;
 import com.onlineeducationsyestem.model.CartList;
 import com.onlineeducationsyestem.model.Category;
+import com.onlineeducationsyestem.model.CheckCourse;
 import com.onlineeducationsyestem.model.CourseDetail;
 import com.onlineeducationsyestem.model.CourseList;
 import com.onlineeducationsyestem.model.DefaultCategory;
+import com.onlineeducationsyestem.model.Exam;
 import com.onlineeducationsyestem.model.ForgotPwd;
 import com.onlineeducationsyestem.model.GetProfile;
 import com.onlineeducationsyestem.model.GlobalSearch;
@@ -14,6 +16,7 @@ import com.onlineeducationsyestem.model.Home;
 import com.onlineeducationsyestem.model.MyCourseList;
 import com.onlineeducationsyestem.model.MyWhishList;
 import com.onlineeducationsyestem.model.SectionCourse;
+import com.onlineeducationsyestem.model.SectionSlideDetail;
 import com.onlineeducationsyestem.model.SubCategory;
 import com.onlineeducationsyestem.model.User;
 
@@ -154,5 +157,22 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("startcourse")
     Call<SectionCourse> startCourse(@Header("language") String lang, @Header("Authorization")String auth, @FieldMap HashMap<String, String> map);
+
+    @FormUrlEncoded
+    @POST("startsectionslide")
+    Call<SectionSlideDetail> getSectionSlide(@Header("language") String lang, @Header("Authorization")String auth, @FieldMap HashMap<String, String> map);
+
+    @FormUrlEncoded
+    @POST("quiz/start")
+    Call<Exam> startQuizeApi(@Header("language") String lang, @Header("Authorization")String auth, @FieldMap HashMap<String, String> map);
+
+    @FormUrlEncoded
+    @POST("quiz/continue")
+    Call<Exam> continueQuiz(@Header("language") String lang, @Header("Authorization")String auth, @FieldMap HashMap<String, String> map);
+
+    @FormUrlEncoded
+    @POST("checkcourse")
+    Call<CheckCourse> checkCourse(@Header("language") String lang, @Header("Authorization")String auth, @FieldMap HashMap<String, String> map);
+
 
 }

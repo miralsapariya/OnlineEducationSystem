@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">OnlineEducationSystem</string>
+    <string name="app_name">ULowgic</string>
 
     <!--bottom nav-->
     <string name="home">الصفحة الرئيسية</string>
@@ -31,6 +31,7 @@
     <string name="enroll_now">تسجيل الآن</string>
     <string name="add_to_cart">أضف إلى السلة</string>
     <string name="whishlist">قائمة الرغبات</string>
+    <string name="my_whish_list">قائمة الرغبات</string>
     <string name="curriculum">منهاج دراسي</string>
     <string name="preview">معاينة</string>
     <string name="course_detail">تفاصيل الدورة</string>

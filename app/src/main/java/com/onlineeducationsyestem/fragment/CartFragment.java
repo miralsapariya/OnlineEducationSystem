@@ -94,6 +94,7 @@ public class CartFragment extends BaseFragment implements NetworkListener, OnIte
         {
             BaseBean data = (BaseBean) response;
             if (data.getStatus() == ServerConstents.CODE_SUCCESS) {
+                Toast.makeText(activity, data.getMessage(), Toast.LENGTH_SHORT).show();
                 getCartList();
             }
         }else if(requestCode == ServerConstents.CHECKOUT)

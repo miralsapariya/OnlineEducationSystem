@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.onlineeducationsyestem.R;
+import com.onlineeducationsyestem.model.Exam;
 import com.onlineeducationsyestem.widget.ItemMoveCallback1;
 
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ public class QuestionTypeMatrixSecondAdapter extends
         RecyclerView.Adapter<QuestionTypeMatrixSecondAdapter.MyViewHolder> implements
         ItemMoveCallback1.ItemTouchHelperContract {
 
-    private ArrayList<String> data;
+    private ArrayList<Exam.Option> data;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
@@ -33,7 +34,7 @@ public class QuestionTypeMatrixSecondAdapter extends
         }
     }
 
-    public QuestionTypeMatrixSecondAdapter(ArrayList<String> data) {
+    public QuestionTypeMatrixSecondAdapter(ArrayList<Exam.Option> data) {
         this.data = data;
     }
 
@@ -46,7 +47,7 @@ public class QuestionTypeMatrixSecondAdapter extends
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        holder.tvSort.setText(data.get(position).toString());
+        holder.tvSort.setText(data.get(position).getOptionMatrix());
 
     }
 

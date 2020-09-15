@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.onlineeducationsyestem.LessionSlideActivity;
 import com.onlineeducationsyestem.R;
 import com.onlineeducationsyestem.UserCourseDetailActivity;
 import com.onlineeducationsyestem.adapter.MyCoursesAdapter;
@@ -119,7 +120,7 @@ public class MyCoursesFragment extends BaseFragment implements OnItemClick, Netw
             startActivity(intent);
         }else if(AppConstant.COURSE_STATUS_RESUME.equals(data.getData().get(0).getCourseslist().get(pos).getCourse_status()))
         {
-            Intent intent =new Intent(activity, UserCourseDetailActivity.class);
+            Intent intent =new Intent(activity, LessionSlideActivity.class);
             intent.putExtra("course_id", data.getData().get(0).getCourseslist().get(pos).getCourseId()+"");
             intent.putExtra("section_id", data.getData().get(0).getCourseslist().get(pos).getNext_section_id()+"");
             intent.putExtra("slide_id",data.getData().get(0).getCourseslist().get(pos).getNext_slide_id()+"");
