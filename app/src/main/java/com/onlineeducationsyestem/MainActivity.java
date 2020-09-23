@@ -40,7 +40,14 @@ public class MainActivity extends BaseActivity {
 
         toolbar_title = findViewById(R.id.toolbar_title);
         initBottomNavigationBar();
-        loadFragment(new HomeFragment());
+
+        Bundle b=getIntent().getExtras();
+        if( b!= null && b.containsKey("from")){
+
+            gotoMyCourses();
+        }else {
+            loadFragment(new HomeFragment());
+        }
 
     }
 
@@ -151,5 +158,12 @@ public class MainActivity extends BaseActivity {
         loadFragment(new CategoryFragment());
     }
 
+    public void gotoMyCourses()
+    {
+        nav_view.getMenu().findItem(R.id.page_3).setChecked(true);
+
+        imgSearch.setVisibility(View.GONE);
+        loadFragment(new MyCoursesFragment());
+    }
 
 }

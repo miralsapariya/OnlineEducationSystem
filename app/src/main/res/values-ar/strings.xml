@@ -24,6 +24,7 @@
     <string name="view_more">عرض المزيد</string>
     <string name="popular_instuctor">المدربين المشهورين</string>
     <string name="courses">الدورات</string>
+    <string name="course">الدورات</string>
     <string name="instructor_profile">الملف الشخصي للمدرب</string>
     <string name="show_more">أظهر المزيد</string>
     <string name="course_includes">تشمل الدورة</string>
@@ -146,4 +147,13 @@
 
     <string name="login_alert">تنبيه تسجيل الدخول</string>
     <string name="please_login">الرجاء تسجيل الدخول</string>
+
+    <string name="ok">حسنا</string>
+    <string name="thank_you">شكرا</string>
+
+    <string name="back_to_my_course">العودة إلى دوراتي</string>
+    <string name="previous">السابق</string>
+    <string name="congrat_success">تهانينا ! لقد أكملت بنجاح</string>
+    <string name="toast_course_alry_whishlist">تم تسجيل الدورة بالفعل حتى لا تقوم بإضافتها إلى قائمة الرغبات الخاصة بك</string>
+    <string name="reset_course">إعادة تعيين الدورة للبدء</string>
 </resources>

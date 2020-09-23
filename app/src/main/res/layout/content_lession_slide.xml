@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="fill_vertical"
     android:fillViewport="true"
+    android:id="@+id/nestedScroll"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".LessionSlideActivity"
     tools:showIn="@layout/activity_lession_slide">
@@ -241,15 +241,22 @@
                 android:layout_weight="1"
                 android:visibility="gone"
                 >-->
-            <WebView
+            <com.onlineeducationsyestem.widget.NestedWebView
                 android:id="@+id/webView"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="400dp"
                 android:layout_weight="1"
                 android:visibility="gone"
+                android:background="#000000"
+                android:fillViewport="true"
+                android:focusable="true"
+                android:isScrollContainer="false"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
                 >
 
-            </WebView><!--</ScrollView>-->
+            </com.onlineeducationsyestem.widget.NestedWebView>
+            <!--</ScrollView>-->
 
         </LinearLayout>
 

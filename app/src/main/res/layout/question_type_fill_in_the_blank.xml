@@ -50,7 +50,6 @@
             android:layout_height="wrap_content"
             android:textSize="@dimen/_12ssp"
             android:textColor="@color/black"
-            android:text="What is meaninf of ?"
             />
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvFillInTheBlank"

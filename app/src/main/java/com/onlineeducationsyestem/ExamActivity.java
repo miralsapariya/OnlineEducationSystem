@@ -2,12 +2,14 @@ package com.onlineeducationsyestem;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -16,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.onlineeducationsyestem.adapter.EdittextAdapter;
+import com.onlineeducationsyestem.adapter.QuestionStatementTypeAdapter;
 import com.onlineeducationsyestem.adapter.QuestionTypeCheckboxAdapter;
 import com.onlineeducationsyestem.adapter.QuestionTypeMatrixImgOneAdapter;
 import com.onlineeducationsyestem.adapter.QuestionTypeMatrixImgSecondAdapter;
@@ -63,6 +66,7 @@ public class ExamActivity extends BaseActivity implements NetworkListener {
     private ImageView imgBack;
     private TextView tvOrder, tvCourse, tvTestName;
     private RecyclerView rvEdittext;
+    private  ArrayList<Exam.Option> listMatrix,listMatrixImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,23 +78,50 @@ public class ExamActivity extends BaseActivity implements NetworkListener {
         initUI();
     }
 
-    private void typeRadio(ArrayList<Exam.Option> options) {
+    private void typeRadio(ArrayList<Exam.Option> options,String question) {
         inflatedView = View.inflate(this, R.layout.question_type_radio, null);
         llContent.addView(inflatedView);
         rvRadio = inflatedView.findViewById(R.id.rvRadio);
 
-        questionTypeRadioAdapter = new QuestionTypeRadioAdapter(ExamActivity.this, options);
+        TextView tvQuestion=inflatedView.findViewById(R.id.tvQuestion);
+
+        tvQuestion.setText(question);
+
+
+        int mSelectedItem =-1;
+        for(int i=0;i<options.size();i++)
+        {
+            if(options.get(i).getSelected().equalsIgnoreCase("true"))
+            {
+                mSelectedItem=i;
+                options.get(i).setSelected(true);
+            }
+
+        }
+
+        questionTypeRadioAdapter = new QuestionTypeRadioAdapter(ExamActivity.this, options,mSelectedItem);
         rvRadio.setItemAnimator(new DefaultItemAnimator());
         LinearLayoutManager manager = new LinearLayoutManager(ExamActivity.this);
         rvRadio.setLayoutManager(manager);
         rvRadio.setAdapter(questionTypeRadioAdapter);
     }
 
-    private void typeCheckbox(ArrayList<Exam.Option> list) {
+    private void typeCheckbox(ArrayList<Exam.Option> list,String question) {
         inflatedView = View.inflate(ExamActivity.this, R.layout.question_type_chechkbox, null);
         llContent.addView(inflatedView);
         rvCheckbox = inflatedView.findViewById(R.id.rvCheckbox);
+        TextView tvQuestion=inflatedView.findViewById(R.id.tvQuestion);
 
+        tvQuestion.setText(question);
+
+        for(int i=0;i<list.size();i++)
+        {
+            if(list.get(i).getSelected().equalsIgnoreCase("true"))
+            {
+                list.get(i).setSelected(true);
+            }
+
+        }
         questionTypeCheckboxAdapter = new QuestionTypeCheckboxAdapter(ExamActivity.this, list);
         rvCheckbox.setItemAnimator(new DefaultItemAnimator());
         LinearLayoutManager manager = new LinearLayoutManager(ExamActivity.this);
@@ -138,10 +169,12 @@ public class ExamActivity extends BaseActivity implements NetworkListener {
         rvSorting.setAdapter(questionTypeSingleSortingAdapter);
     }
 
-    private void typeImgMatrix(ArrayList<Exam.Option> list, String question) {
+    private void typeImgMatrix(ArrayList<Exam.Option> list,ArrayList<Exam.Option> listMatrix ,String question) {
         inflatedView = View.inflate(ExamActivity.this, R.layout.question_type_matrix_shorting, null);
         llContent.addView(inflatedView);
         rvQuestion = inflatedView.findViewById(R.id.rvQuestion);
+        TextView tvQuestion=inflatedView.findViewById(R.id.tvQuestion);
+        tvQuestion.setText(question);
 
 
         questionTypeMatrixImgOneAdapter = new QuestionTypeMatrixImgOneAdapter(ExamActivity.this, list);
@@ -152,7 +185,7 @@ public class ExamActivity extends BaseActivity implements NetworkListener {
         rvQuestion.setAdapter(questionTypeMatrixImgOneAdapter);
 
         rvSortingMtrix = inflatedView.findViewById(R.id.rvSortingMtrix);
-        questionTypeMatrixImgSecondAdapter = new QuestionTypeMatrixImgSecondAdapter(list);
+        questionTypeMatrixImgSecondAdapter = new QuestionTypeMatrixImgSecondAdapter(listMatrix);
         ItemTouchHelper.Callback callback =
                 new ItemMoveCallback2(questionTypeMatrixImgSecondAdapter);
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
@@ -160,7 +193,7 @@ public class ExamActivity extends BaseActivity implements NetworkListener {
         rvSortingMtrix.setAdapter(questionTypeMatrixImgSecondAdapter);
     }
 
-    private void typeMatrix(ArrayList<Exam.Option> list, String question) {
+    private void typeMatrix(ArrayList<Exam.Option> list,ArrayList<Exam.Option> shortList, String question) {
         inflatedView = View.inflate(ExamActivity.this, R.layout.question_type_matrix_shorting, null);
         llContent.addView(inflatedView);
 
@@ -176,7 +209,7 @@ public class ExamActivity extends BaseActivity implements NetworkListener {
         rvQuestion.setAdapter(questionTypeMatrixOneAdapter);
 
         rvSortingMtrix = inflatedView.findViewById(R.id.rvSortingMtrix);
-        questionTypeMatrixSecondAdapter = new QuestionTypeMatrixSecondAdapter(list);
+        questionTypeMatrixSecondAdapter = new QuestionTypeMatrixSecondAdapter(shortList);
         ItemTouchHelper.Callback callback =
                 new ItemMoveCallback1(questionTypeMatrixSecondAdapter);
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
@@ -190,7 +223,19 @@ public class ExamActivity extends BaseActivity implements NetworkListener {
         rvRadio = inflatedView.findViewById(R.id.rvRadio);
         TextView tvQuestion = inflatedView.findViewById(R.id.tvQuestion);
         tvQuestion.setText(question + "");
-        questionTypeRadioAdapter = new QuestionTypeRadioAdapter(ExamActivity.this, list);
+        for(int i=0;i<list.size();i++)
+        {
+            if(list.get(i).getSelected().equalsIgnoreCase("true"))
+            {
+                list.get(i).setSelected(true);
+            }else if(list.get(i).getSelected().equalsIgnoreCase("false"))
+            {
+                list.get(i).setSelected(false);
+            }
+
+        }
+
+        QuestionStatementTypeAdapter questionTypeRadioAdapter = new QuestionStatementTypeAdapter(ExamActivity.this, list);
         rvRadio.setItemAnimator(new DefaultItemAnimator());
         LinearLayoutManager manager = new LinearLayoutManager(ExamActivity.this);
         rvRadio.setLayoutManager(manager);
@@ -201,6 +246,8 @@ public class ExamActivity extends BaseActivity implements NetworkListener {
     private void initUI() {
         course_id = getIntent().getExtras().getString("course_id");
         llContent = findViewById(R.id.llContent);
+
+
         imgPrev = findViewById(R.id.imgPrev);
         imgNext = findViewById(R.id.imgNext);
         tvOrder = findViewById(R.id.tvOrder);
@@ -234,7 +281,7 @@ public class ExamActivity extends BaseActivity implements NetworkListener {
     }
 
     private void nextPrevious(String from) {
-        llContent.removeView(inflatedView);
+
         JSONArray jsonArray = new JSONArray();
 
         if (data.getData().get(0).getQueType() == AppConstant.SINGLE_CHOICE) {
@@ -250,6 +297,19 @@ public class ExamActivity extends BaseActivity implements NetworkListener {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            //
+            if (from.equalsIgnoreCase("next")) {
+                if (jsonArray.length() > 0) {
+                    llContent.removeView(inflatedView);
+                    callNextApi(jsonArray.toString(), data.getData().get(0).getOrder() + 1);
+                } else {
+                    Toast.makeText(ExamActivity.this, "Please fill the answer", Toast.LENGTH_SHORT).show();
+                }
+            }
+            else {
+                llContent.removeView(inflatedView);
+                callNextApi(jsonArray.toString(), data.getData().get(0).getOrder() - 1);
+            }
         } else if (data.getData().get(0).getQueType() == AppConstant.MULTIPLE_CHOICE) {
             try {
                 for (int i = 0; i < data.getData().get(0).getOptions().size(); i++) {
@@ -263,21 +323,49 @@ public class ExamActivity extends BaseActivity implements NetworkListener {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            //
+            if (from.equalsIgnoreCase("next")) {
+                if (jsonArray.length() > 0) {
+                    llContent.removeView(inflatedView);
+                    callNextApi(jsonArray.toString(), data.getData().get(0).getOrder() + 1);
+                } else {
+                    Toast.makeText(ExamActivity.this, "Please fill the answer", Toast.LENGTH_SHORT).show();
+                }
+            }
+            else {
+                llContent.removeView(inflatedView);
+                callNextApi(jsonArray.toString(), data.getData().get(0).getOrder() - 1);
+            }
         } else if (data.getData().get(0).getQueType() == AppConstant.FILL_IN_THE_BLANK) {
             try {
                 for (int i = 0; i < data.getData().get(0).getOptions().size(); i++) {
                     View view1 = rvEdittext.getChildAt(i);
                     EditText editText = view1.findViewById(R.id.edittext);
                     String string = editText.getText().toString();
-                    String key = i + "";
-                    JSONObject jobj = new JSONObject();
-                    jobj.put(key, string);
-                    jsonArray.put(jobj);
+                   // String key = i + "";
+                    if(!TextUtils.isEmpty(string)) {
+                        JSONObject jobj = new JSONObject();
+                        jobj.put(data.getData().get(0).getOptions().get(i).getKey() + "", string);
+                        jsonArray.put(jobj);
+                    }
 
                     Log.d("fill in  ARRAY :: ", jsonArray.toString());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+            }
+            //
+            if (from.equalsIgnoreCase("next")) {
+                if (jsonArray.length() == data.getData().get(0).getOptions().size()) {
+                    llContent.removeView(inflatedView);
+                    callNextApi(jsonArray.toString(), data.getData().get(0).getOrder() + 1);
+                } else {
+                    Toast.makeText(ExamActivity.this, "Please fill the answer", Toast.LENGTH_SHORT).show();
+                }
+            }
+            else {
+                llContent.removeView(inflatedView);
+                callNextApi(jsonArray.toString(), data.getData().get(0).getOrder() - 1);
             }
         } else if (data.getData().get(0).getQueType() == AppConstant.SHORTING) {
             try {
@@ -291,40 +379,89 @@ public class ExamActivity extends BaseActivity implements NetworkListener {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+//
+            if (from.equalsIgnoreCase("next")) {
+                if (jsonArray.length() > 0) {
+                    llContent.removeView(inflatedView);
+                    callNextApi(jsonArray.toString(), data.getData().get(0).getOrder() + 1);
+                } else {
+                    Toast.makeText(ExamActivity.this, "Please fill the answer", Toast.LENGTH_SHORT).show();
+                }
+            }
+            else {
+                llContent.removeView(inflatedView);
+                callNextApi(jsonArray.toString(), data.getData().get(0).getOrder() - 1);
+            }
         } else if (data.getData().get(0).getQueType() == AppConstant.STATEMENT) {
             try {
                 for (int i = 0; i < data.getData().get(0).getOptions().size(); i++) {
-                    JSONObject jobj = new JSONObject();
-                    jobj.put(data.getData().get(0).getOptions().get(i).getKey() + "", data.getData().get(0).getOptions().get(i).getOption());
-                    jsonArray.put(jobj);
+
+                    if(!data.getData().get(0).getOptions().get(i).getSelected().equals("")) {
+                        JSONObject jobj = new JSONObject();
+                        jobj.put(data.getData().get(0).getOptions().get(i).getKey() + "", data.getData().get(0).getOptions().get(i).getSelected());
+                        jsonArray.put(jobj);
+                    }
                 }
                 Log.d("OPTION ARRAY :: ", jsonArray.toString());
             } catch (Exception e) {
                 e.printStackTrace();
+            }
+
+            if (from.equalsIgnoreCase("next")) {
+                if (jsonArray.length() == data.getData().get(0).getOptions().size()) {
+                    llContent.removeView(inflatedView);
+                    callNextApi(jsonArray.toString(), data.getData().get(0).getOrder() + 1);
+                } else {
+                    Toast.makeText(ExamActivity.this, "Please fill the answer", Toast.LENGTH_SHORT).show();
+                }
+            }
+            else {
+                llContent.removeView(inflatedView);
+                callNextApi(jsonArray.toString(), data.getData().get(0).getOrder() - 1);
             }
         } else if (data.getData().get(0).getQueType() == AppConstant.MATRIX) {
 
             try {
-                for (int i = 0; i < data.getData().get(0).getOptions().size(); i++) {
-                    JSONObject jobj = new JSONObject();
-                    jobj.put(data.getData().get(0).getOptions().get(i).getKey() + "", data.getData().get(0).getOptions().get(i).getOption());
-                    jsonArray.put(jobj);
+                if (data.getData().get(0).getSub_type() == 3) {
+                    for (int i = 0; i < listMatrix.size(); i++) {
+                        JSONObject jobj = new JSONObject();
+                        jobj.put(listMatrix.get(i).getKey() + "", listMatrix.get(i).getOptionMatrix());
+                        jsonArray.put(jobj);
+                    }
+                }else{
+
+                    for (int i = 0; i < listMatrixImage.size(); i++) {
+                        JSONObject jobj = new JSONObject();
+                        jobj.put(listMatrixImage.get(i).getKey() + "", listMatrixImage.get(i).getOptionMatrix());
+                        jsonArray.put(jobj);
+                    }
                 }
                 Log.d("OPTION ARRAY :: ", jsonArray.toString());
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
+            //
+            if (from.equalsIgnoreCase("next")) {
+                if (jsonArray.length() > 0) {
+                    llContent.removeView(inflatedView);
+                    callNextApi(jsonArray.toString(), data.getData().get(0).getOrder() + 1);
+                } else {
+                    Toast.makeText(ExamActivity.this, "Please fill the answer", Toast.LENGTH_SHORT).show();
+                }
+            }
+            else {
+                llContent.removeView(inflatedView);
+                callNextApi(jsonArray.toString(), data.getData().get(0).getOrder() - 1);
+            }
 
         }
-        if (from.equalsIgnoreCase("next"))
-            callNextApi(jsonArray.toString(), data.getData().get(0).getOrder() + 1);
-        else
-            callNextApi(jsonArray.toString(), data.getData().get(0).getOrder() - 1);
+
 
     }
 
     private void callNextApi(String jsonObject, int navigation) {
+
         String lang = "";
         AppUtils.showDialog(ExamActivity.this, getString(R.string.pls_wait));
         ApiInterface apiInterface = RestApi.getConnection(ApiInterface.class, ServerConstents.API_URL);
@@ -341,10 +478,11 @@ public class ExamActivity extends BaseActivity implements NetworkListener {
         } else {
             lang = AppConstant.ARABIC_LANG;
         }
-        Call<Exam> call = apiInterface.continueQuiz(lang, AppSharedPreference.getInstance().
-                getString(ExamActivity.this, AppSharedPreference.ACCESS_TOKEN), params);
-        ApiCall.getInstance().hitService(ExamActivity.this, call, this, ServerConstents.EXAM);
-
+        if(navigation !=0) {
+            Call<Exam> call = apiInterface.continueQuiz(lang, AppSharedPreference.getInstance().
+                    getString(ExamActivity.this, AppSharedPreference.ACCESS_TOKEN), params);
+            ApiCall.getInstance().hitService(ExamActivity.this, call, this, ServerConstents.EXAM);
+        }
     }
 
     private void callQuizStart() {
@@ -376,25 +514,68 @@ public class ExamActivity extends BaseActivity implements NetworkListener {
                     tvTestName.setText("Test");
                     tvOrder.setText(data.getData().get(0).getOrder() + "");
                     if (data.getData().get(0).getQueType() == AppConstant.SINGLE_CHOICE) {
-                        typeRadio(data.getData().get(0).getOptions());
+                        typeRadio(data.getData().get(0).getOptions(), data.getData().get(0).getQuestion());
                     } else if (data.getData().get(0).getQueType() == AppConstant.MULTIPLE_CHOICE) {
-                        typeCheckbox(data.getData().get(0).getOptions());
+                        typeCheckbox(data.getData().get(0).getOptions(), data.getData().get(0).getQuestion());
                     } else if (data.getData().get(0).getQueType() == AppConstant.MATRIX) {
                         if (data.getData().get(0).getSub_type() == 3) {
-                            typeMatrix(data.getData().get(0).getOptions(), data.getData().get(0).getQuestion());
+                            listMatrix =new ArrayList<>();
+                            for (int i=0;i<data.getData().get(0).getOptions().size();i++)
+                            {
+                                for(int j=0;j<data.getData().get(0).getOptions().size();j++)
+                                {
+                                    if(i== data.getData().get(0).getOptions().get(j).getOption_order())
+                                    {
+                                        listMatrix.add(data.getData().get(0).getOptions().get(j));
+                                    }
+                                }
+
+                            }
+                            typeMatrix(data.getData().get(0).getOptions(),listMatrix, data.getData().get(0).getQuestion());
                         } else {
-                            typeImgMatrix(data.getData().get(0).getOptions(), data.getData().get(0).getQuestion());
+                           listMatrixImage =new ArrayList<>();
+                            for (int i=0;i<data.getData().get(0).getOptions().size();i++)
+                            {
+                                for(int j=0;j<data.getData().get(0).getOptions().size();j++)
+                                {
+                                    if(i== data.getData().get(0).getOptions().get(j).getOption_order())
+                                    {
+                                        listMatrixImage.add(data.getData().get(0).getOptions().get(j));
+                                    }
+                                }
+
+                            }
+                            typeImgMatrix(data.getData().get(0).getOptions(),listMatrixImage, data.getData().get(0).getQuestion());
                         }
                     } else if (data.getData().get(0).getQueType() == AppConstant.FILL_IN_THE_BLANK) {
                         typeFillInTheBlank(data.getData().get(0).getOptions(), data.getData().get(0).getQuestion());
                     } else if (data.getData().get(0).getQueType() == AppConstant.SHORTING) {
-                        typeSingleSorting(data.getData().get(0).getOptions(), data.getData().get(0).getQuestion());
+
+                        ArrayList<Exam.Option> list =new ArrayList<>();
+                        for (int i=0;i<data.getData().get(0).getOptions().size();i++)
+                        {
+                            for(int j=0;j<data.getData().get(0).getOptions().size();j++)
+                            {
+                                if(i== data.getData().get(0).getOptions().get(j).getOption_order())
+                                {
+                                    list.add(data.getData().get(0).getOptions().get(j));
+                                }
+                            }
+
+                        }
+                        for(int i=0;i<list.size();i++)
+                        {
+                            Log.d("===========> ", list.get(i).getOption_order()+" "+list.get(i).getOption());;
+                        }
+                        typeSingleSorting(list, data.getData().get(0).getQuestion());
                     } else if (data.getData().get(0).getQueType() == AppConstant.STATEMENT) {
                         typeTrueFalse(data.getData().get(0).getOptions(), data.getData().get(0).getQuestion());
                     }
                 } else {
                     Intent intent =new Intent(ExamActivity.this,ReportActivity.class);
+                    intent.putExtra("course_id", course_id);
                     startActivity(intent);
+                    finish();
                 }
             }
         } else if (requestCode == ServerConstents.QUIZ_START) {
@@ -405,14 +586,18 @@ public class ExamActivity extends BaseActivity implements NetworkListener {
                 tvTestName.setText("Test");
                 tvOrder.setText(data.getData().get(0).getOrder() + "");
                 if (data.getData().get(0).getQueType() == AppConstant.SINGLE_CHOICE) {
-                    typeRadio(data.getData().get(0).getOptions());
+                    typeRadio(data.getData().get(0).getOptions(),data.getData().get(0).getQuestion());
                 } else if (data.getData().get(0).getQueType() == AppConstant.MULTIPLE_CHOICE) {
-                    typeCheckbox(data.getData().get(0).getOptions());
+                    typeCheckbox(data.getData().get(0).getOptions(),data.getData().get(0).getQuestion());
                 } else if (data.getData().get(0).getQueType() == AppConstant.MATRIX) {
                     if (data.getData().get(0).getSub_type() == 3) {
-                        typeMatrix(data.getData().get(0).getOptions(), data.getData().get(0).getQuestion());
+                        listMatrix =new ArrayList<>();
+                        listMatrix.addAll(data.getData().get(0).getOptions());
+                        typeMatrix(data.getData().get(0).getOptions(), listMatrix,data.getData().get(0).getQuestion());
                     } else {
-                        typeImgMatrix(data.getData().get(0).getOptions(), data.getData().get(0).getQuestion());
+                        listMatrixImage=new ArrayList<>();
+                        listMatrixImage.addAll(data.getData().get(0).getOptions());
+                        typeImgMatrix(data.getData().get(0).getOptions(),listMatrixImage, data.getData().get(0).getQuestion());
                     }
                 } else if (data.getData().get(0).getQueType() == AppConstant.FILL_IN_THE_BLANK) {
                     typeFillInTheBlank(data.getData().get(0).getOptions(), data.getData().get(0).getQuestion());
@@ -423,7 +608,9 @@ public class ExamActivity extends BaseActivity implements NetworkListener {
                 }
             } else {
                 Intent intent =new Intent(ExamActivity.this,ReportActivity.class);
+                intent.putExtra("course_id", course_id);
                 startActivity(intent);
+                finish();
             }
 
         }
@@ -437,4 +624,6 @@ public class ExamActivity extends BaseActivity implements NetworkListener {
     @Override
     public void onFailure() {
     }
+
+
 }

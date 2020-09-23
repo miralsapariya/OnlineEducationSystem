@@ -142,7 +142,8 @@ public class TrendingCourseActivity extends BaseActivity implements OnItemClick,
             params.put("sub_category_id", subcat_id);
         }
 
-        Call<CourseList> call = apiInterface.getCourseList(lang,params);
+        Call<CourseList> call = apiInterface.getCourseList(lang,AppSharedPreference.getInstance().
+                getString(TrendingCourseActivity.this, AppSharedPreference.ACCESS_TOKEN),params);
         ApiCall.getInstance().hitService(TrendingCourseActivity.this, call, this, ServerConstents.COURSE_LIST);
 
     }

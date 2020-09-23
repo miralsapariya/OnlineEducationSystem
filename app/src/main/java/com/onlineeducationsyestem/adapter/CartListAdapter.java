@@ -34,7 +34,7 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
     private DeleteItemInCart deleteItemInCart;
     private ApplyPromoCode applyPromoCode;
     private CheckOutInCart checkOutInCart;
-
+    int amount=0;
     public CartListAdapter(Context context,
                            ArrayList<CartList.ListData> listProduct,
                            OnItemClick onItemClick, DeleteItemInCart deleteItemInCart, ApplyPromoCode applyPromoCode, CheckOutInCart checkOutInCart) {
@@ -74,8 +74,13 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
             }
         });
 
-        final int amount = Integer.parseInt(data.getCoursePrice().substring(1)) - data.getCourseDiscount();
 
+        if(data.getCoursePrice().equalsIgnoreCase("Free")){
+         amount=0;
+        }else {
+            amount = Integer.parseInt(data.getCoursePrice().substring(1)) - data.getCourseDiscount();
+
+        }
         if (data.getCourseDiscount() == 0) {
             holder.llPromo.setVisibility(View.VISIBLE);
         } else {

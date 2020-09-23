@@ -40,6 +40,9 @@ public class EdittextAdapter extends RecyclerView.Adapter<EdittextAdapter.ViewHo
     public void onBindViewHolder(final EdittextAdapter.ViewHolder holder, final int position) {
         final Exam.Option data = listProduct.get(position);
 
+            holder.edittext.setText(data.getBlank_value() + "");
+
+
 
     }
 

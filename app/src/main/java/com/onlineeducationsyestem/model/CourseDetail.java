@@ -57,6 +57,13 @@ public class CourseDetail implements Serializable
         @Expose
         private Integer is_free;
 
+        @SerializedName("is_added")
+        @Expose
+        private Integer is_added;
+        @SerializedName("is_purchased")
+        @Expose
+        private Integer is_purchased;
+
         @SerializedName("course_name")
         @Expose
         private String courseName;
@@ -93,6 +100,36 @@ public class CourseDetail implements Serializable
         @SerializedName("created_by")
         @Expose
         private String createdBy;
+
+        public Integer getIs_purchased() {
+            return is_purchased;
+        }
+
+        public void setIs_purchased(Integer is_purchased) {
+            this.is_purchased = is_purchased;
+        }
+
+        public Integer getIs_added() {
+            return is_added;
+        }
+
+        public void setIs_added(Integer is_added) {
+            this.is_added = is_added;
+        }
+
+        public String getShare_url() {
+            return share_url;
+        }
+
+        public void setShare_url(String share_url) {
+            this.share_url = share_url;
+        }
+
+        @SerializedName("share_url")
+        @Expose
+        private String share_url;
+
+
         @SerializedName("instructor_details")
         @Expose
         private InstructorDetails instructorDetails;

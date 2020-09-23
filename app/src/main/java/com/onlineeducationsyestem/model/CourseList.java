@@ -72,6 +72,10 @@ this.data = data;
         @SerializedName("id")
         @Expose
         private Integer id;
+        @SerializedName("is_added")
+        @Expose
+        private Integer is_added;
+
         @SerializedName("course_name")
         @Expose
         private String courseName;
@@ -94,6 +98,14 @@ this.data = data;
         @Expose
         private String publishOn;
         private final static long serialVersionUID = -5592562109560271613L;
+
+        public Integer getIs_added() {
+            return is_added;
+        }
+
+        public void setIs_added(Integer is_added) {
+            this.is_added = is_added;
+        }
 
         public Integer getId() {
             return id;

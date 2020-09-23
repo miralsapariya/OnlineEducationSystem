@@ -16,9 +16,11 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
     <style name="MyDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="colorPrimary">@color/colorPrimary</item>
     </style>
+
     <style name="edittext_grevity">
 
         <item name="android:gravity">start|center_vertical</item>

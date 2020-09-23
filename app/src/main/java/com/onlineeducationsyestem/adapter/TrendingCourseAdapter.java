@@ -70,6 +70,12 @@ public class TrendingCourseAdapter extends RecyclerView.Adapter<TrendingCourseAd
                 addItemInCart.addToCart(position);
             }
         });
+
+        if(data.getIs_added() ==1) {
+            holder.imgCart.setVisibility(View.GONE);
+        }else {
+            holder.imgCart.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

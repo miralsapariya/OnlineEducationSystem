@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,6 +25,7 @@ public class QuestionTypeMatrixImgSecondAdapter extends
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         private TextView tvSort;
+        private LinearLayout llMAin;
         View rowView;
 
         public MyViewHolder(View itemView) {
@@ -49,6 +51,14 @@ public class QuestionTypeMatrixImgSecondAdapter extends
     public void onBindViewHolder(MyViewHolder holder, int position) {
         holder.tvSort.setText(data.get(position).getOptionMatrix());
 
+      /*  holder.rowView.setOnTouchListener(new View.OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+                if (MotionEvent.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
+                    mItemTouchHelper.startDrag(viewHolder);
+                }
+                return false;
+            }
+        });*/
     }
 
 
@@ -83,4 +93,6 @@ public class QuestionTypeMatrixImgSecondAdapter extends
         myViewHolder.rowView.setBackgroundColor(Color.WHITE);
 
     }
+
+
 }

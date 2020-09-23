@@ -24,6 +24,7 @@
     <string name="view_more">View More</string>
     <string name="popular_instuctor">Popular Instructors</string>
     <string name="courses">Courses</string>
+    <string name="course">Course</string>
     <string name="instructor_profile">Instructor Profile</string>
     <string name="show_more">Show More</string>
     <string name="course_includes">Course Includes</string>
@@ -147,4 +148,13 @@
     <string name="login_alert">Login Alert</string>
     <string name="please_login">Please Login</string>
     <string name="ok">OK</string>
+    <string name="thank_you">Thank You</string>
+    <string name="back_to_my_course">Back To My Courses</string>
+
+    <string name="toast_course_alry_whishlist">Course already enrolled so you caa not add it to your wishlist</string>
+
+    <string name="previous">Previous</string>
+    <string name="congrat_success">Congratulations ! You have successfully completed the</string>
+
+    <string name="reset_course">Reset Course to start</string>
 </resources>

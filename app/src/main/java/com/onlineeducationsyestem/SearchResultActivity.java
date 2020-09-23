@@ -2,7 +2,6 @@ package com.onlineeducationsyestem;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -115,7 +114,8 @@ public class SearchResultActivity extends AppCompatActivity
         }
       //  page_no
       //  page_limit
-        Call<GlobalSearch> call = apiInterface.getDefaultCategory(lang,params);
+        Call<GlobalSearch> call = apiInterface.getDefaultCategory(lang,AppSharedPreference.getInstance().
+                getString(SearchResultActivity.this, AppSharedPreference.ACCESS_TOKEN),params);
         ApiCall.getInstance().hitService(SearchResultActivity.this, call, this, ServerConstents.DEFUALT_CAT);
 
     }
@@ -181,7 +181,6 @@ public class SearchResultActivity extends AppCompatActivity
 
     @Override
     public void onFailure() {
-        Log.d("in failure ", "========== ");
 
     }
     private void hintAddToCart(int pos)

@@ -60,6 +60,47 @@ public class Option {
     @Expose
     private String path;
 
+    public String getSelected() {
+        return selected;
+    }
+
+    public void setSelected(String selected) {
+        this.selected = selected;
+    }
+
+    @SerializedName("selected")
+    @Expose
+    private String selected="";
+
+    @SerializedName("option_order")
+    @Expose
+    private int option_order=0;
+
+    @SerializedName("blank_value")
+    @Expose
+    private String blank_value="";
+
+    public String getBlank_value() {
+        return blank_value;
+    }
+
+    public void setBlank_value(String blank_value) {
+        this.blank_value = blank_value;
+    }
+
+
+
+    public int getOption_order() {
+        return option_order;
+    }
+
+    public void setOption_order(int option_order) {
+        this.option_order = option_order;
+    }
+
+
+
+
     public String getPath() {
         return path;
     }

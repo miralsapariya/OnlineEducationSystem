@@ -96,6 +96,18 @@ public class Courseslist {
     @Expose
     private String next_slide_id;
 
+    public Integer getPercentage() {
+        return percentage;
+    }
+
+    public void setPercentage(Integer percentage) {
+        this.percentage = percentage;
+    }
+
+    @SerializedName("percentage")
+    @Expose
+    private Integer percentage;
+
     public String getCourse_status() {
         return course_status;
     }

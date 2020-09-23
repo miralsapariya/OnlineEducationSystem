@@ -38,7 +38,9 @@ public class ServerConstents {
     public static int CHECKOUT=18;
     public static int EXAM=19;
     public static int QUIZ_START=20;
-    public static int CHECK_COURSE=20;
+    public static int CHECK_COURSE=21;
+    public static int RESULT=22;
+    public static int RESTART=23;
     //home screen type
     public static String HOME_TYPE_COURSE="1";
     public static String HOME_TYPE_CATEGORY="2";

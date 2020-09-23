@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.onlineeducationsyestem.R;
+import com.onlineeducationsyestem.interfaces.DeleteWhishList;
 import com.onlineeducationsyestem.interfaces.OnItemClick;
 import com.onlineeducationsyestem.model.MyWhishList;
 import com.onlineeducationsyestem.util.AppUtils;
@@ -23,13 +24,16 @@ public class WhishListAdapter extends RecyclerView.Adapter<WhishListAdapter.View
     private LayoutInflater mInflater;
     private Context context;
     private OnItemClick onItemClick;
+    private DeleteWhishList deleteWhishList;
 
     public WhishListAdapter(Context context,
-                            ArrayList<MyWhishList.Courseslist> listProduct, OnItemClick onItemClick) {
+                            ArrayList<MyWhishList.Courseslist> listProduct,
+                            OnItemClick onItemClick,DeleteWhishList deleteWhishList) {
         this.mInflater = LayoutInflater.from(context);
         this.context = context;
         this.listProduct = listProduct;
         this.onItemClick = onItemClick;
+        this.deleteWhishList=deleteWhishList;
     }
 
     @Override
@@ -56,6 +60,14 @@ public class WhishListAdapter extends RecyclerView.Adapter<WhishListAdapter.View
             @Override
             public void onClick(View view) {
 
+                onItemClick.onGridClick(position);
+            }
+        });
+
+        holder.imgWhishList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteWhishList.deleteWishList(position);
             }
         });
     }
@@ -73,7 +85,7 @@ public class WhishListAdapter extends RecyclerView.Adapter<WhishListAdapter.View
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView tvCourse, tvPrice,tvMainCat,tvOldPrice,tvPublishOn,tvInstructor;
         private LinearLayout llMain;
-        private ImageView img;
+        private ImageView img,imgWhishList;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -86,6 +98,7 @@ public class WhishListAdapter extends RecyclerView.Adapter<WhishListAdapter.View
             tvPublishOn = itemView.findViewById(R.id.tvPublishOn);
             tvInstructor =itemView.findViewById(R.id.tvInstructor);
             img =itemView.findViewById(R.id.img);
+            imgWhishList =itemView.findViewById(R.id.imgWhishList);
         }
     }
 }

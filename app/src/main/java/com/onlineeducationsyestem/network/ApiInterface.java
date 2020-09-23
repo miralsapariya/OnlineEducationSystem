@@ -15,6 +15,8 @@ import com.onlineeducationsyestem.model.GlobalSearch;
 import com.onlineeducationsyestem.model.Home;
 import com.onlineeducationsyestem.model.MyCourseList;
 import com.onlineeducationsyestem.model.MyWhishList;
+import com.onlineeducationsyestem.model.Restart;
+import com.onlineeducationsyestem.model.Result;
 import com.onlineeducationsyestem.model.SectionCourse;
 import com.onlineeducationsyestem.model.SectionSlideDetail;
 import com.onlineeducationsyestem.model.SubCategory;
@@ -108,7 +110,7 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST("courselist")
-    Call<CourseList> getCourseList(@Header("language") String lang,@FieldMap HashMap<String, String> map);
+    Call<CourseList> getCourseList(@Header("language") String lang, @Header("Authorization")String auth,@FieldMap HashMap<String, String> map);
 
     @FormUrlEncoded
     @POST("categories_details")
@@ -120,14 +122,14 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST("coursedetails")
-    Call<CourseDetail> getCourseDetail(@Header("language") String lang,@FieldMap HashMap<String, String> map);
+    Call<CourseDetail> getCourseDetail(@Header("language") String lang,@Header("Authorization")String auth,@FieldMap HashMap<String, String> map);
 
     @POST("globalsearch")
     Call<DefaultCategory> getDefaultCategory(@Header("language") String lang);
 
     @FormUrlEncoded
     @POST("globalsearch")
-    Call<GlobalSearch> getDefaultCategory(@Header("language") String lang,@FieldMap HashMap<String, String> map);
+    Call<GlobalSearch> getDefaultCategory(@Header("language") String lang,@Header("Authorization")String auth,@FieldMap HashMap<String, String> map);
 
     @POST("mywishlist")
     Call<MyWhishList> getWhishList(@Header("language") String lang,@Header("Authorization")String auth);
@@ -174,5 +176,12 @@ public interface ApiInterface {
     @POST("checkcourse")
     Call<CheckCourse> checkCourse(@Header("language") String lang, @Header("Authorization")String auth, @FieldMap HashMap<String, String> map);
 
+    @FormUrlEncoded
+    @POST("quiz/result")
+    Call<Result> resultQuiz(@Header("language") String lang, @Header("Authorization")String auth, @FieldMap HashMap<String, String> map);
+
+    @FormUrlEncoded
+    @POST("quiz/restart")
+    Call<Restart> restart(@Header("language") String lang, @Header("Authorization")String auth, @FieldMap HashMap<String, String> map);
 
 }

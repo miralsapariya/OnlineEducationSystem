@@ -1,4 +1,4 @@
-package com.onlineeducationsyestem.widget;
+package com .onlineeducationsyestem.widget;
 
 
 import androidx.annotation.NonNull;
@@ -15,6 +15,7 @@ public class ItemMoveCallback2 extends ItemTouchHelper.Callback {
         mAdapter = adapter;
     }
 
+
     @Override
     public boolean isLongPressDragEnabled() {
         return true;
@@ -29,7 +30,6 @@ public class ItemMoveCallback2 extends ItemTouchHelper.Callback {
 
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
-
     }
 
     @Override

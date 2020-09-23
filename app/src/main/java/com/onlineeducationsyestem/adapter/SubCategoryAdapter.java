@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.onlineeducationsyestem.CourseDetailActivity;
 import com.onlineeducationsyestem.R;
 import com.onlineeducationsyestem.TrendingCourseActivity;
 import com.onlineeducationsyestem.interfaces.OnItemClick;
@@ -57,6 +58,9 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
                         @Override
                         public void onNewCourseClick(int pos) {
 
+                            Intent intent =new Intent(context, CourseDetailActivity.class);
+                            intent.putExtra("course_id", pos+"");
+                            context.startActivity(intent);
                         }
                     });
 

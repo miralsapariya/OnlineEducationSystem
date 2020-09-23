@@ -2,17 +2,22 @@ package com.onlineeducationsyestem;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.widget.NestedScrollView;
 
 import com.onlineeducationsyestem.interfaces.NetworkListener;
 import com.onlineeducationsyestem.model.CheckCourse;
@@ -24,6 +29,7 @@ import com.onlineeducationsyestem.network.ServerConstents;
 import com.onlineeducationsyestem.util.AppConstant;
 import com.onlineeducationsyestem.util.AppSharedPreference;
 import com.onlineeducationsyestem.util.AppUtils;
+import com.onlineeducationsyestem.widget.NestedWebView;
 
 import java.util.HashMap;
 
@@ -31,13 +37,15 @@ import retrofit2.Call;
 
 public class LessionSlideActivity extends BaseActivity implements NetworkListener, View.OnClickListener {
 
-    private WebView webView,tvDescription;
+    private WebView tvDescription;
+    private NestedWebView webView;
     private ProgressBar progressbar;
     private TextView tvSlideId,tvCourseName,tvSectionName,tvSlideName;
     private WebView videoView;
-    private ImageView imgSlide,imgNext,imgPrev,imgBackgroundImage;
+    private ImageView imgSlide,imgNext,imgPrev,imgBackgroundImage,imgBack;
     private String course_id="",section_id="",slide_id="";
     SectionSlideDetail data;
+    private NestedScrollView nestedScroll;
     //private ScrollView scrollView;
     //
 
@@ -53,6 +61,15 @@ public class LessionSlideActivity extends BaseActivity implements NetworkListene
 
     private void initUI()
     {
+        imgBack=findViewById(R.id.imgBack);
+        imgBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+        nestedScroll =findViewById(R.id.nestedScroll);
+        nestedScroll.scrollTo(0,0);
         course_id =getIntent().getExtras().getString("course_id");
         section_id =getIntent().getExtras().getString("section_id");
         slide_id=getIntent().getExtras().getString("slide_id");
@@ -156,15 +173,23 @@ public class LessionSlideActivity extends BaseActivity implements NetworkListene
         {
             CheckCourse checkCourse =(CheckCourse) response;
             if (checkCourse.getStatus() == ServerConstents.CODE_SUCCESS) {
-                if(checkCourse.getData().get(0).getNoOfQue() >0 && checkCourse.getData().get(0).getQuiz().equals("no"))
+                if(checkCourse.getData().get(0).getNoOfQue() >0 && checkCourse.getData().get(0).getQuiz().equalsIgnoreCase("no"))
                 {
                     Intent intent = new Intent(LessionSlideActivity.this,ExamActivity.class);
                     intent.putExtra("course_id", course_id);
                     startActivity(intent);
-                }else if(checkCourse.getData().get(0).getCert().equals("no")) {
+                }else if(checkCourse.getData().get(0).getCert().equalsIgnoreCase("no")) {
 
                     Intent intent = new Intent(LessionSlideActivity.this,ReportActivity.class);
+                    intent.putExtra("course_id", course_id);
                     startActivity(intent);
+                }else if(checkCourse.getData().get(0).getQuiz().equalsIgnoreCase("yes") && checkCourse.getData().get(0).getCert().equalsIgnoreCase("yes"))
+                {
+                    Intent intent = new Intent(LessionSlideActivity.this,ThankYouActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    intent.putExtra("course_name",data.getData().get(0).getCourseTitle());
+                    startActivity(intent);
+                    finish();
                 }
             }
         }
@@ -191,15 +216,31 @@ public class LessionSlideActivity extends BaseActivity implements NetworkListene
             case R.id.imgPrev:
                 section_id=data.getData().get(0).getPreviousSection();
                 slide_id =data.getData().get(0).getPreviousSlide();
+
+                if(videoView.getVisibility() ==View.VISIBLE) {
+                   // videoView.onPause();
+                   /* videoView.loadData("","","");
+                    videoView.clearCache(true);
+                    videoView.reload();
+                    videoView.clearCache(true);*/
+                   clearVideoView();
+                }
+
                 if(section_id.length()>0 && slide_id.length()>0)
                     callApi();
                 break;
             case R.id.imgNext:
                 section_id=data.getData().get(0).getNextSection();
                 slide_id =data.getData().get(0).getNextSlide();
+
+                if(videoView.getVisibility() ==View.VISIBLE) {
+                   clearVideoView();
+                }
+
                 if(section_id.length()>0 && slide_id.length()>0)
                 {
-                callApi();}
+                callApi();
+                }
                 else{
                     if (AppUtils.isInternetAvailable(LessionSlideActivity.this)) {
                         checkIfQuizOptionalOrNot();
@@ -211,6 +252,27 @@ public class LessionSlideActivity extends BaseActivity implements NetworkListene
         }
     }
 
+    private void clearVideoView()
+    {
+        videoView=findViewById(R.id.videoView);
+        videoView.setVisibility(View.GONE);
+        videoView.setWebViewClient(new WebViewClient(){
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                return false;
+            }
+        });
+        videoView.setWebChromeClient(new MyChrome());
+
+        WebSettings webSettings = videoView.getSettings();
+        webSettings.setAllowFileAccess(true);
+        webSettings.setAppCacheEnabled(true);
+        webSettings.setJavaScriptEnabled(true);
+
+        videoView.loadData("", "text/html", "utf-8");
+
+        videoView.setVisibility(View.GONE);
+    }
     private void checkIfQuizOptionalOrNot()
     {
         String lang="";
@@ -242,6 +304,10 @@ public class LessionSlideActivity extends BaseActivity implements NetworkListene
     }
 
     private void playVideo(String embeded_url) {
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading Data...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
      // String embeded_url ="https://www.youtube.com/embed/T3q6QcCQZQg";
      // String embeded_url="https://player.vimeo.com/video/76979871";
       //  String embeded_url="http://1.22.161.26:9875/online_education_system/public/images/Courses/24/SlideVideo/1595486192.webm";
@@ -251,12 +317,30 @@ public class LessionSlideActivity extends BaseActivity implements NetworkListene
                 return false;
             }
         });
+        videoView.setWebChromeClient(new MyChrome());
+
           WebSettings webSettings = videoView.getSettings();
+        webSettings.setAllowFileAccess(true);
+        webSettings.setAppCacheEnabled(true);
         webSettings.setJavaScriptEnabled(true);
+
+
+      /* webSettings.setLoadWithOverviewMode(true);
+        webSettings.setUseWideViewPort(true);*/
+
         videoView.loadData("<iframe width=\"100%\" height=\"100%\"src="+embeded_url+" frameborder=\"0\" allow=\"autoplay; fullscreen\" allowfullscreen >\n" +
                 "</iframe>", "text/html", "utf-8");
 
+        videoView.setWebViewClient(new WebViewClient() {
 
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                // progressbar.setVisibility(View.GONE);
+                progressDialog.dismiss();
+            }
+
+        });
     }
     private void initToolBar()
     {
@@ -285,7 +369,7 @@ public class LessionSlideActivity extends BaseActivity implements NetworkListene
         webView.getSettings().setLoadWithOverviewMode(true);
         webView.setVerticalScrollBarEnabled(true);
         webView.setHorizontalScrollBarEnabled(false);
-
+        webView.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
         /*webView.getSettings().setUseWideViewPort(true);
         webView.setScrollX(1000);
         webView.setScrollY(1000);*/
@@ -299,11 +383,6 @@ public class LessionSlideActivity extends BaseActivity implements NetworkListene
         String url = "https://docs.google.com/gview?embedded=true&url="+myPdfUrl;
         webView.loadUrl(url);
         webView.setWebViewClient(new WebViewClient() {
-           /* @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(url);
-                return true;
-            }*/
 
             @Override
             public void onPageFinished(WebView view, String url) {
@@ -315,5 +394,63 @@ public class LessionSlideActivity extends BaseActivity implements NetworkListene
         });
 
     }
+
+
+    private class MyChrome extends WebChromeClient {
+
+        private View mCustomView;
+        private WebChromeClient.CustomViewCallback mCustomViewCallback;
+        protected FrameLayout mFullscreenContainer;
+        private int mOriginalOrientation;
+        private int mOriginalSystemUiVisibility;
+
+        MyChrome() {}
+
+        public Bitmap getDefaultVideoPoster()
+        {
+            if (mCustomView == null) {
+                return null;
+            }
+            return BitmapFactory.decodeResource(getApplicationContext().getResources(), 2130837573);
+        }
+
+        public void onHideCustomView()
+        {
+            ((FrameLayout)getWindow().getDecorView()).removeView(this.mCustomView);
+            this.mCustomView = null;
+            getWindow().getDecorView().setSystemUiVisibility(this.mOriginalSystemUiVisibility);
+            setRequestedOrientation(this.mOriginalOrientation);
+            this.mCustomViewCallback.onCustomViewHidden();
+            this.mCustomViewCallback = null;
+        }
+
+        public void onShowCustomView(View paramView, WebChromeClient.CustomViewCallback paramCustomViewCallback)
+        {
+            if (this.mCustomView != null)
+            {
+                onHideCustomView();
+                return;
+            }
+            this.mCustomView = paramView;
+            this.mOriginalSystemUiVisibility = getWindow().getDecorView().getSystemUiVisibility();
+            this.mOriginalOrientation = getRequestedOrientation();
+            this.mCustomViewCallback = paramCustomViewCallback;
+            ((FrameLayout)getWindow().getDecorView()).addView(this.mCustomView, new FrameLayout.LayoutParams(-1, -1));
+            getWindow().getDecorView().setSystemUiVisibility(3846 | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        videoView.saveState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        videoView.restoreState(savedInstanceState);
+    }
+
 
 }

@@ -38,6 +38,15 @@ public class QuestionTypeCheckboxAdapter extends RecyclerView.Adapter<QuestionTy
         final Exam.Option data = listProduct.get(position);
         holder.checkbox.setText(data.getOption());
 
+        if(data.isSelected())
+        {
+            holder.checkbox.setChecked(true);
+        }else
+        {
+            holder.checkbox.setChecked(false);
+        }
+
+
         holder.checkbox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

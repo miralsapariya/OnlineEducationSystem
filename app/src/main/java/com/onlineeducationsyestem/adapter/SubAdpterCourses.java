@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -54,6 +55,12 @@ public class SubAdpterCourses extends RecyclerView.Adapter<SubAdpterCourses.View
         holder.tvNewPrice.setText(data.getCoursePrice());
         AppUtils.loadImageWithPicasso(data.getImage() , holder.img, context, 0, 0);
 
+        holder.llMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onItemClick.onNewCourseClick(listProduct.get(position).getId());
+            }
+        });
     }
 
 
@@ -70,6 +77,7 @@ public class SubAdpterCourses extends RecyclerView.Adapter<SubAdpterCourses.View
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView tvName,tvSubName,tvInstructorname,tvOldPrice,tvNewPrice;
         private ImageView img;
+        private LinearLayout llMain;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -80,6 +88,7 @@ public class SubAdpterCourses extends RecyclerView.Adapter<SubAdpterCourses.View
             tvOldPrice =itemView.findViewById(R.id.tvOldPrice);
             tvNewPrice =itemView.findViewById(R.id.tvNewPrice);
             img =itemView.findViewById(R.id.img);
+            llMain =itemView.findViewById(R.id.llMain);
         }
     }
 }
