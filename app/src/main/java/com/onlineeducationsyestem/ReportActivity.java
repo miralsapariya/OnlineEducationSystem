@@ -39,7 +39,7 @@ public class ReportActivity extends BaseActivity implements NetworkListener {
     private String course_id = "";
     private Result data;
     private ImageView img,imgBack;
-    private TextView tvCongrat,tvDescription,tvDownload,tryAgain;
+    private TextView tvCongrat,tvDescription,tvDownload,tryAgain,tvBack;
     private static final int PERMISSION_PHOTO = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +56,17 @@ public class ReportActivity extends BaseActivity implements NetworkListener {
         setSupportActionBar(toolbar);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent =new Intent(ReportActivity.this,MainActivity.class);
+
+        intent.putExtra("from", "thankyou");
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+    }
+
     private void initUI()
     {
         course_id = getIntent().getExtras().getString("course_id");
@@ -68,6 +79,25 @@ public class ReportActivity extends BaseActivity implements NetworkListener {
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                Intent intent =new Intent(ReportActivity.this,MainActivity.class);
+
+                intent.putExtra("from", "thankyou");
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        tvBack =findViewById(R.id.tvBack);
+        tvBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent =new Intent(ReportActivity.this,MainActivity.class);
+
+                intent.putExtra("from", "thankyou");
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
                 finish();
             }
         });

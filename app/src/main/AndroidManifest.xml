@@ -12,9 +12,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".WebPDFActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            ></activity>
+        <activity
+            android:name=".DashBoardActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".WebPDFActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".ThankYouActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -154,14 +158,14 @@
                 android:resource="@xml/provider_paths" />
         </provider>
     </application>
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-
     <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
 </manifest>

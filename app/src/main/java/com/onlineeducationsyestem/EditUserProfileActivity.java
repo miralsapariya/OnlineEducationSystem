@@ -2,7 +2,6 @@ package com.onlineeducationsyestem;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -28,11 +27,12 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.hbb20.CountryCodePicker;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.onlineeducationsyestem.interfaces.NetworkListener;
 import com.onlineeducationsyestem.model.GetProfile;
@@ -77,7 +77,9 @@ public class EditUserProfileActivity extends BaseActivity implements NetworkList
     private EditText etName,etEmail,etPhone;
     private Button btnUpdate;
     private ImageView imgBack;
-
+    private CountryCodePicker ccp;
+    private String selectedCountryCode="",selectedCountry="";
+    private BottomSheetDialog mBottomSheetDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -134,6 +136,18 @@ public class EditUserProfileActivity extends BaseActivity implements NetworkList
         if (AppUtils.isInternetAvailable(EditUserProfileActivity.this)) {
                 getProfile();
         }
+
+        ccp=findViewById(R.id.ccp);
+        selectedCountryCode =ccp.getSelectedCountryCodeWithPlus();
+        selectedCountry =ccp.getSelectedCountryName();
+
+        ccp.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
+            @Override
+            public void onCountrySelected() {
+                selectedCountryCode =ccp.getSelectedCountryCodeWithPlus();
+                selectedCountry =ccp.getSelectedCountryName();
+            }
+        });
     }
 
     private void editProfile()
@@ -161,7 +175,8 @@ public class EditUserProfileActivity extends BaseActivity implements NetworkList
 
         RequestBody phone =
                 RequestBody.create(
-                        okhttp3.MultipartBody.FORM, etPhone.getText().toString());
+                        okhttp3.MultipartBody.FORM, selectedCountryCode+"-"+etPhone.getText().toString());
+
 
         if (AppSharedPreference.getInstance().getString(EditUserProfileActivity.this, AppSharedPreference.LANGUAGE_SELECTED) == null ||
                 AppSharedPreference.getInstance().getString(EditUserProfileActivity.this, AppSharedPreference.LANGUAGE_SELECTED).equalsIgnoreCase(AppConstant.ENG_LANG)) {
@@ -173,16 +188,20 @@ public class EditUserProfileActivity extends BaseActivity implements NetworkList
 
         RequestBody userId = RequestBody.create(
                 okhttp3.MultipartBody.FORM,AppSharedPreference.getInstance().getString(EditUserProfileActivity.this, AppSharedPreference.USERID));
+        RequestBody countryNAme = RequestBody.create(
+                okhttp3.MultipartBody.FORM,selectedCountry);
 
 
           RequestBody.create(
-                        okhttp3.MultipartBody.FORM, etPhone.getText().toString());
+                        okhttp3.MultipartBody.FORM, selectedCountryCode+"-"+etPhone.getText().toString());
+
+
 
         if(body != null) {
             Call<GetProfile> call = apiInterface.editProfile(lang,
                     AppSharedPreference.getInstance().getString(EditUserProfileActivity.this, AppSharedPreference.ACCESS_TOKEN),
                     userId,
-                    name,email,phone,
+                    name,email,phone,countryNAme,
                     body
                     );
 
@@ -193,7 +212,7 @@ public class EditUserProfileActivity extends BaseActivity implements NetworkList
             Call<GetProfile> call = apiInterface.editProfile(lang,
                     AppSharedPreference.getInstance().getString(EditUserProfileActivity.this, AppSharedPreference.ACCESS_TOKEN),
                     userId,
-                    name,email,phone
+                    name,email,phone,countryNAme
             );
 
             ApiCall.getInstance().hitService(EditUserProfileActivity.this, call, this, ServerConstents.EDIT_PROFILE);
@@ -235,6 +254,13 @@ public class EditUserProfileActivity extends BaseActivity implements NetworkList
             Toast.makeText(EditUserProfileActivity.this, getString(R.string.toast_name), Toast.LENGTH_SHORT).show();
             // L.showSnackbar(llLogin, getString(R.string.toast_Ic));
 
+        }else if(AppUtils.countWordsUsingSplit(etName.getText().toString()) <= 1)
+        {
+
+            bool=false;
+            hideKeyboard();
+            Toast.makeText(EditUserProfileActivity.this, getString(R.string.toast_full_name), Toast.LENGTH_SHORT).show();
+
         }else if (TextUtils.isEmpty(etEmail.getText().toString())) {
             bool = false;
             hideKeyboard();
@@ -259,18 +285,26 @@ public class EditUserProfileActivity extends BaseActivity implements NetworkList
 
     @Override
     public void onSuccess(int responseCode, Object response, int requestCode) {
-
         if(requestCode == ServerConstents.GET_PROFILE) {
             GetProfile data = (GetProfile) response;
 
+            String s=data.getData().get(0).getCountry_code().replaceAll("\\+", "");
+            Log.d("______________ ", s);
+
+            ccp.setCountryForPhoneCode(Integer.parseInt(s));
+
+
             Picasso.with(this).load(data.getData().get(0).
-                    getProfilePicture()).into(imgUser);
+                    getProfilePicture()).error(getResources().getDrawable(R.mipmap.placeholder)).into(imgUser);
             etName.setText(data.getData().get(0).getName());
             etEmail.setText(data.getData().get(0).getEmail());
             etPhone.setText(data.getData().get(0).getPhoneNo());
         }else
         {
+            GetProfile data = (GetProfile) response;
+            Toast.makeText(EditUserProfileActivity.this, data.getMessage(), Toast.LENGTH_SHORT).show();
 
+            finish();
         }
 
     }
@@ -287,7 +321,27 @@ public class EditUserProfileActivity extends BaseActivity implements NetworkList
     }
 
     private void chosePicture() {
-        final CharSequence[] items = {"Take Photo", "Choose Photo"};
+        mBottomSheetDialog = new BottomSheetDialog(EditUserProfileActivity.this);
+        View sheetView = getLayoutInflater().inflate(R.layout.dialog_picture, null);
+        mBottomSheetDialog.setContentView(sheetView);
+        LinearLayout llTakePic = sheetView.findViewById(R.id.llTakePic);
+        llTakePic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                takePhotoFromCamera();
+                mBottomSheetDialog.dismiss();
+            }
+        });
+        LinearLayout llChoosePic = sheetView.findViewById(R.id.llChoosePic);
+        llChoosePic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                chooseImageFromGallery();
+                mBottomSheetDialog.dismiss();
+            }
+        });
+        mBottomSheetDialog.show();
+       /* final CharSequence[] items = {"Take Photo", "Choose Photo"};
         AlertDialog.Builder builder = new AlertDialog.Builder(EditUserProfileActivity.this);
         builder.setTitle("Add Photo");
         builder.setItems(items, new DialogInterface.OnClickListener() {
@@ -304,7 +358,7 @@ public class EditUserProfileActivity extends BaseActivity implements NetworkList
                 }
             }
         });
-        builder.show();
+        builder.show();*/
     }
     public void takePhotoFromCamera() {
         if (ContextCompat.checkSelfPermission(EditUserProfileActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED

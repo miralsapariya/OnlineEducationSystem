@@ -59,7 +59,7 @@
     <string name="old_pwd">Old Password</string>
     <string name="newpwd">New Password</string>
     <string name="confirm_pwd">Confirm Password</string>
-    <string name="continue_">Countinue</string>
+    <string name="continue_">Continue</string>
     <string name="change_pwd">Change Password</string>
     <string name="forgot_pwd_">Forgot Password</string>
     <string name="enter_phone_number">Enter Phone Number</string>
@@ -87,7 +87,7 @@
     <string name="my_profile">My Profile</string>
     <string name="change_pwd_">Change Password</string>
     <string name="whishlist_">Wishlist</string>
-    <string name="my_whish_list">My WishList</string>
+    <string name="my_whish_list">My Wishlist</string>
     <string name="notification">Notifications</string>
     <string name="about_us">About Us</string>
     <string name="search_result">Search Result</string>
@@ -114,6 +114,10 @@
     <string name="you_have_passed">You have passed this test and completed this course. You can download your certificate of completion below.</string>
     <string name="hard_luck">Hard Luck. You have falled the test this time. You must retry the test and score </string>
     <string name="to_complete_course">to complete this course.</string>
+    <string name="complete_course">Complete course</string>
+    <string name="not_started">Not Started</string>
+    <string name="completed">Completed</string>
+    <string name="in_progress">In Progress</string>
     <string name="review_your_ans">Review your Answers</string>
     <string name="correct">Correct</string>
     <string name="wrong">Wrong</string>
@@ -151,10 +155,22 @@
     <string name="thank_you">Thank You</string>
     <string name="back_to_my_course">Back To My Courses</string>
 
-    <string name="toast_course_alry_whishlist">Course already enrolled so you caa not add it to your wishlist</string>
+    <string name="toast_course_alry_whishlist">Course already enrolled so you can not add it to your wishlist</string>
 
     <string name="previous">Previous</string>
     <string name="congrat_success">Congratulations ! You have successfully completed the</string>
 
     <string name="reset_course">Reset Course to start</string>
+    <string name="plz_fill_ans">Please fill the answer</string>
+    <string name="no_download">No certificate download for this course</string>
+    <string name="reset_course_no_start">Reset course to start cannot be done</string>
+
+    <string name="blog">Blogs</string>
+    <string name="document">Document</string>
+    <string name="doc_downlad">Document Downloaded Successfully.</string>
+    <string name="open_report">Open report</string>
+    <string name="downloding">Downloading</string>
+    <string name="take_photo">Take Photo</string>
+    <string name="choose_photo">Choose Photo</string>
+    <string name="add_photo">Add Photo</string>
 </resources>

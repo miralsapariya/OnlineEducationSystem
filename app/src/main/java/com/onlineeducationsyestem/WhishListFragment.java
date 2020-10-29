@@ -2,8 +2,10 @@ package com.onlineeducationsyestem;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -35,6 +37,7 @@ public class WhishListFragment extends BaseActivity implements OnItemClick, Dele
     private WhishListAdapter whishListAdapter;
     private ImageView imgBack;
     MyWhishList data;
+    private TextView tvNoRecord;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +48,8 @@ public class WhishListFragment extends BaseActivity implements OnItemClick, Dele
 
     @Override
     public void onGridClick(int pos) {
-        Intent intent = new Intent(WhishListFragment.this, SubCategoryActivity.class);
+        Intent intent = new Intent(WhishListFragment.this, CourseDetailActivity.class);
+        intent.putExtra("course_id", pos+"");
         startActivity(intent);
     }
 
@@ -78,6 +82,7 @@ public class WhishListFragment extends BaseActivity implements OnItemClick, Dele
 
         recyclerView = findViewById(R.id.recyclerView);
         imgBack = findViewById(R.id.imgBack);
+        tvNoRecord =findViewById(R.id.tvNoRecord);
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -114,11 +119,18 @@ public class WhishListFragment extends BaseActivity implements OnItemClick, Dele
         if (requestCode == ServerConstents.WHISH_LIST) {
             data = (MyWhishList) response;
             if (data.getStatus() == ServerConstents.CODE_SUCCESS) {
-                whishListAdapter = new WhishListAdapter(WhishListFragment.this, data.getData().get(0).getCourseslist(), this, this);
-                recyclerView.setItemAnimator(new DefaultItemAnimator());
-                LinearLayoutManager manager = new LinearLayoutManager(WhishListFragment.this);
-                recyclerView.setLayoutManager(manager);
-                recyclerView.setAdapter(whishListAdapter);
+                if(data.getData().get(0).getCourseslist().size() >0) {
+                    tvNoRecord.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
+                    whishListAdapter = new WhishListAdapter(WhishListFragment.this, data.getData().get(0).getCourseslist(), this, this);
+                    recyclerView.setItemAnimator(new DefaultItemAnimator());
+                    LinearLayoutManager manager = new LinearLayoutManager(WhishListFragment.this);
+                    recyclerView.setLayoutManager(manager);
+                    recyclerView.setAdapter(whishListAdapter);
+                }else{
+                    tvNoRecord.setVisibility(View.VISIBLE);
+                    recyclerView.setVisibility(View.GONE);
+                }
             }
         }else if (requestCode == ServerConstents.DEFUALT_CAT) {
                 BaseBean data = (BaseBean) response;
@@ -133,8 +145,21 @@ public class WhishListFragment extends BaseActivity implements OnItemClick, Dele
     @Override
     public void onError(String response, int requestCode, int errorCode) {
         if (requestCode == ServerConstents.DEFUALT_CAT) {
-            if (AppUtils.isInternetAvailable(WhishListFragment.this)) {
-                getWhishList();
+            Log.d("ERRO CODE:: ", errorCode+"");
+            if(errorCode == 401)
+            {
+                tvNoRecord.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.GONE);
+            }else if(errorCode == 403) {
+                if (AppUtils.isInternetAvailable(WhishListFragment.this)) {
+                    getWhishList();
+                }
+            }
+        }else if (requestCode == ServerConstents.WHISH_LIST) {
+            if(errorCode == 401)
+            {
+                tvNoRecord.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.GONE);
             }
         }
         Toast.makeText(WhishListFragment.this, response, Toast.LENGTH_SHORT).show();
@@ -143,6 +168,7 @@ public class WhishListFragment extends BaseActivity implements OnItemClick, Dele
 
     @Override
     public void onFailure() {
-
+        tvNoRecord.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
     }
 }

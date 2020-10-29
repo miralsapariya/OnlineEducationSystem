@@ -74,6 +74,9 @@ this.data = data;
         @SerializedName("country_name")
         @Expose
         private String countryName;
+        @SerializedName("country_code")
+        @Expose
+        private String country_code;
 
 
         @SerializedName("join_date")
@@ -84,8 +87,16 @@ this.data = data;
         @Expose
         private int course;
 
+
         private final static long serialVersionUID = -4234654006100548697L;
 
+        public String getCountry_code() {
+            return country_code;
+        }
+
+        public void setCountry_code(String country_code) {
+            this.country_code = country_code;
+        }
 
         public String getCountryName() {
             return countryName;

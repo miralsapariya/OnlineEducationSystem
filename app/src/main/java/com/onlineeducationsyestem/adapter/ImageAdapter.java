@@ -35,7 +35,7 @@ public class ImageAdapter extends PagerAdapter {
     }
     @Override
     public int getCount() {
-        return GalImages.length;
+        return list.size();
     }
 
     @Override

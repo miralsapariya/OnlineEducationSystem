@@ -98,7 +98,6 @@ public class CategoryFragment extends BaseFragment implements OnItemClick, Netwo
     public void onSuccess(int responseCode, Object response, int requestCode) {
         if(requestCode == ServerConstents.CATEGORY) {
             data= (Category) response;
-
             tvNameCategory.setText(data.getData().get(0).getCategoryLabel());
             //top cat
             int numberOfColumns = 3;

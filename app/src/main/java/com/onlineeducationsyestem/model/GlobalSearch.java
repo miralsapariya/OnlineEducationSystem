@@ -92,13 +92,27 @@ public class GlobalSearch implements Serializable
         @SerializedName("category_name")
         @Expose
         private String categoryName;
-        @SerializedName("publish_on")
-        @Expose
-        private String publishOn;
+
 
         @SerializedName("is_added")
         @Expose
         private Integer is_added;
+
+        @SerializedName("publish_on")
+        @Expose
+        private String publishOn;
+        public Integer getIs_purchased() {
+            return is_purchased;
+        }
+
+        public void setIs_purchased(Integer is_purchased) {
+            this.is_purchased = is_purchased;
+        }
+
+        @SerializedName("is_purchased")
+        @Expose
+        private Integer is_purchased;
+
 
         private final static long serialVersionUID = -5592562109560271613L;
 

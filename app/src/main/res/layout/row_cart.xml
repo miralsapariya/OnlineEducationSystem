@@ -119,7 +119,7 @@
                 android:paddingBottom="8dp"
                 android:textSize="@dimen/_9ssp"
                 android:layout_height="wrap_content"
-                android:text="Byu with GPAY"
+                android:text="Buy with GPAY"
                 android:background="@drawable/round_rect_dialog_bg"
                 android:textColor="@color/font1"
                 />
@@ -144,6 +144,7 @@
                     android:gravity="center_vertical"
                     android:hint="@string/promo_code"
                     android:padding="5dp"
+                    android:textCursorDrawable="@drawable/custom_cursor"
                     />
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvApply"

@@ -33,6 +33,9 @@ public class ThankYouActivity extends AppCompatActivity {
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent =new Intent(ThankYouActivity.this,MainActivity.class);
+                intent.putExtra("from", "thankyou");
+                startActivity(intent);
                 finish();
             }
         });

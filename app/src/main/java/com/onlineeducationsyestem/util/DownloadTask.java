@@ -9,6 +9,8 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.StrictMode;
 import android.util.Log;
+import android.view.Gravity;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.view.ContextThemeWrapper;
@@ -30,6 +32,7 @@ public class DownloadTask {
 
     private String downloadUrl = "", downloadFileName = "";
     private ProgressDialog progressDialog;
+    AlertDialog alertDialog = null;
 
     public DownloadTask(Context context, String downloadUrl) {
         this.context = context;
@@ -51,7 +54,7 @@ public class DownloadTask {
         protected void onPreExecute() {
             super.onPreExecute();
             progressDialog = new ProgressDialog(context);
-            progressDialog.setMessage("Downloading...");
+            progressDialog.setMessage(context.getString(R.string.downloding)+"...");
             progressDialog.setCancelable(false);
             progressDialog.show();
         }
@@ -59,20 +62,22 @@ public class DownloadTask {
         @Override
         protected void onPostExecute(Void result) {
             try {
+
                 if (outputFile != null) {
                     progressDialog.dismiss();
+
                     ContextThemeWrapper ctw = new ContextThemeWrapper( context, R.style.MyDialogTheme);
                      AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ctw);
-                    alertDialogBuilder.setTitle("Document  ");
-                    alertDialogBuilder.setMessage("Document Downloaded Successfully ");
+                    alertDialogBuilder.setTitle(context.getString(R.string.document));
+                    alertDialogBuilder.setMessage(context.getString(R.string.doc_downlad));
                     alertDialogBuilder.setCancelable(false);
-                    alertDialogBuilder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                    alertDialogBuilder.setPositiveButton(context.getString(R.string.ok), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-
+                            alertDialog.dismiss();
                         }
                     });
 
-                    alertDialogBuilder.setNegativeButton("Open report",new DialogInterface.OnClickListener() {
+                    alertDialogBuilder.setNegativeButton(context.getString(R.string.open_report),new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
                             StrictMode.setVmPolicy(builder.build());
@@ -93,27 +98,20 @@ public class DownloadTask {
                             Intent intent =new Intent(context, WebPDFActivity.class);
                             intent.putExtra("file", pdfFile.getAbsolutePath());
                             context.startActivity(intent);
-                           /* String extension = MimeTypeMap.getFileExtensionFromUrl(Uri.fromFile(pdfFile).toString());
-
-                            String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
-
-                            Intent intent = new Intent(Intent.ACTION_VIEW);
-
-                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                            intent.setDataAndType(path, "application/pdf");
-                            Uri uri = FileProvider.getUriForFile(context,
-                                    BuildConfig.APPLICATION_ID + ".provider", pdfFile);
-                            intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-
-                            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION
-                                    | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                            context.startActivity(Intent.createChooser(intent, "choseFile"));
-                       */
 
                         }
                     });
                     alertDialogBuilder.show();
+                    alertDialog = alertDialogBuilder.create();
+                    alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                        @Override
+                        public void onShow(DialogInterface dlg) {
+                            if(AppSharedPreference.getInstance().getString(context, AppSharedPreference.LANGUAGE_SELECTED).equals("ar")) {
+                                TextView messageText1 = alertDialog.findViewById(android.R.id.text2);
+                                messageText1.setGravity(Gravity.END);
+                            }
+                        }
+                    });
 //                    Toast.makeText(context, "Document Downloaded Successfully", Toast.LENGTH_SHORT).show();
                 } else {
 

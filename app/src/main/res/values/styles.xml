@@ -22,9 +22,15 @@
     </style>
 
     <style name="edittext_grevity">
-
         <item name="android:gravity">start|center_vertical</item>
         <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="ThemeSpinner">
+        <!-- Color when pressed -->
+        <item name="colorAccent">#ffffff</item>
+        <!-- Default color for the dropdown arrow and line -->
+        <item name="colorControlNormal">#ffffff</item>
     </style>
 
     <style name="MyTheme" parent="android:Theme.Holo.Dialog">

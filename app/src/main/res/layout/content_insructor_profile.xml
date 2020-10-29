@@ -28,7 +28,7 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_gravity="center"
-            android:src="@drawable/learn"
+            android:src="@mipmap/placeholder"
             android:layout_marginTop="@dimen/_10sdp"
             app:civ_border_color="@color/colorPrimary"
             app:civ_border_width="2dp"
@@ -37,23 +37,23 @@
             app:civ_shadow_radius="4dp" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/_2sdp"
             android:gravity="center"
-            android:text="John Lee"
             android:textDirection="locale"
             android:textColor="@color/black"
             android:textSize="@dimen/_15ssp" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvCatgory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
             android:textDirection="locale"
-            android:text="AWS certified"
             android:textColor="@color/font1"
             android:textSize="@dimen/_10ssp" />
 
@@ -81,10 +81,10 @@
                 android:layout_height="wrap_content">
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvCourses"
                     android:layout_width="match_parent"
                     android:gravity="center"
                     android:textSize="@dimen/_9ssp"
-                    android:text="400"
                     android:textDirection="locale"
                     android:textColor="@color/black"
                     android:layout_height="wrap_content" />
@@ -112,10 +112,10 @@
                 android:orientation="vertical"
                 android:layout_height="wrap_content">
                 <androidx.appcompat.widget.AppCompatTextView
+                   android:id="@+id/tvSubscriber"
                     android:layout_width="match_parent"
                     android:gravity="center"
                     android:textSize="@dimen/_9ssp"
-                    android:text="100"
                     android:textDirection="locale"
                     android:textColor="@color/black"
                     android:layout_height="wrap_content" />
@@ -156,12 +156,12 @@
         />
 
     <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="@dimen/_10ssp"
         android:textDirection="locale"
         android:textColor="@color/font1"
-        android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation"
         />
 
     <androidx.appcompat.widget.AppCompatTextView

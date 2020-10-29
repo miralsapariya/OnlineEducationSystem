@@ -31,7 +31,8 @@ public class MyApplication extends Application {
             } else {
 
                 String languageToLoad = "ar"; // your language
-                Locale locale = new Locale(languageToLoad);
+               // "MA" For Morocco to use 0123... number not in arbic
+                Locale locale = new Locale(languageToLoad,"MA");
                 Locale.setDefault(locale);
                 config = new Configuration();
                 config.locale = locale;
@@ -59,6 +60,7 @@ public class MyApplication extends Application {
 
             } else {
 
+                // "MA" For Morocco to use 0123... number not in arbic
                 String languageToLoad = "ar"; // your language
                 Locale locale = new Locale(languageToLoad);
                 Locale.setDefault(locale);

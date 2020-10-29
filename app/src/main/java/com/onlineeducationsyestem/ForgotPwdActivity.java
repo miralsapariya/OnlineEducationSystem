@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.hbb20.CountryCodePicker;
 import com.onlineeducationsyestem.interfaces.NetworkListener;
 import com.onlineeducationsyestem.model.BaseBean;
 import com.onlineeducationsyestem.model.ForgotPwd;
@@ -38,7 +39,8 @@ public class ForgotPwdActivity extends AppCompatActivity implements NetworkListe
     CountDownTimer countDownTimer;
     private AppSharedPreference preference;
     private String userId="";
-
+    private CountryCodePicker ccp;
+    private String selectedCountryCode="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +55,15 @@ public class ForgotPwdActivity extends AppCompatActivity implements NetworkListe
         etPhone =findViewById(R.id.etPhone);
         etNewPwd =findViewById(R.id.etNewPwd);
         etResetPwd =findViewById(R.id.etResetPwd);
+        ccp=findViewById(R.id.ccp);
+        selectedCountryCode =ccp.getSelectedCountryCodeWithPlus();
+
+        ccp.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
+            @Override
+            public void onCountrySelected() {
+                selectedCountryCode =ccp.getSelectedCountryCodeWithPlus();
+            }
+        });
 
         llMain =findViewById(R.id.llMain);
         llForgot =findViewById(R.id.llForgot);
@@ -143,7 +154,7 @@ public class ForgotPwdActivity extends AppCompatActivity implements NetworkListe
         AppUtils.showDialog(this, getString(R.string.pls_wait));
         ApiInterface apiInterface = RestApi.getConnection(ApiInterface.class, ServerConstents.API_URL);
         final HashMap params = new HashMap<>();
-        params.put("phone_no", phone);
+        params.put("phone_no", selectedCountryCode+"-"+phone);
         if (AppSharedPreference.getInstance().getString(ForgotPwdActivity.this, AppSharedPreference.LANGUAGE_SELECTED) == null ||
                 AppSharedPreference.getInstance().getString(ForgotPwdActivity.this, AppSharedPreference.LANGUAGE_SELECTED).equalsIgnoreCase(AppConstant.ENG_LANG)) {
             lang = AppConstant.ENG_LANG;
@@ -164,7 +175,7 @@ public class ForgotPwdActivity extends AppCompatActivity implements NetworkListe
         ApiInterface apiInterface = RestApi.getConnection(ApiInterface.class, ServerConstents.API_URL);
         final HashMap params = new HashMap<>();
         params.put("otp", etOtp.getText().toString());
-        params.put("phone_no", phone);
+        params.put("phone_no", selectedCountryCode+"-"+phone);
         if (AppSharedPreference.getInstance().getString(ForgotPwdActivity.this, AppSharedPreference.LANGUAGE_SELECTED) == null ||
                 AppSharedPreference.getInstance().getString(ForgotPwdActivity.this, AppSharedPreference.LANGUAGE_SELECTED).equalsIgnoreCase(AppConstant.ENG_LANG)) {
             lang = AppConstant.ENG_LANG;
@@ -184,7 +195,7 @@ public class ForgotPwdActivity extends AppCompatActivity implements NetworkListe
         AppUtils.showDialog(this, getString(R.string.pls_wait));
         ApiInterface apiInterface = RestApi.getConnection(ApiInterface.class, ServerConstents.API_URL);
         final HashMap params = new HashMap<>();
-        params.put("phone_no", etPhone.getText().toString());
+        params.put("phone_no", selectedCountryCode+"-"+etPhone.getText().toString());
         if (AppSharedPreference.getInstance().getString(ForgotPwdActivity.this, AppSharedPreference.LANGUAGE_SELECTED) == null ||
                 AppSharedPreference.getInstance().getString(ForgotPwdActivity.this, AppSharedPreference.LANGUAGE_SELECTED).equalsIgnoreCase(AppConstant.ENG_LANG)) {
             lang = AppConstant.ENG_LANG;

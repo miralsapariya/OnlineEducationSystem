@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -132,41 +133,45 @@ public class LessionSlideActivity extends BaseActivity implements NetworkListene
                 tvCourseName.setText(data.getData().get(0).getCourseTitle());
                 tvSectionName.setText(data.getData().get(0).getSectionTitle());
                 tvSlideName.setText(data.getData().get(0).getSectionSlideDetails().getSlideName());
-                if(! data.getData().get(0).getSectionSlideDetails().getSlideDesc().equals(""))
+
+                //String value = response.body().getAsJsonObject().get("pair_name").getAsString();
+                if(data.getData().get(0).getSectionSlideDetails()== null || data.getData().get(0).getSectionSlideDetails().getSlideDesc()==null)
                 {
-                    tvDescription.setVisibility(View.VISIBLE);
-                    loadDescription();
-                }else{
-                    tvDescription.setVisibility(View.GONE);
-                }
-                if(! data.getData().get(0).getSectionSlideDetails().getSlideImage().equals(""))
-                {
-                    imgSlide.setVisibility(View.VISIBLE);
-                    loadImage();
+                    Log.d("============nullllll","nullllll");
                 }else {
-                    imgSlide.setVisibility(View.GONE);
-                }
-                if(! data.getData().get(0).getSectionSlideDetails().getSlideBackgroundImage().equals(""))
-                {
-                    imgBackgroundImage.setVisibility(View.VISIBLE);
-                    loadBackgroundImage();
-                }else{
-                    imgBackgroundImage.setVisibility(View.GONE);
-                }
-                if(! data.getData().get(0).getSectionSlideDetails().getVideoUrl().equals(""))
-                {
-                    videoView.setVisibility(View.VISIBLE);
-                    playVideo(data.getData().get(0).getSectionSlideDetails().getVideoUrl());
-                }else{
-                    videoView.setVisibility(View.GONE);
-                }
-                if(! data.getData().get(0).getSectionSlideDetails().getDocumentUrl().equals("")) {
-                    webView.setVisibility(View.VISIBLE);
-                   // scrollView.setVisibility(View.VISIBLE);
-                    loadWebview(data.getData().get(0).getSectionSlideDetails().getDocumentUrl());
-                }else {
-                    webView.setVisibility(View.GONE);
-                   //scrollView.setVisibility(View.GONE);
+
+                    if (!data.getData().get(0).getSectionSlideDetails().getSlideDesc().equals("")) {
+                        tvDescription.setVisibility(View.VISIBLE);
+                        loadDescription();
+                    } else {
+                        tvDescription.setVisibility(View.GONE);
+                    }
+                    if (!data.getData().get(0).getSectionSlideDetails().getSlideImage().equals("")) {
+                        imgSlide.setVisibility(View.VISIBLE);
+                        loadImage();
+                    } else {
+                        imgSlide.setVisibility(View.GONE);
+                    }
+                    if (!data.getData().get(0).getSectionSlideDetails().getSlideBackgroundImage().equals("")) {
+                        imgBackgroundImage.setVisibility(View.VISIBLE);
+                        loadBackgroundImage();
+                    } else {
+                        imgBackgroundImage.setVisibility(View.GONE);
+                    }
+                    if (!data.getData().get(0).getSectionSlideDetails().getVideoUrl().equals("")) {
+                        videoView.setVisibility(View.VISIBLE);
+                        playVideo(data.getData().get(0).getSectionSlideDetails().getVideoUrl());
+                    } else {
+                        videoView.setVisibility(View.GONE);
+                    }
+                    if (!data.getData().get(0).getSectionSlideDetails().getDocumentUrl().equals("")) {
+                        webView.setVisibility(View.VISIBLE);
+                        // scrollView.setVisibility(View.VISIBLE);
+                        loadWebview(data.getData().get(0).getSectionSlideDetails().getDocumentUrl());
+                    } else {
+                        webView.setVisibility(View.GONE);
+                        //scrollView.setVisibility(View.GONE);
+                    }
                 }
             }
         }else if(requestCode == ServerConstents.CHECK_COURSE)
@@ -195,6 +200,7 @@ public class LessionSlideActivity extends BaseActivity implements NetworkListene
         }
 
     }
+
     private void loadBackgroundImage()
     {
         AppUtils.loadImageWithPicasso(data.getData().get(0).getSectionSlideDetails().getSlideBackgroundImage() , imgSlide, LessionSlideActivity.this, 0, 0);
@@ -242,8 +248,13 @@ public class LessionSlideActivity extends BaseActivity implements NetworkListene
                 callApi();
                 }
                 else{
-                    if (AppUtils.isInternetAvailable(LessionSlideActivity.this)) {
-                        checkIfQuizOptionalOrNot();
+                    if(data.getData().get(0).getIs_completed() ==1)
+                    {
+                     finish();
+                    }else {
+                        if (AppUtils.isInternetAvailable(LessionSlideActivity.this)) {
+                            checkIfQuizOptionalOrNot();
+                        }
                     }
 
                 }

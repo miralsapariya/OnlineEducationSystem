@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.hbb20.CountryCodePicker;
 import com.onlineeducationsyestem.interfaces.NetworkListener;
 import com.onlineeducationsyestem.model.BaseBean;
 import com.onlineeducationsyestem.model.User;
@@ -35,7 +36,8 @@ public class OTPActivity extends BaseActivity implements NetworkListener {
     private LinearLayout llMain;
     private TextView btnVerify,tvTimer,tvResend;
     private AppSharedPreference preference;
-
+    private CountryCodePicker ccp;
+    private String selectedCountryCode="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +50,16 @@ public class OTPActivity extends BaseActivity implements NetworkListener {
         preference = AppSharedPreference.getInstance();
         etOtp =findViewById(R.id.etOtp);
         llMain =findViewById(R.id.llMain);
+
+        //ccp=findViewById(R.id.ccp);
+
+      /*  ccp.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
+            @Override
+            public void onCountrySelected() {
+                selectedCountryCode =ccp.getSelectedCountryCodeWithPlus();
+            }
+        });
+*/
         Bundle extras = getIntent().getExtras();
         if (extras == null) {
             return;
@@ -55,6 +67,8 @@ public class OTPActivity extends BaseActivity implements NetworkListener {
         // get data via the key
         phone  = extras.getString("phone");
         response_code =extras.getString("response_code");
+        selectedCountryCode =extras.getString("country_code");
+
         btnVerify=findViewById(R.id.btnVerify);
         tvTimer =findViewById(R.id.tvTimer);
         countDownTimer();
@@ -96,7 +110,7 @@ public class OTPActivity extends BaseActivity implements NetworkListener {
         AppUtils.showDialog(this, getString(R.string.pls_wait));
         ApiInterface apiInterface = RestApi.getConnection(ApiInterface.class, ServerConstents.API_URL);
         final HashMap params = new HashMap<>();
-        params.put("phone_no", phone);
+        params.put("phone_no", selectedCountryCode+"-"+phone);
         if (AppSharedPreference.getInstance().getString(OTPActivity.this, AppSharedPreference.LANGUAGE_SELECTED) == null ||
                 AppSharedPreference.getInstance().getString(OTPActivity.this, AppSharedPreference.LANGUAGE_SELECTED).equalsIgnoreCase(AppConstant.ENG_LANG)) {
             lang = AppConstant.ENG_LANG;
@@ -117,7 +131,7 @@ public class OTPActivity extends BaseActivity implements NetworkListener {
         ApiInterface apiInterface = RestApi.getConnection(ApiInterface.class, ServerConstents.API_URL);
         final HashMap params = new HashMap<>();
         params.put("otp", etOtp.getText().toString());
-        params.put("phone_no", phone);
+        params.put("phone_no", selectedCountryCode+"-"+phone);
         if (AppSharedPreference.getInstance().getString(OTPActivity.this, AppSharedPreference.LANGUAGE_SELECTED) == null ||
                 AppSharedPreference.getInstance().getString(OTPActivity.this, AppSharedPreference.LANGUAGE_SELECTED).equalsIgnoreCase(AppConstant.ENG_LANG)) {
             lang = AppConstant.ENG_LANG;

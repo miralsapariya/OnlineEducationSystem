@@ -9,9 +9,11 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.hbb20.CountryCodePicker;
 import com.onlineeducationsyestem.interfaces.NetworkListener;
 import com.onlineeducationsyestem.model.User;
 import com.onlineeducationsyestem.network.ApiCall;
@@ -34,6 +36,9 @@ public class SignUpActivity extends BaseActivity implements NetworkListener
     private LinearLayout llMain;
     private TextView tvLogin,btnSignUp;
     private ImageView imgBack;
+    private Spinner spinnerCountry;
+    private CountryCodePicker ccp;
+    private String selectedCountryCode="",selectedCountry="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,30 +47,29 @@ public class SignUpActivity extends BaseActivity implements NetworkListener
         initUI();
     }
 
-    private void initUI()
-    {
-        etName =findViewById(R.id.etName);
-        etEmail =findViewById(R.id.etEmail);
-        etPhone =findViewById(R.id.etPhone);
-        etPassword =findViewById(R.id.etPassword);
-        imgBack =findViewById(R.id.imgBack);
+    private void initUI() {
+        etName = findViewById(R.id.etName);
+        etEmail = findViewById(R.id.etEmail);
+        etPhone = findViewById(R.id.etPhone);
+        etPassword = findViewById(R.id.etPassword);
+        imgBack = findViewById(R.id.imgBack);
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
-        llMain =findViewById(R.id.llMain);
-        tvLogin =findViewById(R.id.tvLogin);
+        llMain = findViewById(R.id.llMain);
+        tvLogin = findViewById(R.id.tvLogin);
         tvLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SignUpActivity.this,LoginActivity.class);
+                Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
             }
         });
-        btnSignUp =findViewById(R.id.btnSignUp);
+        btnSignUp = findViewById(R.id.btnSignUp);
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -77,8 +81,21 @@ public class SignUpActivity extends BaseActivity implements NetworkListener
                 }
             }
         });
-    }
 
+        ccp=findViewById(R.id.ccp);
+        selectedCountryCode =ccp.getSelectedCountryCodeWithPlus();
+        selectedCountry =ccp.getSelectedCountryName();
+
+        ccp.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
+            @Override
+            public void onCountrySelected() {
+                selectedCountryCode =ccp.getSelectedCountryCodeWithPlus();
+                selectedCountry =ccp.getSelectedCountryName();
+            }
+        });
+
+
+    }
     private void hintRegister()
     {
         String lang="";
@@ -88,9 +105,10 @@ public class SignUpActivity extends BaseActivity implements NetworkListener
         params.put("name", etName.getText().toString());
         params.put("email", etEmail.getText().toString());
         params.put("password", etPassword.getText().toString());
-        params.put("phone_no", etPhone.getText().toString());
+        params.put("phone_no", selectedCountryCode+"-"+etPhone.getText().toString());
         params.put("device_token", "1234");
         params.put("device_type", ServerConstents.DEVICE_TYPE);
+        params.put("country_name", selectedCountry);
         if (AppSharedPreference.getInstance().getString(SignUpActivity.this, AppSharedPreference.LANGUAGE_SELECTED) == null ||
                 AppSharedPreference.getInstance().getString(SignUpActivity.this, AppSharedPreference.LANGUAGE_SELECTED).equalsIgnoreCase(AppConstant.ENG_LANG)) {
             lang = AppConstant.ENG_LANG;
@@ -111,18 +129,16 @@ public class SignUpActivity extends BaseActivity implements NetworkListener
            Toast.makeText(SignUpActivity.this, data.getStatus(), Toast.LENGTH_SHORT).show();
         }
 
-
         AppConstant.registerData =data;
         Intent intent =new Intent(SignUpActivity.this, OTPActivity.class);
         intent.putExtra("name", etName.getText().toString());
         intent.putExtra("password", etPassword.getText().toString());
         intent.putExtra("email", etEmail.getText().toString());
         intent.putExtra("phone", etPhone.getText().toString());
+        intent.putExtra("country_code", selectedCountryCode);
         intent.putExtra("response_code", "200");
-
         startActivity(intent);
         finish();
-
     }
 
     @Override
@@ -135,8 +151,8 @@ public class SignUpActivity extends BaseActivity implements NetworkListener
             intent.putExtra("password", etPassword.getText().toString());
             intent.putExtra("email", etEmail.getText().toString());
             intent.putExtra("phone", etPhone.getText().toString());
+            intent.putExtra("country_code", selectedCountryCode);
             intent.putExtra("response_code", "403");
-
             startActivity(intent);
             finish();
         }
@@ -186,12 +202,6 @@ public class SignUpActivity extends BaseActivity implements NetworkListener
         { bool=false;
             hideKeyboard();
             Toast.makeText(SignUpActivity.this, getString(R.string.toast_phone), Toast.LENGTH_SHORT).show();
-
-        }else if(etPhone.getText().toString().length() != 10)
-        {
-            bool=false;
-            hideKeyboard();
-            Toast.makeText(SignUpActivity.this, getString(R.string.toast_phone_length), Toast.LENGTH_SHORT).show();
 
         }
 

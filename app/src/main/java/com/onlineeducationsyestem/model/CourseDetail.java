@@ -304,6 +304,19 @@ public class CourseDetail implements Serializable
         @SerializedName("total_course")
         @Expose
         private Integer totalCourse;
+
+        public Integer getInstructor_id() {
+            return instructor_id;
+        }
+
+        public void setInstructor_id(Integer instructor_id) {
+            this.instructor_id = instructor_id;
+        }
+
+        @SerializedName("instructor_id")
+        @Expose
+        private Integer instructor_id;
+
         private final static long serialVersionUID = -6945934332407118435L;
 
         public String getInstructorName() {

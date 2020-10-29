@@ -104,15 +104,46 @@
             android:textColorHint="@color/white"
             android:textDirection="locale"
             android:textSize="@dimen/_13ssp" />
-
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+        <com.hbb20.CountryCodePicker
+            android:id="@+id/ccp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:ccp_arrowColor="@color/white"
+            app:ccp_contentColor="@color/white"
+            app:ccp_flagBorderColor="@color/white"
+            android:textDirection="locale"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:layout_gravity="center_vertical"
+            app:ccp_showFullName="false"
+            app:ccp_showNameCode="false"
+            app:ccp_showPhoneCode="true"
+            app:ccpDialog_textColor="@color/black"
+            app:ccpDialog_backgroundColor="@color/white"
+            app:ccp_autoDetectCountry="true"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/white"
+                    />
+            </LinearLayout>
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/etPhone"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/white"
             android:drawableEnd="@mipmap/phone"
             android:drawablePadding="@dimen/_7sdp"
             android:hint="@string/phone_number"
+            android:digits="0123456789"
             android:layout_marginTop="@dimen/_10sdp"
             android:inputType="phone"
             android:gravity="start"
@@ -122,7 +153,7 @@
             android:textColor="@color/white"
             android:textColorHint="@color/white"
             android:textDirection="locale"
-            android:textSize="@dimen/_13ssp" />
+            android:textSize="@dimen/_13ssp" /></LinearLayout>
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/etPassword"
             android:layout_width="match_parent"

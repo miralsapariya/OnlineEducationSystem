@@ -175,6 +175,20 @@ public class Datum {
     @Expose
     private String courseName;
 
+    public String getParagraph() {
+        return paragraph;
+    }
+
+    public void setParagraph(String paragraph) {
+        this.paragraph = paragraph;
+    }
+
+    @SerializedName("paragraph")
+    @Expose
+    private String paragraph;
+
+
+
     public String getQuiz_over() {
         return quiz_over;
     }

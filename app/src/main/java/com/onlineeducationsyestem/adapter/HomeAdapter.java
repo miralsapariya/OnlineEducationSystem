@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.onlineeducationsyestem.CourseDetailActivity;
+import com.onlineeducationsyestem.InstructorProfileActivity;
 import com.onlineeducationsyestem.PopularInstructorActivity;
 import com.onlineeducationsyestem.R;
 import com.onlineeducationsyestem.SubCategoryActivity;
@@ -126,10 +127,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>
             });
 
         }else {
-            HomeAdapterInstructor homeAdapter =
-                    new HomeAdapterInstructor(context, data.getList(), new OnInstructorsClick() {
+            HomeAdapterInstructor1 homeAdapter =
+                    new HomeAdapterInstructor1(context, data.getList(), new OnInstructorsClick() {
                         @Override
                         public void onInstructorClick(int pos) {
+                            Intent intent=new Intent(context, InstructorProfileActivity.class);
+                            intent.putExtra("instructor_id", data.getList().get(pos).getId()+"");
+                            context.startActivity(intent);
 
                         }
                     });

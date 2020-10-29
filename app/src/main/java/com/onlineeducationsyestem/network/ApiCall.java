@@ -116,7 +116,7 @@ public class ApiCall {
                     networkListener.onFailure();
                 } catch (Exception e) {
                     AppUtils.dismissDialog();
-                    Log.d("ERROR IN PRSING ", ""+e.getMessage());
+                    Log.d("ERROR ", ""+e.getMessage());
                     e.printStackTrace();
                     //commanDialogError(context);
                     networkListener.onFailure();

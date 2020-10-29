@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.onlineeducationsyestem.R;
 import com.onlineeducationsyestem.interfaces.OnInstructorsClick;
-import com.onlineeducationsyestem.model.Home;
+import com.onlineeducationsyestem.model.InstructorProfile;
 import com.onlineeducationsyestem.util.AppUtils;
 
 import java.util.ArrayList;
@@ -20,13 +20,13 @@ import java.util.ArrayList;
 public class HomeAdapterInstructor extends RecyclerView.Adapter<HomeAdapterInstructor.ViewHolder>
        {
 
-    private ArrayList<Home.List1> listProduct;
+    private ArrayList<InstructorProfile.List> listProduct;
     private LayoutInflater mInflater;
     private OnInstructorsClick onItemClick;
     private Context context;
 
     public HomeAdapterInstructor(Context context,
-                                 ArrayList<Home.List1> listProduct, OnInstructorsClick onItemClick) {
+                                 ArrayList<InstructorProfile.List> listProduct, OnInstructorsClick onItemClick) {
         this.mInflater = LayoutInflater.from(context);
         this.context =context;
         this.listProduct = listProduct;
@@ -42,7 +42,7 @@ public class HomeAdapterInstructor extends RecyclerView.Adapter<HomeAdapterInstr
 
     @Override
     public void onBindViewHolder(final HomeAdapterInstructor.ViewHolder holder, final int position) {
-        final  Home.List1 data = listProduct.get(position);
+        final  InstructorProfile.List data = listProduct.get(position);
 
         holder.llInstructor.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,7 +65,7 @@ public class HomeAdapterInstructor extends RecyclerView.Adapter<HomeAdapterInstr
         return listProduct.size();
     }
 
-    public  Home.List1 getItem(int id) {
+    public  InstructorProfile.List getItem(int id) {
         return listProduct.get(id);
     }
 

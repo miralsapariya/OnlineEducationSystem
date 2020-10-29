@@ -122,6 +122,7 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:visibility="gone"
                 android:orientation="vertical"
                 android:layoutDirection="locale"
                 android:textDirection="locale"
@@ -144,6 +145,7 @@
             </LinearLayout>
 
             <View
+                android:visibility="gone"
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
                 android:background="@color/border_color" />
@@ -396,7 +398,7 @@
                     android:id="@+id/imgUser"
                     android:layout_width="120dp"
                     android:layout_height="130dp"
-                    android:src="@drawable/learn" />
+                    android:src="@mipmap/placeholder" />
             </LinearLayout>
 
             <LinearLayout
@@ -420,7 +422,6 @@
                         android:drawableStart="@mipmap/student"
                         android:drawablePadding="@dimen/_10sdp"
                         android:gravity="start"
-                        android:text="1150"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_12ssp" />
 
@@ -454,7 +455,6 @@
                         android:drawableStart="@mipmap/play"
                         android:drawablePadding="@dimen/_10sdp"
                         android:singleLine="true"
-                        android:text="9"
                         android:textColor="@color/black"
                         android:textDirection="locale"
                         android:textSize="@dimen/_12ssp" />

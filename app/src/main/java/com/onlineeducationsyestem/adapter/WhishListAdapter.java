@@ -60,7 +60,7 @@ public class WhishListAdapter extends RecyclerView.Adapter<WhishListAdapter.View
             @Override
             public void onClick(View view) {
 
-                onItemClick.onGridClick(position);
+                onItemClick.onGridClick(data.getId());
             }
         });
 

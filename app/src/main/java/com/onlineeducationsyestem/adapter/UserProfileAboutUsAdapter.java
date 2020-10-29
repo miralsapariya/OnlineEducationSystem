@@ -48,10 +48,10 @@ public class UserProfileAboutUsAdapter extends RecyclerView.Adapter<UserProfileA
         }else if(position ==1)
         {
             holder.img.setImageResource(R.mipmap.about_us);
-        }else if(position ==2)
+        }/*else if(position ==2)
         {holder.img.setImageResource(R.mipmap.faq);
-        }
-        else if(position ==3)
+        }*/
+        else if(position ==2)
         {holder.img.setImageResource(R.mipmap.privacypolicy);
         }else {
             holder.img.setImageResource(R.mipmap.terms_conditions);

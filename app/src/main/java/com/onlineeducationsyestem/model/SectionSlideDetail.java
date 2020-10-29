@@ -134,7 +134,7 @@ this.data = data;
         private String sectionTitle;
         @SerializedName("section_slide_details")
         @Expose
-        private SectionSlideDetails sectionSlideDetails;
+        private SectionSlideDetails sectionSlideDetails=null;
         @SerializedName("previous_section")
         @Expose
         private String previousSection;
@@ -147,6 +147,19 @@ this.data = data;
         @SerializedName("next_slide")
         @Expose
         private String nextSlide;
+
+        public Integer getIs_completed() {
+            return is_completed;
+        }
+
+        public void setIs_completed(Integer is_completed) {
+            this.is_completed = is_completed;
+        }
+
+        @SerializedName("is_completed")
+        @Expose
+        private Integer is_completed;
+
 
         public String getCourseTitle() {
             return courseTitle;

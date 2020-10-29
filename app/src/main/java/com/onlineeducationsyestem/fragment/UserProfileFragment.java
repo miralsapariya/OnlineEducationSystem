@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.onlineeducationsyestem.ChangePwdActivity;
+import com.onlineeducationsyestem.DashBoardActivity;
 import com.onlineeducationsyestem.EditUserProfileActivity;
 import com.onlineeducationsyestem.LoginActivity;
 import com.onlineeducationsyestem.R;
@@ -72,7 +73,8 @@ public class UserProfileFragment extends BaseFragment implements OnItemClick, On
 
         ArrayList<String> list=new ArrayList<>();
 
-         list.add(getString(R.string.my_whish_list));
+        list.add(getString(R.string.dasahboard));
+        list.add(getString(R.string.my_whish_list));
         list.add(getString(R.string.my_profile));
         list.add(getString(R.string.change_pwd_));
         //list.add(getString(R.string.whishlist_));
@@ -92,9 +94,10 @@ public class UserProfileFragment extends BaseFragment implements OnItemClick, On
         ArrayList<String> listAboutUs=new ArrayList<>();
         listAboutUs.add(getString(R.string.prefered_lang));
         listAboutUs.add(getString(R.string.about));
-        listAboutUs.add(getString(R.string.faq));
+        //listAboutUs.add(getString(R.string.faq));
         listAboutUs.add(getString(R.string.privacy_policy));
         listAboutUs.add(getString(R.string.terms_n_condition));
+        listAboutUs.add(getString(R.string.blog));
 
         rvAboutUs =view.findViewById(R.id.rvAboutUs);
         userProfileAboutUsAdapter = new UserProfileAboutUsAdapter(activity,listAboutUs , this);
@@ -201,35 +204,57 @@ public class UserProfileFragment extends BaseFragment implements OnItemClick, On
 
     @Override
     public void onSubGridClick(int pos) {
+        String lang="";
+        if (AppSharedPreference.getInstance().getString(activity, AppSharedPreference.LANGUAGE_SELECTED) == null ||
+                AppSharedPreference.getInstance().getString(activity, AppSharedPreference.LANGUAGE_SELECTED).equalsIgnoreCase(AppConstant.ENG_LANG)) {
+            lang = AppConstant.ENG_LANG;
+        } else {
+            lang = AppConstant.ARABIC_LANG;
+        }
+
         if(pos == 0){
             showBottomSheet();
-        }
-        else if(pos == 3)
+        }else if(pos == 1)
         {
             Intent intent =new Intent(activity, WebActivity.class);
-            intent.putExtra("url", AppConstant.PRIVACY_POLICY);
+            intent.putExtra("url", AppConstant.ABOUT_US+lang+"/mobile/aboutus");
             startActivity(intent);
-        }else if(pos == 4)
+        }else if(pos == 2)
         {
             Intent intent =new Intent(activity, WebActivity.class);
-            intent.putExtra("url", AppConstant.TERMS_CONDITION);
+            intent.putExtra("url", AppConstant.PRIVACY_POLICY+lang+"/mobile/privacy_policy");
+            startActivity(intent);
+        }else if(pos == 3)
+        {
+            Intent intent =new Intent(activity, WebActivity.class);
+            intent.putExtra("url", AppConstant.TERMS_CONDITION+lang+"/mobile/terms_of_use");
             startActivity(intent);
 
+        }else if(pos ==4)
+        {
+            Intent intent =new Intent(activity, WebActivity.class);
+            intent.putExtra("url", AppConstant.BLOG+lang+"/mobile/blog");
+            startActivity(intent);
         }
     }
 
     @Override
     public void onGridClick(int pos) {
 
-        if(pos == 0)
+        if(pos ==0)
+        {
+            Intent intent = new Intent(activity, DashBoardActivity.class);
+            startActivity(intent);
+        }
+       else if(pos == 1)
         {
             Intent intent = new Intent(activity, WhishListFragment.class);
             startActivity(intent);
-        }else if(pos == 1)
+        }else if(pos == 2)
         {
             Intent intent =new Intent(activity, EditUserProfileActivity.class);
             startActivity(intent);
-        }else if(pos == 2)
+        }else if(pos == 3)
         {
             Intent intent =new Intent(activity, ChangePwdActivity.class);
             startActivity(intent);

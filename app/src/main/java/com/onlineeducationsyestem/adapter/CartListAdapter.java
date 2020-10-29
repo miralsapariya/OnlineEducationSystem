@@ -75,11 +75,11 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
         });
 
 
-        if(data.getCoursePrice().equalsIgnoreCase("Free")){
+        //free courses
+        if(!data.getCoursePrice().contains("$")){
          amount=0;
         }else {
             amount = Integer.parseInt(data.getCoursePrice().substring(1)) - data.getCourseDiscount();
-
         }
         if (data.getCourseDiscount() == 0) {
             holder.llPromo.setVisibility(View.VISIBLE);

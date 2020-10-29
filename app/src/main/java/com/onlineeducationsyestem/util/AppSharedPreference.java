@@ -23,6 +23,7 @@ public class AppSharedPreference {
     public static final String PWD = "pwd";
 
 
+
     public static AppSharedPreference getInstance() {
         if (appSharedPreference == null) {
             return new AppSharedPreference();

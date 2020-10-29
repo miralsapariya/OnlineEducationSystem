@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".TrendingCourseActivity"
-    tools:showIn="@layout/activity_trending_course">
+    tools:context=".WhishListFragment"
+    tools:showIn="@layout/activity_whish_list">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,16 +18,24 @@
         tools:context=".WhishListFragment"
         >
 
-
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10ssp"
+
             >
 
         </androidx.recyclerview.widget.RecyclerView>
+        <TextView
+            android:id="@+id/tvNoRecord"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/no_record"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            />
 
         <LinearLayout
             android:id="@+id/llNologin"

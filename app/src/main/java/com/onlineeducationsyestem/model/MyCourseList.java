@@ -96,6 +96,32 @@ public class Courseslist {
     @Expose
     private String next_slide_id;
 
+    public Integer getIs_coursereset() {
+        return is_coursereset;
+    }
+
+    public void setIs_coursereset(Integer is_coursereset) {
+        this.is_coursereset = is_coursereset;
+    }
+
+    @SerializedName("is_coursereset")
+    @Expose
+    private  Integer is_coursereset;
+
+
+    public String getCertificate_link() {
+        return certificate_link;
+    }
+
+    public void setCertificate_link(String certificate_link) {
+        this.certificate_link = certificate_link;
+    }
+
+    @SerializedName("certificate_link")
+    @Expose
+    private String certificate_link;
+
+
     public Integer getPercentage() {
         return percentage;
     }

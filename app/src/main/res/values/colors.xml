@@ -9,6 +9,7 @@
 
     <color name="button_bg">#e98074</color>
     <color name="black">#000000</color>
+    <color name="spinner_bg">#80000000</color>
     <!--#e85a4f ,#b54136 , #000000 ,#8e8d8a-->
 
     <color name="font1">#8e8d8a</color>
@@ -18,5 +19,9 @@
     <color name="blue">#107084</color>
     <color name="shadow_color">#C0C0BE</color>
     <color name="green">#a4c639</color>
+    <color name="chart1">#1DAF8A</color>
+    <color name="chart2">#FFC227</color>
+    <color name="purple">#c4a2fc</color>
+    <color name="cyan">#25ae88</color>
 
 </resources>

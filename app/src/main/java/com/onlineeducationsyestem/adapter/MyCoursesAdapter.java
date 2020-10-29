@@ -1,26 +1,32 @@
 package com.onlineeducationsyestem.adapter;
 
+import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
+import android.graphics.Point;
+import android.graphics.drawable.BitmapDrawable;
+import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import androidx.appcompat.widget.PopupMenu;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.onlineeducationsyestem.MainActivity;
 import com.onlineeducationsyestem.R;
+import com.onlineeducationsyestem.interfaces.DownloadClick;
 import com.onlineeducationsyestem.interfaces.OnCardViewClick;
 import com.onlineeducationsyestem.interfaces.OnItemClick;
+import com.onlineeducationsyestem.interfaces.OnResetCourse;
 import com.onlineeducationsyestem.model.MyCourseList;
 import com.onlineeducationsyestem.util.AppUtils;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 public class MyCoursesAdapter extends RecyclerView.Adapter<MyCoursesAdapter.ViewHolder> {
@@ -30,15 +36,20 @@ public class MyCoursesAdapter extends RecyclerView.Adapter<MyCoursesAdapter.View
     private Context context;
     private OnItemClick onItemClick;
     private OnCardViewClick onCardViewClick;
+    private DownloadClick downloadClick;
+    private OnResetCourse onResetCourse;
 
     public MyCoursesAdapter(Context context,
                             ArrayList<MyCourseList.Courseslist> listProduct,
-                            OnItemClick onItemClick,OnCardViewClick onCardViewClick) {
+                            OnItemClick onItemClick, OnCardViewClick onCardViewClick,
+                            DownloadClick downloadClick, OnResetCourse onResetCourse) {
         this.mInflater = LayoutInflater.from(context);
         this.context = context;
         this.listProduct = listProduct;
         this.onItemClick = onItemClick;
         this.onCardViewClick =onCardViewClick;
+        this.downloadClick =downloadClick;
+        this.onResetCourse =onResetCourse;
     }
 
     @Override
@@ -74,9 +85,20 @@ public class MyCoursesAdapter extends RecyclerView.Adapter<MyCoursesAdapter.View
         holder.imgSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //creating a popup menu
-                PopupMenu popup = new PopupMenu(context, holder.imgSetting);
-                //inflating menu from xml resource
+                int[] location = new int[2];
+                int currentRowId = position;
+                View currentRow = view;
+                // Get the x, y location and store it in the location[] array
+                // location[0] = x, location[1] = y.
+                view.getLocationOnScreen(location);
+
+                //Initialize the Point with x, and y positions
+                Point point = new Point();
+                point.x = location[0];
+                point.y = location[1];
+                showStatusPopup((MainActivity)context, point,data,position);
+
+            /*    PopupMenu popup = new PopupMenu(context, holder.imgSetting);
                 popup.inflate(R.menu.menu_my_couses);
                 try {
                     Method method = popup.getMenu().getClass().getDeclaredMethod("setOptionalIconsVisible", boolean.class);
@@ -85,30 +107,82 @@ public class MyCoursesAdapter extends RecyclerView.Adapter<MyCoursesAdapter.View
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                //adding click listener
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.menu1:
                                 //handle menu1 click
-                                Log.d("=========== ", "menu1");
+                                if(data.getCertificate_link().length() > 1)
+                                downloadClick.onDownload(position);
+                                else
+                                    Toast.makeText(context, context.getString(R.string.no_download),Toast.LENGTH_SHORT ).show();
                                 break;
                             case R.id.menu2:
                                 //handle menu2 click
-                                Log.d("=========== ", "menu2");
+                                if(data.getIs_coursereset() == 1)
+                                onResetCourse.onReset(position);
+                                else
+                                    Toast.makeText(context, context.getString(R.string.reset_course_no_start),Toast.LENGTH_SHORT ).show();
                                 break;
 
                         }
                         return false;
                     }
                 });
-                //displaying the popup
-                popup.show();
+                popup.show();*/
             }
         });
 
     }
+    private void showStatusPopup(final Activity context, Point p, final MyCourseList.Courseslist data, final int position) {
+
+        // Inflate the popup_layout.xml
+        LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View layout = layoutInflater.inflate(R.layout.popup_menu, null);
+
+        // Creating the PopupWindow
+        PopupWindow changeStatusPopUp = new PopupWindow(context);
+        changeStatusPopUp.setContentView(layout);
+        changeStatusPopUp.setWidth(LinearLayout.LayoutParams.WRAP_CONTENT);
+        changeStatusPopUp.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
+        changeStatusPopUp.setFocusable(true);
+        LinearLayout llDownload=layout.findViewById(R.id.llDownload);
+        LinearLayout llReset=layout.findViewById(R.id.llReset);
+        llDownload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changeStatusPopUp.dismiss();
+                if(data.getCertificate_link().length() > 1)
+                    downloadClick.onDownload(position);
+                else
+                    Toast.makeText(context, context.getString(R.string.no_download),Toast.LENGTH_SHORT ).show();
+
+            }
+        });
+
+        llReset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changeStatusPopUp.dismiss();
+                if(data.getIs_coursereset() == 1)
+                    onResetCourse.onReset(position);
+                else
+                    Toast.makeText(context, context.getString(R.string.reset_course_no_start),Toast.LENGTH_SHORT ).show();
+            }
+        });
+
+        // Some offset to align the popup a bit to the left, and a bit down, relative to button's position.
+        int OFFSET_X = -20;
+        int OFFSET_Y = 50;
+
+        //Clear the default translucent background
+        changeStatusPopUp.setBackgroundDrawable(new BitmapDrawable());
+
+        // Displaying the popup at the specified location, + offsets.
+        changeStatusPopUp.showAtLocation(layout, Gravity.NO_GRAVITY, p.x + OFFSET_X, p.y + OFFSET_Y);
+    }
+
 
 
     @Override

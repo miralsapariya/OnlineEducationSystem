@@ -129,7 +129,7 @@ public class ExamActivity extends BaseActivity implements NetworkListener {
         rvCheckbox.setAdapter(questionTypeCheckboxAdapter);
     }
 
-    private void typeFillInTheBlank(ArrayList<Exam.Option> list, String question) {
+    private void typeFillInTheBlank(ArrayList<Exam.Option> list, String question,String paragraph) {
         inflatedView = View.inflate(ExamActivity.this, R.layout.question_type_fill_in_the_blank, null);
         llContent.addView(inflatedView);
         rvEdittext = inflatedView.findViewById(R.id.rvEdittext);
@@ -138,14 +138,16 @@ public class ExamActivity extends BaseActivity implements NetworkListener {
         tvQuestion.setText(question);
         TextView tvFillInTheBlank = inflatedView.findViewById(R.id.tvFillInTheBlank);
 
-        StringBuilder sb = new StringBuilder();
+        /*StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i < list.size(); i++) {
             sb.append(list.get(i).getOption());
             sb.append("________");
         }
-        String str = sb.toString();
-        tvFillInTheBlank.setText(str);
+        String str = sb.toString();*/
+
+        paragraph =paragraph.replaceAll("\\#Blank#", "________");
+                tvFillInTheBlank.setText(paragraph);
         EdittextAdapter edittextAdapter = new EdittextAdapter(ExamActivity.this, list);
         rvEdittext.setItemAnimator(new DefaultItemAnimator());
         LinearLayoutManager manager = new LinearLayoutManager(ExamActivity.this);
@@ -303,7 +305,7 @@ public class ExamActivity extends BaseActivity implements NetworkListener {
                     llContent.removeView(inflatedView);
                     callNextApi(jsonArray.toString(), data.getData().get(0).getOrder() + 1);
                 } else {
-                    Toast.makeText(ExamActivity.this, "Please fill the answer", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ExamActivity.this, getString(R.string.plz_fill_ans), Toast.LENGTH_SHORT).show();
                 }
             }
             else {
@@ -329,7 +331,7 @@ public class ExamActivity extends BaseActivity implements NetworkListener {
                     llContent.removeView(inflatedView);
                     callNextApi(jsonArray.toString(), data.getData().get(0).getOrder() + 1);
                 } else {
-                    Toast.makeText(ExamActivity.this, "Please fill the answer", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ExamActivity.this, getString(R.string.plz_fill_ans), Toast.LENGTH_SHORT).show();
                 }
             }
             else {
@@ -360,7 +362,7 @@ public class ExamActivity extends BaseActivity implements NetworkListener {
                     llContent.removeView(inflatedView);
                     callNextApi(jsonArray.toString(), data.getData().get(0).getOrder() + 1);
                 } else {
-                    Toast.makeText(ExamActivity.this, "Please fill the answer", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ExamActivity.this, getString(R.string.plz_fill_ans), Toast.LENGTH_SHORT).show();
                 }
             }
             else {
@@ -385,7 +387,7 @@ public class ExamActivity extends BaseActivity implements NetworkListener {
                     llContent.removeView(inflatedView);
                     callNextApi(jsonArray.toString(), data.getData().get(0).getOrder() + 1);
                 } else {
-                    Toast.makeText(ExamActivity.this, "Please fill the answer", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ExamActivity.this, getString(R.string.plz_fill_ans), Toast.LENGTH_SHORT).show();
                 }
             }
             else {
@@ -412,7 +414,7 @@ public class ExamActivity extends BaseActivity implements NetworkListener {
                     llContent.removeView(inflatedView);
                     callNextApi(jsonArray.toString(), data.getData().get(0).getOrder() + 1);
                 } else {
-                    Toast.makeText(ExamActivity.this, "Please fill the answer", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ExamActivity.this, getString(R.string.plz_fill_ans), Toast.LENGTH_SHORT).show();
                 }
             }
             else {
@@ -447,7 +449,7 @@ public class ExamActivity extends BaseActivity implements NetworkListener {
                     llContent.removeView(inflatedView);
                     callNextApi(jsonArray.toString(), data.getData().get(0).getOrder() + 1);
                 } else {
-                    Toast.makeText(ExamActivity.this, "Please fill the answer", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ExamActivity.this, getString(R.string.plz_fill_ans), Toast.LENGTH_SHORT).show();
                 }
             }
             else {
@@ -548,7 +550,7 @@ public class ExamActivity extends BaseActivity implements NetworkListener {
                             typeImgMatrix(data.getData().get(0).getOptions(),listMatrixImage, data.getData().get(0).getQuestion());
                         }
                     } else if (data.getData().get(0).getQueType() == AppConstant.FILL_IN_THE_BLANK) {
-                        typeFillInTheBlank(data.getData().get(0).getOptions(), data.getData().get(0).getQuestion());
+                        typeFillInTheBlank(data.getData().get(0).getOptions(), data.getData().get(0).getQuestion(),data.getData().get(0).getParagraph());
                     } else if (data.getData().get(0).getQueType() == AppConstant.SHORTING) {
 
                         ArrayList<Exam.Option> list =new ArrayList<>();
@@ -600,7 +602,7 @@ public class ExamActivity extends BaseActivity implements NetworkListener {
                         typeImgMatrix(data.getData().get(0).getOptions(),listMatrixImage, data.getData().get(0).getQuestion());
                     }
                 } else if (data.getData().get(0).getQueType() == AppConstant.FILL_IN_THE_BLANK) {
-                    typeFillInTheBlank(data.getData().get(0).getOptions(), data.getData().get(0).getQuestion());
+                    typeFillInTheBlank(data.getData().get(0).getOptions(), data.getData().get(0).getQuestion(),data.getData().get(0).getParagraph());
                 } else if (data.getData().get(0).getQueType() == AppConstant.SHORTING) {
                     typeSingleSorting(data.getData().get(0).getOptions(), data.getData().get(0).getQuestion());
                 } else if (data.getData().get(0).getQueType() == AppConstant.STATEMENT) {

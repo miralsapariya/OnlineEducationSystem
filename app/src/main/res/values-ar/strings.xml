@@ -2,6 +2,7 @@
     <string name="app_name">ULowgic</string>
 
     <!--bottom nav-->
+
     <string name="home">الصفحة الرئيسية</string>
     <string name="category">الفئة</string>
     <string name="my_courses">دوراتي</string>
@@ -18,7 +19,7 @@
     <string name="popular_instructor">المدربين المشهورين</string>
 
     <string name="total_courses">مجموع الدورات</string>
-    <string name="subscribers">v</string>
+    <string name="subscribers">مشتركين</string>
 
     <string name="description">وصف</string>
     <string name="view_more">عرض المزيد</string>
@@ -117,6 +118,10 @@
     <string name="you_have_passed">لقد نجحت في هذا الاختبار وأكملت هذه الدورة. يمكنك تنزيل شهادة الإنجاز الخاصة بك أدناه.</string>
     <string name="hard_luck">حظ سيئ. لقد خضعت للاختبار هذه المرة. يجب عليك إعادة الاختبار والنتيجة</string>
     <string name="to_complete_course">.لإكمال هذه الدورة</string>
+    <string name="complete_course">دورة كاملة</string>
+    <string name="not_started">لم يبدأ</string>
+    <string name="completed">منجز</string>
+    <string name="in_progress">في تقدم</string>
     <string name="review_your_ans">راجع إجاباتك</string>
     <string name="correct">صيح</string>
     <string name="wrong">خطأ</string>
@@ -156,4 +161,15 @@
     <string name="congrat_success">تهانينا ! لقد أكملت بنجاح</string>
     <string name="toast_course_alry_whishlist">تم تسجيل الدورة بالفعل حتى لا تقوم بإضافتها إلى قائمة الرغبات الخاصة بك</string>
     <string name="reset_course">إعادة تعيين الدورة للبدء</string>
+    <string name="plz_fill_ans">من فضلك املأ الجواب</string>
+    <string name="no_download">لا يوجد تنزيل شهادة لهذه الدورة</string>
+    <string name="reset_course_no_start">الدورة لم تبدأ</string>
+    <string name="blog">مدونة</string>
+    <string name="document">وثيقة</string>
+    <string name="doc_downlad">تم تنزيل المستند بنجاح</string>
+    <string name="open_report">افتح التقرير</string>
+    <string name="downloding">جارى التحميل</string>
+    <string name="take_photo">تصوير</string>
+    <string name="choose_photo">اختر صورة</string>
+    <string name="add_photo">إضافة صورة</string>
 </resources>

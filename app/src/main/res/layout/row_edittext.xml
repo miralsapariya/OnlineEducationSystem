@@ -14,5 +14,6 @@
         android:padding="@dimen/_5sdp"
         android:textColor="@color/black"
         android:backgroundTint="@color/font1"
+        android:textCursorDrawable="@drawable/custom_cursor"
         />
 </LinearLayout>

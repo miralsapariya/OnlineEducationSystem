@@ -7,12 +7,15 @@ import com.onlineeducationsyestem.model.Category;
 import com.onlineeducationsyestem.model.CheckCourse;
 import com.onlineeducationsyestem.model.CourseDetail;
 import com.onlineeducationsyestem.model.CourseList;
+import com.onlineeducationsyestem.model.Dashboard;
 import com.onlineeducationsyestem.model.DefaultCategory;
 import com.onlineeducationsyestem.model.Exam;
 import com.onlineeducationsyestem.model.ForgotPwd;
 import com.onlineeducationsyestem.model.GetProfile;
 import com.onlineeducationsyestem.model.GlobalSearch;
 import com.onlineeducationsyestem.model.Home;
+import com.onlineeducationsyestem.model.InstructorList;
+import com.onlineeducationsyestem.model.InstructorProfile;
 import com.onlineeducationsyestem.model.MyCourseList;
 import com.onlineeducationsyestem.model.MyWhishList;
 import com.onlineeducationsyestem.model.Restart;
@@ -87,6 +90,7 @@ public interface ApiInterface {
                                  @Part("name") RequestBody name,
                                  @Part("email") RequestBody email,
                                  @Part("phone_no") RequestBody phone,
+                                 @Part("country_name") RequestBody countryName,
                                  @Part MultipartBody.Part file);
 
     @Multipart
@@ -96,7 +100,8 @@ public interface ApiInterface {
                                  @Part("user_id") RequestBody userId,
                                  @Part("name") RequestBody name,
                                  @Part("email") RequestBody email,
-                                 @Part("phone_no") RequestBody phone
+                                 @Part("phone_no") RequestBody phone,
+                                 @Part("country_name") RequestBody countryName
                                 );
 
 
@@ -184,4 +189,19 @@ public interface ApiInterface {
     @POST("quiz/restart")
     Call<Restart> restart(@Header("language") String lang, @Header("Authorization")String auth, @FieldMap HashMap<String, String> map);
 
+    @FormUrlEncoded
+    @POST("resetcourse")
+    Call<BaseBean> resetCourse(@Header("language") String lang, @Header("Authorization")String auth, @FieldMap HashMap<String, String> map);
+
+    @POST("popular_instructorlist")
+    Call<InstructorList> getInstructorList(@Header("language") String lang, @Header("Authorization")String auth);
+
+    @FormUrlEncoded
+    @POST("popular_instructorlist")
+    Call<InstructorProfile> getInstructorProfile(@Header("language") String lang, @Header("Authorization")String auth, @FieldMap HashMap<String, String> map);
+
+
+    @FormUrlEncoded
+    @POST("dashboard")
+    Call<Dashboard> getDashBord(@Header("language") String lang, @Header("Authorization")String auth, @FieldMap HashMap<String, String> map);
 }

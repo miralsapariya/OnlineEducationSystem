@@ -2,6 +2,7 @@ package com.onlineeducationsyestem;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebResourceError;
@@ -46,7 +47,10 @@ public class WebActivity extends BaseActivity {
 
         webview =findViewById(R.id.webview);
         webview.getSettings().setJavaScriptEnabled(true); // enable javascript
-
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading Data...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
         final Activity activity = this;
 
         webview.setWebViewClient(new WebViewClient() {
@@ -60,6 +64,12 @@ public class WebActivity extends BaseActivity {
             public void onReceivedError(WebView view, WebResourceRequest req, WebResourceError rerr) {
                 // Redirect to deprecated method, so you can use it in all SDK versions
                 onReceivedError(view, rerr.getErrorCode(), rerr.getDescription().toString(), req.getUrl().toString());
+            }
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                // progressbar.setVisibility(View.GONE);
+                progressDialog.dismiss();
             }
         });
 
