@@ -90,6 +90,14 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+   /* @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d("===== onactivity result ::: ", "==============");
+       *//* Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        fragment.onActivityResult(requestCode, resultCode, data);*//*
+    }*/
+
     private void initBottomNavigationBar() {
         nav_view = findViewById(R.id.nav_view);
         imgSearch = findViewById(R.id.imgSearch);

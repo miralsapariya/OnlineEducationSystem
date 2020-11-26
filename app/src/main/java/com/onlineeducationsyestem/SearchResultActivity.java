@@ -42,7 +42,7 @@ public class SearchResultActivity extends AppCompatActivity
     private TextView tvNoData;
     private SearchResultAdapter searchResultAdapter;
     private ArrayList<GlobalSearch.Courseslist> list;
-    private SwipeRefreshLayout swipeRefresh;
+   // private SwipeRefreshLayout swipeRefresh;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,8 +69,8 @@ public class SearchResultActivity extends AppCompatActivity
         tvNoData =findViewById(R.id.tvNoData);
 
 
-        swipeRefresh = findViewById(R.id.swipeRefresh);
-        swipeRefresh.setOnRefreshListener(this);
+        //swipeRefresh = findViewById(R.id.swipeRefresh);
+       // swipeRefresh.setOnRefreshListener(this);
 
         rvSearch.setHasFixedSize(true);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(SearchResultActivity.this);

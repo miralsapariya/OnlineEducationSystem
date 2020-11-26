@@ -172,4 +172,5 @@
     <string name="take_photo">تصوير</string>
     <string name="choose_photo">اختر صورة</string>
     <string name="add_photo">إضافة صورة</string>
+    <string name="logout_alert">هل ترغب بالخروج؟</string>
 </resources>

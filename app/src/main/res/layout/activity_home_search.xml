@@ -36,7 +36,7 @@
                    android:paddingEnd="@dimen/_5sdp"
                    />
 
-            <androidx.appcompat.widget.AppCompatEditText
+            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                 android:id="@+id/etSearch"
                 android:paddingStart="@dimen/_5sdp"
                 android:paddingEnd="@dimen/_5sdp"
@@ -47,6 +47,7 @@
                 android:textDirection="locale"
                 android:inputType="text"
                 android:gravity="start"
+                android:completionThreshold="1"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_height="wrap_content"

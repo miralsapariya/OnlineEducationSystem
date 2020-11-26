@@ -58,6 +58,9 @@ dependencies {
     implementation 'com.hbb20:ccp:2.4.0'
 
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
+    implementation 'com.github.dbachelder:CreditCardEntry:1.4.9'
+    implementation project(':paytabs_sdk-v4.0.0')
     //implementation 'com.google.android.exoplayer:exoplayer:2.7.2'
     //com.google.android.exoplayer:exoplayer:rX.X.X
     /*implementation 'com.google.android.exoplayer:exoplayer:2.10.8'*/

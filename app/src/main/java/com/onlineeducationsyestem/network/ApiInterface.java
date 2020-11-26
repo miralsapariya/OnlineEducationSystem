@@ -23,6 +23,7 @@ import com.onlineeducationsyestem.model.Result;
 import com.onlineeducationsyestem.model.SectionCourse;
 import com.onlineeducationsyestem.model.SectionSlideDetail;
 import com.onlineeducationsyestem.model.SubCategory;
+import com.onlineeducationsyestem.model.Suggestion;
 import com.onlineeducationsyestem.model.User;
 
 import java.util.HashMap;
@@ -200,8 +201,12 @@ public interface ApiInterface {
     @POST("popular_instructorlist")
     Call<InstructorProfile> getInstructorProfile(@Header("language") String lang, @Header("Authorization")String auth, @FieldMap HashMap<String, String> map);
 
-
     @FormUrlEncoded
     @POST("dashboard")
     Call<Dashboard> getDashBord(@Header("language") String lang, @Header("Authorization")String auth, @FieldMap HashMap<String, String> map);
+
+    @FormUrlEncoded
+    @POST("globalsearchsuggestion")
+    Call<Suggestion> getSuggestion(@Header("language") String lang, @Header("Authorization")String auth, @FieldMap HashMap<String, String> map);
+
 }

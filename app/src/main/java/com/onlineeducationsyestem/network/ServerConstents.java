@@ -41,6 +41,7 @@ public class ServerConstents {
     public static int CHECK_COURSE=21;
     public static int RESULT=22;
     public static int RESTART=23;
+    public static int SUGGESTION=31;
     //home screen type
     public static String HOME_TYPE_COURSE="1";
     public static String HOME_TYPE_CATEGORY="2";

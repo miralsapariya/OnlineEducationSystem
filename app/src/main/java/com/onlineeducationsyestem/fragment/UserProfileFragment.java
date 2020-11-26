@@ -1,5 +1,6 @@
 package com.onlineeducationsyestem.fragment;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -130,17 +132,49 @@ public class UserProfileFragment extends BaseFragment implements OnItemClick, On
         tvSignOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AppSharedPreference.getInstance().clearAllPrefs(activity);
-                llWithLogin.setVisibility(View.GONE);
-                tvSignIn.setVisibility(View.VISIBLE);
-                Intent intent = new Intent(activity, LoginActivity.class);
-                startActivity(intent);
+                ViewDialog alert = new ViewDialog();
+                alert.showDialog(activity);
             }
         });
 
 
         imgUser =view.findViewById(R.id.imgUser);
 
+    }
+    public  class ViewDialog {
+
+        public void showDialog(final Activity activity){
+            final Dialog dialog = new Dialog(activity);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setCancelable(false);
+            dialog.setContentView(R.layout.dialog_logout_alert);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+            Button btnApply =  dialog.findViewById(R.id.btnApply);
+            btnApply.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AppSharedPreference.getInstance().clearAllPrefs(activity);
+                    llWithLogin.setVisibility(View.GONE);
+                    tvSignIn.setVisibility(View.VISIBLE);
+
+                    Intent intent = new Intent(activity, LoginActivity.class);
+                    startActivity(intent);
+
+
+                }
+            });
+
+            Button btnCancel =  dialog.findViewById(R.id.btnCancel);
+            btnCancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.cancel();
+                }
+            });
+
+            dialog.show();
+        }
     }
 
     @Override
