@@ -9,6 +9,16 @@
     android:orientation="vertical"
     android:id="@+id/llMain"
     tools:context=".SignUpActivity">
+    <ImageView
+        android:id="@+id/imgBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layoutDirection="locale"
+        android:src="@drawable/ic_back"
+        android:layout_marginTop="@dimen/_30sdp"
+        android:layout_marginLeft="@dimen/_15sdp"
+        android:textDirection="locale" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv"

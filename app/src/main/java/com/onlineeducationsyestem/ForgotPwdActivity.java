@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,6 +42,7 @@ public class ForgotPwdActivity extends AppCompatActivity implements NetworkListe
     private String userId="";
     private CountryCodePicker ccp;
     private String selectedCountryCode="";
+    private ImageView imgBack;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,8 +58,20 @@ public class ForgotPwdActivity extends AppCompatActivity implements NetworkListe
         etNewPwd =findViewById(R.id.etNewPwd);
         etResetPwd =findViewById(R.id.etResetPwd);
         ccp=findViewById(R.id.ccp);
+        if (AppSharedPreference.getInstance().getString(ForgotPwdActivity.this, AppSharedPreference.LANGUAGE_SELECTED) != null &&
+                AppSharedPreference.getInstance().getString(ForgotPwdActivity.this, AppSharedPreference.LANGUAGE_SELECTED).equalsIgnoreCase(AppConstant.ARABIC_LANG)) {
+            ccp.setTextDirection(View.TEXT_DIRECTION_RTL);
+        }
         selectedCountryCode =ccp.getSelectedCountryCodeWithPlus();
 
+        imgBack =findViewById(R.id.imgBack);
+        imgBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                finish();
+            }
+        });
         ccp.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
             @Override
             public void onCountrySelected() {
@@ -84,10 +98,10 @@ public class ForgotPwdActivity extends AppCompatActivity implements NetworkListe
 
                 if (AppUtils.isInternetAvailable(ForgotPwdActivity.this)) {
                     if (isValidResetPwd()) {
-
                         hintResetPwd();
-
                     }
+                }else {
+                    AppUtils.showAlertDialog(ForgotPwdActivity.this,getString(R.string.no_internet),getString(R.string.alter_net));
                 }
 
             }
@@ -99,6 +113,8 @@ public class ForgotPwdActivity extends AppCompatActivity implements NetworkListe
                 if (AppUtils.isInternetAvailable(ForgotPwdActivity.this)) {
                     countDownTimer();
                     hintResend();
+                }else {
+                    AppUtils.showAlertDialog(ForgotPwdActivity.this,getString(R.string.no_internet),getString(R.string.alter_net));
                 }
             }
         });
@@ -110,6 +126,8 @@ public class ForgotPwdActivity extends AppCompatActivity implements NetworkListe
                     if (isValidPhone()) {
                         hintPhone();
                     }
+                }else {
+                    AppUtils.showAlertDialog(ForgotPwdActivity.this,getString(R.string.no_internet),getString(R.string.alter_net));
                 }
             }
         });
@@ -122,6 +140,8 @@ public class ForgotPwdActivity extends AppCompatActivity implements NetworkListe
                     if (isValid()) {
                         hintOtp();
                     }
+                }else {
+                    AppUtils.showAlertDialog(ForgotPwdActivity.this,getString(R.string.no_internet),getString(R.string.alter_net));
                 }
             }
         });

@@ -74,7 +74,7 @@ public class EditUserProfileActivity extends BaseActivity implements NetworkList
     File myFile;
     private Uri mCurrentPhotoPathUri;
     private LinearLayout llMain;
-    private EditText etName,etEmail,etPhone;
+    private EditText etName,etLName,etEmail,etPhone;
     private Button btnUpdate;
     private ImageView imgBack;
     private CountryCodePicker ccp;
@@ -88,12 +88,10 @@ public class EditUserProfileActivity extends BaseActivity implements NetworkList
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
 
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         initUI();
-
     }
 
     private void initUI()
@@ -106,6 +104,7 @@ public class EditUserProfileActivity extends BaseActivity implements NetworkList
             }
         });
         etName =findViewById(R.id.etName);
+        etLName=findViewById(R.id.etLName);
         etEmail =findViewById(R.id.etEmail);
         etPhone =findViewById(R.id.etPhone);
         llMain =findViewById(R.id.llMain);
@@ -118,6 +117,8 @@ public class EditUserProfileActivity extends BaseActivity implements NetworkList
                 if (AppUtils.isInternetAvailable(EditUserProfileActivity.this)) {
                    if(isValid())
                     editProfile();
+                }else {
+                    AppUtils.showAlertDialog(EditUserProfileActivity.this,getString(R.string.no_internet),getString(R.string.alter_net));
                 }
             }
         });
@@ -135,9 +136,15 @@ public class EditUserProfileActivity extends BaseActivity implements NetworkList
 
         if (AppUtils.isInternetAvailable(EditUserProfileActivity.this)) {
                 getProfile();
+        }else {
+            AppUtils.showAlertDialog(EditUserProfileActivity.this,getString(R.string.no_internet),getString(R.string.alter_net));
         }
 
         ccp=findViewById(R.id.ccp);
+        if (AppSharedPreference.getInstance().getString(EditUserProfileActivity.this, AppSharedPreference.LANGUAGE_SELECTED) != null &&
+                AppSharedPreference.getInstance().getString(EditUserProfileActivity.this, AppSharedPreference.LANGUAGE_SELECTED).equalsIgnoreCase(AppConstant.ARABIC_LANG)) {
+            ccp.setTextDirection(View.TEXT_DIRECTION_RTL);
+        }
         selectedCountryCode =ccp.getSelectedCountryCodeWithPlus();
         selectedCountry =ccp.getSelectedCountryName();
 
@@ -169,6 +176,10 @@ public class EditUserProfileActivity extends BaseActivity implements NetworkList
                 RequestBody.create(
                         okhttp3.MultipartBody.FORM, etName.getText().toString());
 
+        RequestBody lname =
+                RequestBody.create(
+                        okhttp3.MultipartBody.FORM, etLName.getText().toString());
+
         RequestBody email =
                 RequestBody.create(
                         okhttp3.MultipartBody.FORM, etEmail.getText().toString());
@@ -190,31 +201,24 @@ public class EditUserProfileActivity extends BaseActivity implements NetworkList
                 okhttp3.MultipartBody.FORM,AppSharedPreference.getInstance().getString(EditUserProfileActivity.this, AppSharedPreference.USERID));
         RequestBody countryNAme = RequestBody.create(
                 okhttp3.MultipartBody.FORM,selectedCountry);
-
-
           RequestBody.create(
                         okhttp3.MultipartBody.FORM, selectedCountryCode+"-"+etPhone.getText().toString());
-
-
 
         if(body != null) {
             Call<GetProfile> call = apiInterface.editProfile(lang,
                     AppSharedPreference.getInstance().getString(EditUserProfileActivity.this, AppSharedPreference.ACCESS_TOKEN),
                     userId,
-                    name,email,phone,countryNAme,
+                    name,lname,email,phone,countryNAme,
                     body
                     );
-
             ApiCall.getInstance().hitService(EditUserProfileActivity.this, call, this, ServerConstents.EDIT_PROFILE);
-
         }else
         {
             Call<GetProfile> call = apiInterface.editProfile(lang,
                     AppSharedPreference.getInstance().getString(EditUserProfileActivity.this, AppSharedPreference.ACCESS_TOKEN),
                     userId,
-                    name,email,phone,countryNAme
+                    name,lname,email,phone,countryNAme
             );
-
             ApiCall.getInstance().hitService(EditUserProfileActivity.this, call, this, ServerConstents.EDIT_PROFILE);
         }
 
@@ -254,14 +258,22 @@ public class EditUserProfileActivity extends BaseActivity implements NetworkList
             Toast.makeText(EditUserProfileActivity.this, getString(R.string.toast_name), Toast.LENGTH_SHORT).show();
             // L.showSnackbar(llLogin, getString(R.string.toast_Ic));
 
-        }else if(AppUtils.countWordsUsingSplit(etName.getText().toString()) <= 1)
+        }
+       else  if (TextUtils.isEmpty(etLName.getText().toString())) {
+            bool = false;
+            hideKeyboard();
+            Toast.makeText(EditUserProfileActivity.this, getString(R.string.toast_lname), Toast.LENGTH_SHORT).show();
+            // L.showSnackbar(llLogin, getString(R.string.toast_Ic));
+
+        }
+        /*else if(AppUtils.countWordsUsingSplit(etName.getText().toString()) <= 1)
         {
 
             bool=false;
             hideKeyboard();
             Toast.makeText(EditUserProfileActivity.this, getString(R.string.toast_full_name), Toast.LENGTH_SHORT).show();
 
-        }else if (TextUtils.isEmpty(etEmail.getText().toString())) {
+        }*/else if (TextUtils.isEmpty(etEmail.getText().toString())) {
             bool = false;
             hideKeyboard();
             Toast.makeText(EditUserProfileActivity.this, getString(R.string.toast_email), Toast.LENGTH_SHORT).show();
@@ -290,20 +302,17 @@ public class EditUserProfileActivity extends BaseActivity implements NetworkList
 
             String s=data.getData().get(0).getCountry_code().replaceAll("\\+", "");
             Log.d("______________ ", s);
-
             ccp.setCountryForPhoneCode(Integer.parseInt(s));
-
-
             Picasso.with(this).load(data.getData().get(0).
                     getProfilePicture()).error(getResources().getDrawable(R.mipmap.placeholder)).into(imgUser);
-            etName.setText(data.getData().get(0).getName());
+            etName.setText(data.getData().get(0).getFirstName());
+            etLName.setText(data.getData().get(0).getLastName());
             etEmail.setText(data.getData().get(0).getEmail());
             etPhone.setText(data.getData().get(0).getPhoneNo());
         }else
         {
             GetProfile data = (GetProfile) response;
             Toast.makeText(EditUserProfileActivity.this, data.getMessage(), Toast.LENGTH_SHORT).show();
-
             finish();
         }
 

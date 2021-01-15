@@ -1,7 +1,6 @@
 package com.onlineeducationsyestem;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -43,7 +42,6 @@ public class SubCategoryActivity extends BaseActivity implements OnItemClick, Ne
 
         initToolbar();
         initUI();
-
     }
 
     private void initUI()
@@ -71,6 +69,8 @@ public class SubCategoryActivity extends BaseActivity implements OnItemClick, Ne
 
         if (AppUtils.isInternetAvailable(SubCategoryActivity.this)) {
                 hintSubCat();
+        }else {
+            AppUtils.showAlertDialog(SubCategoryActivity.this,getString(R.string.no_internet),getString(R.string.alter_net));
         }
     }
 
@@ -95,13 +95,18 @@ public class SubCategoryActivity extends BaseActivity implements OnItemClick, Ne
     @Override
     public void onSuccess(int responseCode, Object response, int requestCode) {
         SubCategory data=(SubCategory) response;
-        Log.d("size:: ", data.getData().get(0).getCategories().get(0).getSubCategories().size()+"");
+//        Log.d("size:: ", data.getData().get(0).getCategories().get(0).getSubCategories().size()+"");
 
+        if(data.getData().get(0).getCategories().size() ==0)
+        {
+            recyclerViewSubCat.setVisibility(View.GONE);
+            tvNoData.setVisibility(View.VISIBLE);
+            return;
+        }
         if(data.getData().get(0).getCategories().get(0).getSubCategories().size() > 0) {
 
             recyclerViewSubCat.setVisibility(View.VISIBLE);
             tvNoData.setVisibility(View.GONE);
-
             subCategoryAdapter =
                     new SubCategoryAdapter(SubCategoryActivity.this, data.getData().get(0).getCategories().get(0).getSubCategories(), this);
 

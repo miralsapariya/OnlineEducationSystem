@@ -23,7 +23,7 @@ public class AppConstant {
     //Permission Constant
     public static final int CAMERA = 1;
     public static User registerData=new User();
-
+    public static boolean fromCourseDetail=false;
     public static String COURSE_STATUS_RESUME="2";
     public static String COURSE_STATUS_START="1";
 

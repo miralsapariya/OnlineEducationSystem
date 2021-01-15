@@ -49,25 +49,29 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
         final  SubCategory.SubCategory_ data = listProduct.get(position);
 
 
-        holder.tvNameCategory.setText(data.getSubCategoryName());
+
 
         Log.d("course list :: ", data.getCourseList().size()+"");
 
-        SubAdpterCourses homeAdapter =
+        if(data.getCourseList().size() >0) {
+            holder.tvNameCategory.setText(data.getSubCategoryName());
+            SubAdpterCourses homeAdapter =
                     new SubAdpterCourses(context, data.getCourseList(), new OnNewCourseClick() {
                         @Override
                         public void onNewCourseClick(int pos) {
 
-                            Intent intent =new Intent(context, CourseDetailActivity.class);
-                            intent.putExtra("course_id", pos+"");
+                            Intent intent = new Intent(context, CourseDetailActivity.class);
+                            intent.putExtra("course_id", pos + "");
                             context.startActivity(intent);
                         }
                     });
-
             holder.rvHorizonatal.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
             holder.rvHorizonatal.setHasFixedSize(true);
             holder.rvHorizonatal.setItemAnimator(new DefaultItemAnimator());
             holder.rvHorizonatal.setAdapter(homeAdapter);
+        }
+
+
 
         if(data.getCourseList().size() > 3){
             holder.tvViewAll.setVisibility(View.VISIBLE);

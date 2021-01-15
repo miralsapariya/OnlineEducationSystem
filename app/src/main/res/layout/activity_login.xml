@@ -25,6 +25,7 @@
             android:layout_gravity="center_vertical"
             android:layoutDirection="locale"
             android:src="@drawable/ic_back"
+            android:visibility="gone"
             android:textDirection="locale" />
 
         <ImageView

@@ -19,6 +19,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,6 +30,7 @@ import com.onlineeducationsyestem.ChangePwdActivity;
 import com.onlineeducationsyestem.DashBoardActivity;
 import com.onlineeducationsyestem.EditUserProfileActivity;
 import com.onlineeducationsyestem.LoginActivity;
+import com.onlineeducationsyestem.MainActivity;
 import com.onlineeducationsyestem.R;
 import com.onlineeducationsyestem.WebActivity;
 import com.onlineeducationsyestem.WhishListFragment;
@@ -124,7 +127,20 @@ public class UserProfileFragment extends BaseFragment implements OnItemClick, On
         tvSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //set eng lang
+                String languageToLoad = "en"; // your language
+                Locale locale = new Locale(languageToLoad);
+                Locale.setDefault(locale);
+                Configuration config = new Configuration();
+                config.locale = locale;
+                activity.getBaseContext().getResources().updateConfiguration(config, activity.getBaseContext().getResources().getDisplayMetrics());
+
+
                 Intent intent = new Intent(activity, LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 startActivity(intent);
             }
         });
@@ -158,9 +174,25 @@ public class UserProfileFragment extends BaseFragment implements OnItemClick, On
                     llWithLogin.setVisibility(View.GONE);
                     tvSignIn.setVisibility(View.VISIBLE);
 
-                    Intent intent = new Intent(activity, LoginActivity.class);
-                    startActivity(intent);
+                    llWithLogin.setVisibility(View.GONE);
+                    tvSignIn.setVisibility(View.VISIBLE);
+                    //set eng lang
+                    String languageToLoad = "en"; // your language
+                    Locale locale = new Locale(languageToLoad);
+                    Locale.setDefault(locale);
+                    config = new Configuration();
+                    config.locale = locale;
+                    activity.getBaseContext().getResources().updateConfiguration(config, activity.getBaseContext().getResources().getDisplayMetrics());
 
+                   refereshActivity();
+                    dialog.dismiss();
+                  /*  Intent intent = new Intent(activity, LoginActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                    startActivity(intent);
+                    */
 
                 }
             });
@@ -176,13 +208,21 @@ public class UserProfileFragment extends BaseFragment implements OnItemClick, On
             dialog.show();
         }
     }
-
+    private void loadFragment(Fragment fragment) {
+        if (fragment != null) {
+            FragmentManager fragmentManager =((MainActivity) activity).getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, fragment).commit();
+        }
+    }
     @Override
     public void onResume() {
         super.onResume();
         if (AppUtils.isInternetAvailable(activity)) {
             getProfile();
+        }else {
+            AppUtils.showAlertDialog(activity,activity.getString(R.string.no_internet),activity.getString(R.string.alter_net));
         }
+
     }
 
     private void getProfile()
@@ -384,6 +424,24 @@ public class UserProfileFragment extends BaseFragment implements OnItemClick, On
             }
         });
     }
+    private void refereshActivityAndLoadHomeFrag()
+    {
+        new Handler().post(new Runnable() {
 
+            @Override
+            public void run()
+            {
+                Intent intent = getActivity().getIntent();
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK
+                        | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                getActivity().overridePendingTransition(0, 0);
+                getActivity().finish();
+
+                getActivity().overridePendingTransition(0, 0);
+                startActivity(intent);
+                loadFragment(new HomeFragment());
+            }
+        });
+    }
 
 }

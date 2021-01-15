@@ -108,6 +108,9 @@ public class ListData {
     @Expose
     private String image;
 
+    public Float amount;
+
+
     public Integer getCourseid() {
         return courseid;
     }

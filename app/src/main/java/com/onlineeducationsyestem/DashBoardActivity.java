@@ -100,6 +100,8 @@ public class DashBoardActivity extends BaseActivity implements NetworkListener, 
         super.onResume();
         if (AppUtils.isInternetAvailable(DashBoardActivity.this)) {
             getDashBorad();
+        }else {
+            AppUtils.showAlertDialog(DashBoardActivity.this,getString(R.string.no_internet),getString(R.string.alter_net));
         }
     }
 

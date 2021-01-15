@@ -3,6 +3,7 @@ package com.onlineeducationsyestem.fragment;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +38,7 @@ import com.onlineeducationsyestem.util.AppUtils;
 import com.onlineeducationsyestem.util.DownloadTask;
 
 import java.util.HashMap;
+import java.util.Locale;
 
 import retrofit2.Call;
 
@@ -66,6 +68,15 @@ public class MyCoursesFragment extends BaseFragment implements OnItemClick, Netw
     public void onResume() {
         super.onResume();
         initUI();
+        if (AppSharedPreference.getInstance().getString(activity, AppSharedPreference.LANGUAGE_SELECTED) !=null &&AppSharedPreference.getInstance().getString(activity, AppSharedPreference.LANGUAGE_SELECTED).equalsIgnoreCase(AppConstant.ARABIC_LANG)) {
+            String languageToLoad = "ar"; // your language
+            Locale locale = new Locale(languageToLoad);
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            activity.getBaseContext().getResources().updateConfiguration(config, activity.getBaseContext().getResources().getDisplayMetrics());
+
+        }
     }
 
     private void initUI() {
@@ -73,7 +84,10 @@ public class MyCoursesFragment extends BaseFragment implements OnItemClick, Netw
         tvNoData = view.findViewById(R.id.tvNoData);
         if (AppUtils.isInternetAvailable(activity)) {
             getMyCourseList();
+        }else {
+            AppUtils.showAlertDialog(activity,activity.getString(R.string.no_internet),activity.getString(R.string.alter_net));
         }
+
     }
 
     private void getMyCourseList() {

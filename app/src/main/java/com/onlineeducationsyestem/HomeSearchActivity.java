@@ -116,6 +116,8 @@ public class HomeSearchActivity extends BaseActivity implements OnItemClick, Net
     {
         if (AppUtils.isInternetAvailable(HomeSearchActivity.this)) {
             hintDefulatCategory();
+        }else {
+            AppUtils.showAlertDialog(HomeSearchActivity.this,getString(R.string.no_internet),getString(R.string.alter_net));
         }
     }
 

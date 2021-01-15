@@ -1,5 +1,6 @@
 package com.onlineeducationsyestem.fragment;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +30,7 @@ import com.onlineeducationsyestem.util.AppUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 
 import retrofit2.Call;
 
@@ -55,10 +57,22 @@ public class HomeFragment extends BaseFragment  implements OnItemClick , OnViewA
 
     private void iniUI()
     {
-         viewPager = view.findViewById(R.id.view_pager);
+        if (AppSharedPreference.getInstance().getString(activity, AppSharedPreference.LANGUAGE_SELECTED)!= null && AppSharedPreference.getInstance().getString(activity, AppSharedPreference.LANGUAGE_SELECTED).equalsIgnoreCase(AppConstant.ENG_LANG)) {
+
+            String languageToLoad = "en"; // your language
+            Locale locale = new Locale(languageToLoad);
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            activity.getBaseContext().getResources().updateConfiguration(config, activity.getBaseContext().getResources().getDisplayMetrics());
+
+        }
+        viewPager = view.findViewById(R.id.view_pager);
 
         if (AppUtils.isInternetAvailable(activity)) {
                 hintHome();
+        }else {
+            AppUtils.showAlertDialog(activity,activity.getString(R.string.no_internet),activity.getString(R.string.alter_net));
         }
 
 
@@ -105,6 +119,8 @@ public class HomeFragment extends BaseFragment  implements OnItemClick , OnViewA
             //
 
             data.getData().remove(0);
+            data.getData().remove(data.getData().size()-1);
+
             HomeAdapter homeAdapter =
                     new HomeAdapter(activity, data.getData(),this,this);
 

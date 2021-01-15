@@ -2,6 +2,7 @@ package com.onlineeducationsyestem;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -24,6 +25,7 @@ import com.onlineeducationsyestem.util.AppUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -39,12 +41,22 @@ public class LoginActivity extends BaseActivity implements NetworkListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        String languageToLoad = "en"; // your language
+        Locale locale = new Locale(languageToLoad);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+
         setContentView(R.layout.activity_login);
         initUI();
     }
 
     private void initUI()
     {
+
+
         preference = AppSharedPreference.getInstance();
         etEmail =findViewById(R.id.etEmail);
         etPassword =findViewById(R.id.etPassword);
@@ -65,6 +77,8 @@ public class LoginActivity extends BaseActivity implements NetworkListener {
                     if (isValid()) {
                         hintLogin();
                     }
+                }else {
+                    AppUtils.showAlertDialog(LoginActivity.this,getString(R.string.no_internet),getString(R.string.alter_net));
                 }
             }
         });
@@ -84,6 +98,7 @@ public class LoginActivity extends BaseActivity implements NetworkListener {
             public void onClick(View view) {
                 Intent intent = new Intent(LoginActivity.this,ForgotPwdActivity.class);
                 startActivity(intent);
+                finish();
 
             }
         });

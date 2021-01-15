@@ -97,6 +97,8 @@ public class LessionSlideActivity extends BaseActivity implements NetworkListene
     {
         if (AppUtils.isInternetAvailable(LessionSlideActivity.this)) {
             getSectionSlide();
+        }else {
+            AppUtils.showAlertDialog(LessionSlideActivity.this,getString(R.string.no_internet),getString(R.string.alter_net));
         }
     }
     private void getSectionSlide()
@@ -254,6 +256,8 @@ public class LessionSlideActivity extends BaseActivity implements NetworkListene
                     }else {
                         if (AppUtils.isInternetAvailable(LessionSlideActivity.this)) {
                             checkIfQuizOptionalOrNot();
+                        }else {
+                            AppUtils.showAlertDialog(LessionSlideActivity.this,getString(R.string.no_internet),getString(R.string.alter_net));
                         }
                     }
 
@@ -334,8 +338,6 @@ public class LessionSlideActivity extends BaseActivity implements NetworkListene
         webSettings.setAllowFileAccess(true);
         webSettings.setAppCacheEnabled(true);
         webSettings.setJavaScriptEnabled(true);
-
-
       /* webSettings.setLoadWithOverviewMode(true);
         webSettings.setUseWideViewPort(true);*/
 
@@ -365,8 +367,44 @@ public class LessionSlideActivity extends BaseActivity implements NetworkListene
         progressDialog.setMessage("Loading Data...");
         progressDialog.setCancelable(false);
         progressDialog.show();
-        webView = findViewById(R.id.webView);
-        // progressbar =findViewById(R.id.progressbar);
+       /* webView.setWebViewClient(new WebViewClient(){
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                return false;
+            }
+        });
+        webView.setWebChromeClient(new MyChrome());
+        if (Build.VERSION.SDK_INT >= 19) {
+            webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+        }
+        else {
+            webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        }
+        WebSettings webSettings = webView.getSettings();
+        webSettings.setAllowFileAccess(true);
+        webSettings.setAppCacheEnabled(true);
+        webSettings.setJavaScriptEnabled(true);
+
+      //   myPdfUrl="http://www.iasted.org/conferences/formatting/presentations-tips.ppt";
+        String  myPdfUrl1="http://1.22.161.26:9875/online_education_system/public/images/Courses/104/SlideDocument/1605077355.docx";
+       webView.loadData("<iframe src='https://docs.google.com/viewer?url="+myPdfUrl1+"&embedded=true' width='100%' height='100%' style='border: none;'></iframe>","text/html", "utf-8");
+       // webView .loadUrl(myPdfUrl);
+       webView.setWebViewClient(new WebViewClient() {
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                progressDialog.dismiss();
+
+                if (view.getTitle().equals("")) {
+                    webView.loadData("<iframe src='https://docs.google.com/viewer?url=" + myPdfUrl1 + "&embedded=true' width='100%' height='100%' style='border: none;'></iframe>", "text/html", "utf-8");
+                    //view.reload();
+                }
+
+            }
+
+        });*/
+
 
         if (Build.VERSION.SDK_INT >= 19) {
             webView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
@@ -381,26 +419,37 @@ public class LessionSlideActivity extends BaseActivity implements NetworkListene
         webView.setVerticalScrollBarEnabled(true);
         webView.setHorizontalScrollBarEnabled(false);
         webView.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
-        /*webView.getSettings().setUseWideViewPort(true);
-        webView.setScrollX(1000);
-        webView.setScrollY(1000);*/
+         // myPdfUrl="http://1.22.161.26:9875/online_education_system/public/images/Courses/104/SlideDocument/1605077355.docx";
 
-        //String myPdfUrl = "https://mindorks.s3.ap-south-1.amazonaws.com/courses/MindOrks_Android_Online_Professional_Course-Syllabus.pdf";
-        // String myPdfUrl="https://brevity.symmetryplatform.com/brevity/uploads/Course/Document_Files/1594213922_6Cz.docx";
-        // String myPdfUrl ="https://brevity.symmetryplatform.com/brevity/uploads/Course/Document_Files/1594214645_wJv.ppt";
-        //String myPdfUrl ="https://file-examples.com/wp-content/uploads/2017/02/file_example_XLSX_5000.xlsx";
-
-        // String myPdfUrl = "https://docs.google.com/spreadsheets/d/1zdFhFWbprCVFdPCypu_ToRkKCEAIY8TVn2balQh5Cao/edit#gid=0";
         String url = "https://docs.google.com/gview?embedded=true&url="+myPdfUrl;
-        webView.loadUrl(url);
-        webView.setWebViewClient(new WebViewClient() {
 
+        webView.loadUrl(url);
+        Log.d("URL DOC:: ", " "+url);
+        webView.setWebViewClient(new WebViewClient() {
+            boolean checkhasOnPageStarted = false;
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                view.loadUrl(url);
+                return true;
+            }
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                Log.d("PAGE START :: ", "CAL PAGE START===== ");
+                checkhasOnPageStarted = true;
+                super.onPageStarted(view, url, favicon);
+            }
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                // progressbar.setVisibility(View.GONE);
+                Log.d("PAGE  :: ", "CAL PAGE FINISHHH===== ");
+                if (checkhasOnPageStarted ) {
+                    webView.loadUrl("javascript:(function() { document.querySelector('[role=\"toolbar\"]').remove();})()");
+                } else {
+                    loadWebview(myPdfUrl);
+                }
                 progressDialog.dismiss();
             }
+
 
         });
 

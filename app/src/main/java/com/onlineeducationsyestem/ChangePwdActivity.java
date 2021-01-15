@@ -213,7 +213,10 @@ public class ChangePwdActivity extends BaseActivity implements NetworkListener {
                     if (isValid()) {
                         changePwd();
                     }
+                }else {
+                    AppUtils.showAlertDialog(ChangePwdActivity.this,getString(R.string.no_internet),getString(R.string.alter_net));
                 }
+
             }
         });
     }

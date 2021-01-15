@@ -18,7 +18,7 @@ import com.onlineeducationsyestem.util.AppUtils;
 import java.util.ArrayList;
 
 public class HomeSearchAdapter extends RecyclerView.Adapter<HomeSearchAdapter.ViewHolder>
-         {
+{
 
     private ArrayList<DefaultCategory.Category> listProduct;
     private LayoutInflater mInflater;
@@ -26,7 +26,8 @@ public class HomeSearchAdapter extends RecyclerView.Adapter<HomeSearchAdapter.Vi
     private Context context;
 
     public HomeSearchAdapter(Context context,
-                             ArrayList<DefaultCategory.Category> listProduct, OnItemClick onItemClick) {
+                             ArrayList<DefaultCategory.Category> listProduct,
+                             OnItemClick onItemClick) {
         this.mInflater = LayoutInflater.from(context);
         this.context =context;
         this.listProduct = listProduct;
@@ -43,19 +44,15 @@ public class HomeSearchAdapter extends RecyclerView.Adapter<HomeSearchAdapter.Vi
     @Override
     public void onBindViewHolder(final HomeSearchAdapter.ViewHolder holder, final int position) {
         final DefaultCategory.Category data = listProduct.get(position);
-
         AppUtils.loadImageWithPicasso(data.getCategoryIcon() , holder.img, context, 0, 0);
-
-        holder.tvCatName.setText(data.getCategoryName());
+        holder.tvCatName.setText(data.getCategoryName()+" ("+data.getTotal_course()+" "+context.getString(R.string.courses)+")");
         holder.llMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onItemClick.onGridClick(position);
             }
         });
-
     }
-
 
     @Override
     public int getItemCount() {

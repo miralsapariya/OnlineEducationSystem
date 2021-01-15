@@ -77,6 +77,8 @@ public class OTPActivity extends BaseActivity implements NetworkListener {
         {
             if (AppUtils.isInternetAvailable(OTPActivity.this)) {
                     hintResend();
+            }else {
+                AppUtils.showAlertDialog(OTPActivity.this,getString(R.string.no_internet),getString(R.string.alter_net));
             }
         }
         tvResend =findViewById(R.id.tvResend);
@@ -99,6 +101,8 @@ public class OTPActivity extends BaseActivity implements NetworkListener {
                     if (isValid()) {
                         hintOtp();
                     }
+                }else {
+                    AppUtils.showAlertDialog(OTPActivity.this,getString(R.string.no_internet),getString(R.string.alter_net));
                 }
             }
         });

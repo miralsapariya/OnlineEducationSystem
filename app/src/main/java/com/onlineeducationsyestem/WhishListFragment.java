@@ -91,6 +91,8 @@ public class WhishListFragment extends BaseActivity implements OnItemClick, Dele
         });
         if (AppUtils.isInternetAvailable(WhishListFragment.this)) {
             getWhishList();
+        }else {
+            AppUtils.showAlertDialog(WhishListFragment.this,getString(R.string.no_internet),getString(R.string.alter_net));
         }
 
     }

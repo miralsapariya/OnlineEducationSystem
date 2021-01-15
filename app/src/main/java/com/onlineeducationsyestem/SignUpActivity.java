@@ -32,7 +32,7 @@ import retrofit2.Call;
 
 public class SignUpActivity extends BaseActivity implements NetworkListener
 {
-    private EditText etName,etEmail,etPhone,etPassword;
+    private EditText etName,etLName,etEmail,etPhone,etPassword;
     private LinearLayout llMain;
     private TextView tvLogin,btnSignUp;
     private ImageView imgBack;
@@ -49,6 +49,8 @@ public class SignUpActivity extends BaseActivity implements NetworkListener
 
     private void initUI() {
         etName = findViewById(R.id.etName);
+        etLName=findViewById(R.id.etLName);
+
         etEmail = findViewById(R.id.etEmail);
         etPhone = findViewById(R.id.etPhone);
         etPassword = findViewById(R.id.etPassword);
@@ -73,16 +75,22 @@ public class SignUpActivity extends BaseActivity implements NetworkListener
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 if (AppUtils.isInternetAvailable(SignUpActivity.this)) {
                     if (isValid()) {
                         hintRegister();
                     }
+                }else {
+                    AppUtils.showAlertDialog(SignUpActivity.this,getString(R.string.no_internet),getString(R.string.alter_net));
                 }
             }
         });
 
         ccp=findViewById(R.id.ccp);
+        if (AppSharedPreference.getInstance().getString(SignUpActivity.this, AppSharedPreference.LANGUAGE_SELECTED) != null &&
+                AppSharedPreference.getInstance().getString(SignUpActivity.this, AppSharedPreference.LANGUAGE_SELECTED).equalsIgnoreCase(AppConstant.ARABIC_LANG)) {
+            ccp.setTextDirection(View.TEXT_DIRECTION_RTL);
+        }
+
         selectedCountryCode =ccp.getSelectedCountryCodeWithPlus();
         selectedCountry =ccp.getSelectedCountryName();
 
@@ -102,7 +110,8 @@ public class SignUpActivity extends BaseActivity implements NetworkListener
         AppUtils.showDialog(this, getString(R.string.pls_wait));
         ApiInterface apiInterface = RestApi.getConnection(ApiInterface.class, ServerConstents.API_URL);
         final HashMap params = new HashMap<>();
-        params.put("name", etName.getText().toString());
+        params.put("first_name", etName.getText().toString());
+        params.put("last_name", etLName.getText().toString());
         params.put("email", etEmail.getText().toString());
         params.put("password", etPassword.getText().toString());
         params.put("phone_no", selectedCountryCode+"-"+etPhone.getText().toString());
@@ -131,7 +140,8 @@ public class SignUpActivity extends BaseActivity implements NetworkListener
 
         AppConstant.registerData =data;
         Intent intent =new Intent(SignUpActivity.this, OTPActivity.class);
-        intent.putExtra("name", etName.getText().toString());
+        intent.putExtra("first_name", etName.getText().toString());
+        intent.putExtra("last_name", etLName.getText().toString());
         intent.putExtra("password", etPassword.getText().toString());
         intent.putExtra("email", etEmail.getText().toString());
         intent.putExtra("phone", etPhone.getText().toString());
@@ -147,7 +157,8 @@ public class SignUpActivity extends BaseActivity implements NetworkListener
 
         if(errorCode == 403) {
             Intent intent = new Intent(SignUpActivity.this, OTPActivity.class);
-            intent.putExtra("name", etName.getText().toString());
+            intent.putExtra("first_name", etName.getText().toString());
+            intent.putExtra("last_name", etLName.getText().toString());
             intent.putExtra("password", etPassword.getText().toString());
             intent.putExtra("email", etEmail.getText().toString());
             intent.putExtra("phone", etPhone.getText().toString());
@@ -171,17 +182,20 @@ public class SignUpActivity extends BaseActivity implements NetworkListener
             bool=false;
             hideKeyboard();
             Toast.makeText(SignUpActivity.this, getString(R.string.toast_name), Toast.LENGTH_SHORT).show();
-           // L.showSnackbar(llLogin, getString(R.string.toast_Ic));
-
+        }else  if(TextUtils.isEmpty(etLName.getText().toString()))
+        {
+            bool=false;
+            hideKeyboard();
+            Toast.makeText(SignUpActivity.this, getString(R.string.toast_lname), Toast.LENGTH_SHORT).show();
         }
-        else if(AppUtils.countWordsUsingSplit(etName.getText().toString()) <= 1)
+       /* else if(AppUtils.countWordsUsingSplit(etName.getText().toString()) <= 1)
         {
 
              bool=false;
             hideKeyboard();
             Toast.makeText(SignUpActivity.this, getString(R.string.toast_full_name), Toast.LENGTH_SHORT).show();
 
-        }
+        }*/
 
         else if(TextUtils.isEmpty(etEmail.getText().toString()))
         {
@@ -232,7 +246,7 @@ public class SignUpActivity extends BaseActivity implements NetworkListener
         //(?=.*\d)
         // final String PASSWORD_PATTERN = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{6,}$";
         //final String PASSWORD_PATTERN = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z#@$!%*?&]{6,}$";
-        final String PASSWORD_PATTERN = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z#@$!%*?&0-9]{6,}$";
+        final String PASSWORD_PATTERN = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$!%*?&])[A-Za-z#@$!%*?&0-9]{6,}$";
 
         pattern = Pattern.compile(PASSWORD_PATTERN);
         matcher = pattern.matcher(password);

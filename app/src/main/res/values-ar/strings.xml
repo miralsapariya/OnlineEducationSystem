@@ -12,7 +12,9 @@
 
     <string name="view_all">مشاهدة الكل</string>
     <string name="top_category">أعلى الفئات</string>
-
+    <string name="first_name">الاسم الاول</string>
+    <string name="last_name">الكنية</string>
+    <string name="toast_lname">الرجاء إدخال الاسم الأخير</string>
     <string name="search_by_cat">البحث بالفئة</string>
     <string name="trending_course">الدورات التدريبية الشائعة</string>
     <string name="action_settings">الإعدادات</string>
@@ -154,9 +156,13 @@
     <string name="please_login">الرجاء تسجيل الدخول</string>
 
     <string name="ok">حسنا</string>
+    <string name="cancel">إلغاء</string>
     <string name="thank_you">شكرا</string>
 
     <string name="back_to_my_course">العودة إلى دوراتي</string>
+    <string name="go_to_my_course">الذهاب إلى الدورات الخاصة بي</string>
+    <string name="discount">خصم</string>
+    <string name="buy">يشترى</string>
     <string name="previous">السابق</string>
     <string name="congrat_success">تهانينا ! لقد أكملت بنجاح</string>
     <string name="toast_course_alry_whishlist">تم تسجيل الدورة بالفعل حتى لا تقوم بإضافتها إلى قائمة الرغبات الخاصة بك</string>
@@ -173,4 +179,10 @@
     <string name="choose_photo">اختر صورة</string>
     <string name="add_photo">إضافة صورة</string>
     <string name="logout_alert">هل ترغب بالخروج؟</string>
+    <string name="no_search">لم يتم العثور على نتيجة بحث</string>
+    <string name="thank_u_payment">شكرا لك على الدفع. تم الاشتراك في دورتك بنجاح</string>
+    <string name="no_internet">بدون انترنت</string>
+    <string name="alter_net">يرجى التحقق من حالة اتصالك بالإنترنت وحاول مرة أخرى</string>
+    <string name="facebook_app_id">2438596933040553</string>
+    <string name="fb_login_protocol_scheme">fb2438596933040553</string>
 </resources>

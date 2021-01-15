@@ -20,7 +20,6 @@ import com.onlineeducationsyestem.fragment.MyCoursesFragment;
 import com.onlineeducationsyestem.fragment.UserProfileFragment;
 import com.onlineeducationsyestem.util.AppConstant;
 import com.onlineeducationsyestem.util.AppSharedPreference;
-import com.onlineeducationsyestem.util.AppUtils;
 
 import java.util.Locale;
 
@@ -37,18 +36,26 @@ public class MainActivity extends BaseActivity {
 
         setLanguage();
         setContentView(R.layout.activity_main);
-
         toolbar_title = findViewById(R.id.toolbar_title);
         initBottomNavigationBar();
 
         Bundle b=getIntent().getExtras();
         if( b!= null && b.containsKey("from")){
-
             gotoMyCourses();
         }else {
             loadFragment(new HomeFragment());
         }
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(AppConstant.fromCourseDetail)
+        {
+            AppConstant.fromCourseDetail=false;
+            gotoCart();
+        }
     }
 
     private void setLanguage() {
@@ -61,9 +68,7 @@ public class MainActivity extends BaseActivity {
                 config = new Configuration();
                 config.locale = locale;
                 getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-
             } else {
-
                 String languageToLoad = "ar"; // your language
                 // "MA" For Morocco to use 0123... number not in arbic
                 Locale locale = new Locale(languageToLoad,"MA");
@@ -104,11 +109,9 @@ public class MainActivity extends BaseActivity {
         imgSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Intent intent = new Intent(MainActivity.this, HomeSearchActivity.class);
                 ;
                 startActivity(intent);
-
             }
         });
 
@@ -131,20 +134,26 @@ public class MainActivity extends BaseActivity {
                         imgSearch.setVisibility(View.GONE);
                         toolbar_title.setText(getString(R.string.my_courses));
                         if (AppSharedPreference.getInstance().getString(MainActivity.this, AppSharedPreference.USERID) == null) {
-                            AppUtils.loginAlert(MainActivity.this);
+                           // AppUtils.loginAlert(MainActivity.this);
+                            //set eng lang
+                            String languageToLoad = "en"; // your language
+                            Locale locale = new Locale(languageToLoad);
+                            Locale.setDefault(locale);
+                            Configuration config = new Configuration();
+                            config.locale = locale;
+                            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+
+
+                            Intent intent=new Intent(MainActivity.this,LoginActivity.class);
+                            startActivity(intent);
+                            finish();
                         } else {
                             loadFragment(new MyCoursesFragment());
                         }
 
                         break;
                     case R.id.page_4:
-                        imgSearch.setVisibility(View.GONE);
-                        toolbar_title.setText(getString(R.string.cart));
-                        if (AppSharedPreference.getInstance().getString(MainActivity.this, AppSharedPreference.USERID) == null) {
-                            AppUtils.loginAlert(MainActivity.this);
-                        } else {
-                            loadFragment(new CartFragment());
-                        }
+                        gotoCart();
                         break;
                     case R.id.page_5:
                         imgSearch.setVisibility(View.GONE);
@@ -158,6 +167,21 @@ public class MainActivity extends BaseActivity {
         });
     }
 
+    private void gotoCart()
+    {
+        nav_view.getMenu().findItem(R.id.page_4).setChecked(true);
+        imgSearch.setVisibility(View.GONE);
+        toolbar_title.setText(getString(R.string.cart));
+        if (AppSharedPreference.getInstance().getString(MainActivity.this, AppSharedPreference.USERID) == null) {
+            // AppUtils.loginAlert(MainActivity.this);
+
+            Intent intent=new Intent(MainActivity.this,LoginActivity.class);
+            startActivity(intent);
+            finish();
+        } else {
+            loadFragment(new CartFragment());
+        }
+    }
     public void gotoCategory() {
 
         nav_view.getMenu().findItem(R.id.page_2).setChecked(true);
@@ -170,7 +194,7 @@ public class MainActivity extends BaseActivity {
     public void gotoMyCourses()
     {
         nav_view.getMenu().findItem(R.id.page_3).setChecked(true);
-
+        toolbar_title.setText(getString(R.string.my_courses));
         imgSearch.setVisibility(View.GONE);
         loadFragment(new MyCoursesFragment());
     }

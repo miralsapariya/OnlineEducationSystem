@@ -4,6 +4,8 @@
     android:layout_height="wrap_content"
     android:padding="@dimen/_15sdp"
     android:orientation="vertical"
+    android:layoutDirection="locale"
+    android:textDirection="locale"
     android:background="@drawable/round_rect"
     android:layout_margin="@dimen/_10sdp"
     >
@@ -12,6 +14,8 @@
         android:layout_height="wrap_content"
         android:text="@string/logout_alert"
         android:textColor="@color/black"
+        android:layoutDirection="locale"
+        android:textDirection="locale"
         />
 
 
@@ -29,6 +33,8 @@
             android:layout_width="0dp"
             android:layout_height="35dp"
             android:layout_weight="1"
+            android:layoutDirection="locale"
+            android:textDirection="locale"
             android:textColor="@color/white"
             android:background="@drawable/button"
             android:text="@string/ok"
@@ -38,6 +44,8 @@
             android:layout_width="0dp"
             android:layout_height="35dp"
             android:layout_weight="1"
+            android:layoutDirection="locale"
+            android:textDirection="locale"
             android:textColor="@color/white"
             android:background="@drawable/button"
             android:text="@string/cancel"

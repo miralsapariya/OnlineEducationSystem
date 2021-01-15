@@ -14,11 +14,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.onlineeducationsyestem.adapter.HomeSearchAdapter;
 import com.onlineeducationsyestem.adapter.SearchResultAdapter;
 import com.onlineeducationsyestem.interfaces.AddItemInCart;
 import com.onlineeducationsyestem.interfaces.NetworkListener;
 import com.onlineeducationsyestem.interfaces.OnItemClick;
 import com.onlineeducationsyestem.model.BaseBean;
+import com.onlineeducationsyestem.model.DefaultCategory;
 import com.onlineeducationsyestem.model.GlobalSearch;
 import com.onlineeducationsyestem.network.ApiCall;
 import com.onlineeducationsyestem.network.ApiInterface;
@@ -38,7 +40,7 @@ public class SearchResultActivity extends AppCompatActivity
 
     String searchKeyword="",cat_id="";
     private ImageView imgBack;
-    private RecyclerView rvSearch;
+    private RecyclerView rvSearch,recyclerView;
     private TextView tvNoData;
     private SearchResultAdapter searchResultAdapter;
     private ArrayList<GlobalSearch.Courseslist> list;
@@ -49,7 +51,6 @@ public class SearchResultActivity extends AppCompatActivity
         setContentView(R.layout.activity_search_result);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         initUI();
     }
 
@@ -66,12 +67,10 @@ public class SearchResultActivity extends AppCompatActivity
             }
         });
         rvSearch=findViewById(R.id.rvSearch);
+        recyclerView=findViewById(R.id.recyclerView);
         tvNoData =findViewById(R.id.tvNoData);
-
-
         //swipeRefresh = findViewById(R.id.swipeRefresh);
        // swipeRefresh.setOnRefreshListener(this);
-
         rvSearch.setHasFixedSize(true);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(SearchResultActivity.this);
         rvSearch.setLayoutManager(mLayoutManager);
@@ -81,10 +80,33 @@ public class SearchResultActivity extends AppCompatActivity
 
         if (AppUtils.isInternetAvailable(SearchResultActivity.this)) {
             hintGetSearchResult();
+        }else {
+            AppUtils.showAlertDialog(SearchResultActivity.this,getString(R.string.no_internet),getString(R.string.alter_net));
         }
 
     }
+    private void getDefaultCategory() {
+        if (AppUtils.isInternetAvailable(SearchResultActivity.this)) {
+            hintDefulatCategory();
+        }else {
+            AppUtils.showAlertDialog(SearchResultActivity.this,getString(R.string.no_internet),getString(R.string.alter_net));
+        }
+    }
 
+    private void hintDefulatCategory() {
+        String lang = "";
+        AppUtils.showDialog(this, getString(R.string.pls_wait));
+        ApiInterface apiInterface = RestApi.getConnection(ApiInterface.class, ServerConstents.API_URL);
+
+        if (AppSharedPreference.getInstance().getString(SearchResultActivity.this, AppSharedPreference.LANGUAGE_SELECTED) == null ||
+                AppSharedPreference.getInstance().getString(SearchResultActivity.this, AppSharedPreference.LANGUAGE_SELECTED).equalsIgnoreCase(AppConstant.ENG_LANG)) {
+            lang = AppConstant.ENG_LANG;
+        } else {
+            lang = AppConstant.ARABIC_LANG;
+        }
+        Call<DefaultCategory> call = apiInterface.getDefaultCategory(lang);
+        ApiCall.getInstance().hitService(SearchResultActivity.this, call, this, ServerConstents.DEFUALT_CAT);
+    }
     private void hintGetSearchResult()
     {
         String lang="";
@@ -116,7 +138,7 @@ public class SearchResultActivity extends AppCompatActivity
       //  page_limit
         Call<GlobalSearch> call = apiInterface.getDefaultCategory(lang,AppSharedPreference.getInstance().
                 getString(SearchResultActivity.this, AppSharedPreference.ACCESS_TOKEN),params);
-        ApiCall.getInstance().hitService(SearchResultActivity.this, call, this, ServerConstents.DEFUALT_CAT);
+        ApiCall.getInstance().hitService(SearchResultActivity.this, call, this, ServerConstents.CATEGORY);
 
     }
 
@@ -125,18 +147,28 @@ public class SearchResultActivity extends AppCompatActivity
 
     }
 
-
-
     @Override
     public void onSuccess(int responseCode, Object response, int requestCode) {
         if(requestCode == ServerConstents.CART){
-
             BaseBean baseBean =(BaseBean) response;
             Toast.makeText(SearchResultActivity.this, baseBean.getMessage().toString(),Toast.LENGTH_SHORT).show();
-
+        }else if (requestCode == ServerConstents.DEFUALT_CAT) {
+            final DefaultCategory data = (DefaultCategory) response;
+            HomeSearchAdapter homeSearchAdapter =
+                    new HomeSearchAdapter(SearchResultActivity.this, data.getData().get(0).getCategories(), new OnItemClick() {
+                        @Override
+                        public void onGridClick(int pos) {
+                            Intent intent = new Intent(SearchResultActivity.this, SearchResultActivity.class);
+                            intent.putExtra("cat_id", data.getData().get(0).getCategories().get(pos).getId() + "");
+                            startActivity(intent);
+                            finish();
+                        }
+                    });
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            LinearLayoutManager manager = new LinearLayoutManager(SearchResultActivity.this);
+            recyclerView.setLayoutManager(manager);
+            recyclerView.setAdapter(homeSearchAdapter);
         }else {
-
-
             GlobalSearch data = (GlobalSearch) response;
             list = new ArrayList<>();
             list.addAll(data.getData().get(0).getCourseslist());
@@ -146,14 +178,17 @@ public class SearchResultActivity extends AppCompatActivity
                 tvNoData.setVisibility(View.GONE);
 
                 searchResultAdapter = new SearchResultAdapter
-                        (SearchResultActivity.this, data.getData().get(0).getCourseslist(), this, this);
+                        (SearchResultActivity.this,
+                                data.getData().get(0).getCourseslist(), this, this);
                 rvSearch.setItemAnimator(new DefaultItemAnimator());
                 LinearLayoutManager manager = new LinearLayoutManager(SearchResultActivity.this);
                 rvSearch.setLayoutManager(manager);
                 rvSearch.setAdapter(searchResultAdapter);
+                getDefaultCategory();
             } else {
                 rvSearch.setVisibility(View.GONE);
                 tvNoData.setVisibility(View.VISIBLE);
+                getDefaultCategory();
             }
         }
     }
@@ -176,6 +211,7 @@ public class SearchResultActivity extends AppCompatActivity
             Toast.makeText(SearchResultActivity.this, response, Toast.LENGTH_SHORT).show();
             rvSearch.setVisibility(View.GONE);
             tvNoData.setVisibility(View.VISIBLE);
+            getDefaultCategory();
         }
     }
 
@@ -213,6 +249,8 @@ public class SearchResultActivity extends AppCompatActivity
             }else {
                 hintAddToCart(pos);
             }
+        }else {
+            AppUtils.showAlertDialog(SearchResultActivity.this,getString(R.string.no_internet),getString(R.string.alter_net));
         }
 
     }

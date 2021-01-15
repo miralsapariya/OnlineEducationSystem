@@ -51,6 +51,15 @@ public class TrendingCourseActivity extends BaseActivity implements OnItemClick,
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(AppConstant.fromCourseDetail)
+        {
+            finish();
+        }
+    }
+
     private void initToolBar()
     {
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -76,8 +85,6 @@ public class TrendingCourseActivity extends BaseActivity implements OnItemClick,
         from =getIntent().getExtras().getString("from");
 
         subcat_id=getIntent().getExtras().getString("subcat_id");
-
-
         tvTitle.setText(title);
         imgBack = findViewById(R.id.imgBack);
         imgBack.setOnClickListener(new View.OnClickListener() {
@@ -89,10 +96,9 @@ public class TrendingCourseActivity extends BaseActivity implements OnItemClick,
 
         if (AppUtils.isInternetAvailable(TrendingCourseActivity.this)) {
                 hintCourseList();
+        }else {
+            AppUtils.showAlertDialog(TrendingCourseActivity.this,getString(R.string.no_internet),getString(R.string.alter_net));
         }
-
-
-
     }
     private void hintAddToCart(int pos)
     {

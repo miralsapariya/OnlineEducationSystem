@@ -1,14 +1,18 @@
 package com.onlineeducationsyestem;
 
 import android.Manifest;
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
@@ -19,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -26,6 +31,13 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.share.Sharer;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.widget.ShareDialog;
 import com.onlineeducationsyestem.adapter.CourseDetailCourseIncludesAdapter;
 import com.onlineeducationsyestem.adapter.ExpandedCourseDetail;
 import com.onlineeducationsyestem.interfaces.NetworkListener;
@@ -47,9 +59,10 @@ import java.util.HashMap;
 
 import retrofit2.Call;
 
-public class CourseDetailActivity extends BaseActivity implements NetworkListener {
+public class CourseDetailActivity extends BaseActivity implements NetworkListener  {
 
     private static final int PERMISSION_PHOTO = 1;
+    private static final int REQUEST_CODE_MY_PICK = 2;
     private RecyclerView rvCourse;
     private CourseDetailCourseIncludesAdapter courseDetailCourseIncludesAdapter;
     private NonScrollExpandableListView expandableView;
@@ -64,23 +77,27 @@ public class CourseDetailActivity extends BaseActivity implements NetworkListene
     private WebView tvCourseDetail;
     private ImageView imgShare;
     private CourseDetail data;
+    private IntentFilter mIntentFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_detail);
+        FacebookSdk.sdkInitialize(getApplicationContext());
 
         initToolbar();
         initUI();
-
     }
+
 
 
     private void initToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         imgShare = findViewById(R.id.imgShare);
+
         imgShare.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
             @Override
             public void onClick(View view) {
                 if (ContextCompat.checkSelfPermission(CourseDetailActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
@@ -88,15 +105,90 @@ public class CourseDetailActivity extends BaseActivity implements NetworkListene
                     ActivityCompat.requestPermissions(CourseDetailActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_PHOTO);
                 } else {
 
-                    share();
+                    shareIt();
+                 // share();
+                    //callling();
                 }
             }
         });
     }
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
+    public void shareIt(){
+
+
+       Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_SUBJECT, data.getData().get(0).getCourseName());
+        intent.putExtra(Intent.EXTRA_TEXT, data.getData().get(0).getShare_url());
+        intent.setType("text/plain");
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+       startActivity(Intent.createChooser(intent, data.getData().get(0).getCourseName()));
+       /* Intent sendIntent = new Intent(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, "Hello!");
+       // (Optional) Here we're setting the title of the content
+        sendIntent.putExtra(Intent.EXTRA_TITLE, "Send message");
+       // (Optional) Here we're passing a content URI to an image to be displayed
+        sendIntent.setData(Uri.parse(data.getData().get(0).getShare_url()));
+        sendIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+       // Show the Sharesheet
+        startActivity(Intent.createChooser(sendIntent, null));*/
+        //startActivity(intent);
+        /*ShareCompat.IntentBuilder.from(CourseDetailActivity.this)
+                .setType("text/plain")
+                .setChooserTitle("Share URL")
+                .setText(data.getData().get(0).getShare_url())
+                //.setStream(Uri.parse(data.getData().get(0).getShare_url()))
+                .startChooser();*/
+    }
+
+  public void callling()
+  {
+      Log.d("+++++++++++++++++++++ ", "======");
+      ShareLinkContent content = new ShareLinkContent.Builder()
+              .setContentUrl(Uri.parse(data.getData().get(0).getShare_url()))
+              .build();
+      CallbackManager callbackManager;
+      ShareDialog shareDialog;
+      callbackManager = CallbackManager.Factory.create();
+      shareDialog = new ShareDialog(this);
+      // this part is optional
+      shareDialog.registerCallback(callbackManager, new FacebookCallback<Sharer.Result>()
+      {
+          @Override
+          public void onSuccess(Sharer.Result result) {
+
+          }
+
+          @Override
+          public void onCancel() {
+
+          }
+
+          @Override
+          public void onError(FacebookException error) {
+
+          }
+      });
+      shareDialog.show(content);
+
+    /*  Bitmap image = BitmapFactory.decodeResource(getResources(),
+              R.mipmap.ic_launcher);
+
+      SharePhoto photo = new SharePhoto.Builder().setBitmap(image)
+              .setCaption("Welcome To Facebook Photo Sharing on steroids!")
+              .build();
+
+      SharePhotoContent content = new SharePhotoContent.Builder().addPhoto(
+              photo).build();
+
+      ShareApi.share(content, null);
+      Toast.makeText(this, "Succsesfully posted on your wall",
+              Toast.LENGTH_LONG).show();*/
+  }
+
     private void share() {
 
-
-        Target target = new Target() {
+               Target target = new Target() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
             @Override
             public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
 
@@ -107,7 +199,11 @@ public class CourseDetailActivity extends BaseActivity implements NetworkListene
                 Uri screenshotUri = Uri.parse(path);
                 intent.putExtra(Intent.EXTRA_STREAM, screenshotUri);
                 intent.setType("image/*");
-                startActivity(Intent.createChooser(intent, data.getData().get(0).getCourseName()));
+
+                Intent receiver = new Intent(CourseDetailActivity.this, ApplicationSelectorReceiver.class);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(CourseDetailActivity.this, 0, receiver, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                startActivity(Intent.createChooser(intent, data.getData().get(0).getCourseName(),pendingIntent.getIntentSender()));
             }
 
             @Override
@@ -120,9 +216,23 @@ public class CourseDetailActivity extends BaseActivity implements NetworkListene
 
             }
         };
-       // String url = "http://efdreams.com/data_images/dreams/face/face-03.jpg";
         String url=data.getData().get(0).getImage();
         Picasso.with(getApplicationContext()).load(url).into(target);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == REQUEST_CODE_MY_PICK) {
+            if(data != null && data.getComponent() != null && !TextUtils.isEmpty(data.getComponent().flattenToShortString()) ) {
+                String appName = data.getComponent().flattenToShortString();
+                // Now you know the app being picked.
+                // data is a copy of your launchIntent with this important extra info added.
+
+                // Start the selected activity
+                Log.d("==================>>> ", appName);
+                startActivity(data);
+            }
+        }
     }
 
     @Override
@@ -144,6 +254,9 @@ public class CourseDetailActivity extends BaseActivity implements NetworkListene
 
     private void initUI() {
         Bundle extras = getIntent().getExtras();
+        IntentFilter filter = new IntentFilter("action_fb");
+        ApplicationSelectorReceiver mMyBroadcastReceiver=new ApplicationSelectorReceiver();
+        this.registerReceiver(mMyBroadcastReceiver, filter);
 
         if (extras != null) {
             course_id = extras.getString("course_id");
@@ -171,7 +284,12 @@ public class CourseDetailActivity extends BaseActivity implements NetworkListene
             @Override
             public void onClick(View view) {
                 if (AppSharedPreference.getInstance().getString(CourseDetailActivity.this, AppSharedPreference.USERID) == null) {
-                    AppUtils.loginAlert(CourseDetailActivity.this);
+                   // AppUtils.loginAlert(CourseDetailActivity.this);
+
+                    Intent intent=new Intent(CourseDetailActivity.this,LoginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    finish();
                 } else {
 
                     callCart();
@@ -196,7 +314,12 @@ public class CourseDetailActivity extends BaseActivity implements NetworkListene
                 if (AppUtils.isInternetAvailable(CourseDetailActivity.this)) {
 
                     if (AppSharedPreference.getInstance().getString(CourseDetailActivity.this, AppSharedPreference.USERID) == null) {
-                        Toast.makeText(CourseDetailActivity.this, getString(R.string.toast_login_first), Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(CourseDetailActivity.this, getString(R.string.toast_login_first), Toast.LENGTH_SHORT).show();
+
+                        Intent intent=new Intent(CourseDetailActivity.this,LoginActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                        finish();
                     } else {
                         if(data.getData().get(0).getIs_purchased() ==1)
                         {
@@ -206,16 +329,18 @@ public class CourseDetailActivity extends BaseActivity implements NetworkListene
                         }
                     }
 
+                }else {
+                    AppUtils.showAlertDialog(CourseDetailActivity.this,getString(R.string.no_internet),getString(R.string.alter_net));
                 }
             }
         });
 
 
         if (AppUtils.isInternetAvailable(CourseDetailActivity.this)) {
-
             hintCourseDetail();
+        }else {
+            AppUtils.showAlertDialog(CourseDetailActivity.this,getString(R.string.no_internet),getString(R.string.alter_net));
         }
-
 
     }
 
@@ -303,7 +428,8 @@ public class CourseDetailActivity extends BaseActivity implements NetworkListene
 
             BaseBean baseBean = (BaseBean) response;
             Toast.makeText(CourseDetailActivity.this, baseBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
-
+            AppConstant.fromCourseDetail=true;
+            finish();
         } else {
 
             data = (CourseDetail) response;
@@ -313,6 +439,7 @@ public class CourseDetailActivity extends BaseActivity implements NetworkListene
                         (data.getData().get(0).getImage(), imgCourse, CourseDetailActivity.this, 0, 0);
                 tvCourseTitle.setText(data.getData().get(0).getCourseName());
                 tvTitle1.setText(data.getData().get(0).getCourseName());
+                tvDuration.setText(data.getData().get(0).getCourse_duration());
 
               /*  if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                     tvCourseDetail.setText(Html.fromHtml(data.getData().get(0).getDescription(),Html.FROM_HTML_MODE_LEGACY));
@@ -435,4 +562,6 @@ public class CourseDetailActivity extends BaseActivity implements NetworkListene
     public void onFailure() {
 
     }
+
+
 }

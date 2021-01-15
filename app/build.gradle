@@ -68,5 +68,8 @@ dependencies {
     //top corner img view
     // implementation 'com.joooonho:selectableroundedimageview:1.0.1'
 
+    //advnace webview
+    implementation 'com.github.delight-im:Android-AdvancedWebView:v3.2.1'
 
+    implementation 'com.facebook.android:facebook-share:[5,6)'
 }

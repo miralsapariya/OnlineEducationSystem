@@ -3,6 +3,7 @@ package com.onlineeducationsyestem.adapter;
 import android.content.Context;
 import android.graphics.Paint;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +35,7 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
     private DeleteItemInCart deleteItemInCart;
     private ApplyPromoCode applyPromoCode;
     private CheckOutInCart checkOutInCart;
-    float amount=0;
+    //float amount=0;
     public CartListAdapter(Context context,
                            ArrayList<CartList.ListData> listProduct,
                            OnItemClick onItemClick, DeleteItemInCart deleteItemInCart, ApplyPromoCode applyPromoCode, CheckOutInCart checkOutInCart) {
@@ -77,9 +78,10 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
 
         //free courses
         if(!data.getCoursePrice().contains("$")){
-         amount=0;
+         data.amount=0.0f;
         }else {
-            amount = Float.parseFloat(data.getCoursePrice().substring(1)) - data.getCourseDiscount();
+            data.amount = Float.parseFloat(data.getCoursePrice().substring(1)) - data.getCourseDiscount();
+            Log.d("========> ", data.amount+"");
         }
         if (data.getCourseDiscount() == 0) {
             holder.llPromo.setVisibility(View.VISIBLE);
@@ -107,7 +109,8 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
         holder.buyWith.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                checkOutInCart.doCheckout(data.getCartid() + "", amount + "",data.getCourseName());
+                Log.d("amount : ", data.amount+" course:: "+data.getCourseName());
+                checkOutInCart.doCheckout(data.getCartid() + "", data.amount + "",data.getCourseName());
             }
         });
     }

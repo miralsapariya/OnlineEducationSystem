@@ -122,7 +122,6 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:visibility="gone"
                 android:orientation="vertical"
                 android:layoutDirection="locale"
                 android:textDirection="locale"
@@ -138,14 +137,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="0"
                     android:textColor="@color/font1"
                     android:textDirection="locale" />
 
             </LinearLayout>
 
             <View
-                android:visibility="gone"
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
                 android:background="@color/border_color" />

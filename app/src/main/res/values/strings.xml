@@ -43,6 +43,8 @@
     <string name="sign_up">Sign Up</string>
     <string name="sign_in">Sign In</string>
     <string name="full_name">Full Name</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="new_pwd">New Password</string>
@@ -128,6 +130,7 @@
 
     <string name="no_record">No record found</string>
     <string name="toast_name">Please enter name</string>
+    <string name="toast_lname">Please enter Last name</string>
     <string name="toast_full_name">Please enter full name</string>
     <string name="toast_email">Please enter email</string>
     <string name="toast_valid_email">Please enter valid email.</string>
@@ -152,8 +155,12 @@
     <string name="login_alert">Login Alert</string>
     <string name="please_login">Please Login</string>
     <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
     <string name="thank_you">Thank You</string>
     <string name="back_to_my_course">Back To My Courses</string>
+    <string name="go_to_my_course">Go To My Courses</string>
+    <string name="discount">Discount</string>
+    <string name="buy">Buy</string>
 
     <string name="toast_course_alry_whishlist">Course already enrolled so you can not add it to your wishlist</string>
 
@@ -174,4 +181,10 @@
     <string name="choose_photo">Choose Photo</string>
     <string name="add_photo">Add Photo</string>
     <string name="logout_alert">Do you want to logout?</string>
+    <string name="no_search">No search result found</string>
+    <string name="thank_u_payment">Thank you for making payment. The subscription of your course(s) is done sucessfully.</string>
+    <string name="no_internet">No Internet</string>
+    <string name="alter_net">Please check your internet connection status and try again</string>
+    <string name="facebook_app_id">2438596933040553</string>
+    <string name="fb_login_protocol_scheme">fb2438596933040553</string>
 </resources>

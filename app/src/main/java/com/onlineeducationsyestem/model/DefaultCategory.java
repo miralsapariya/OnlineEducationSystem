@@ -57,6 +57,8 @@ public class DefaultCategory implements Serializable
         private ArrayList<Category> categories = null;
         private final static long serialVersionUID = 8083280329208032982L;
 
+
+
         public String getTitle() {
             return title;
         }
@@ -87,6 +89,18 @@ public class DefaultCategory implements Serializable
         @SerializedName("category_icon")
         @Expose
         private String categoryIcon;
+
+        @SerializedName("total_course")
+        @Expose
+        private Integer total_course;
+
+        public Integer getTotal_course() {
+            return total_course;
+        }
+
+        public void setTotal_course(Integer total_course) {
+            this.total_course = total_course;
+        }
         private final static long serialVersionUID = 2268342625711373244L;
 
         public Integer getId() {
